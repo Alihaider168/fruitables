@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorConstant {
+  static Color black = fromHex('#000000');
   static Color gray5001 = fromHex('#fafafa');
   static Color primaryPink = fromHex('#B620E0');
   static Color green = fromHex('#43FF00');
@@ -10,7 +11,7 @@ class ColorConstant {
   static Color containerBg = fromHex('#363636');
   static Color blue = fromHex('#007AFF');
   static Color white60 = Colors.white.withOpacity(.6);
-  static Color whiteA700 = fromHex('#ffffff');
+  static Color white = fromHex('#ffffff');
   static Color unselectedIcon = fromHex('#CDCDCD');
   static Color grayBorder = fromHex('#707070');
   static Color greenActive = fromHex('#6DD400');
@@ -76,7 +77,6 @@ class ColorConstant {
 
   static Color black90066 = fromHex('#66000000');
 
-  static Color black900 = fromHex('#000000');
 
   static Color gray50001 = fromHex('#979797');
 

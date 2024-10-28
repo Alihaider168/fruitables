@@ -64,15 +64,15 @@ class GetStartedView extends GetView<GetStartedController> {
                     MyText(
                       title: "lbl_welcome_to_fruitables".tr,
                       fontSize: 20,
-                      clr: ColorConstant.black,
-                      customWeight: FontWeight.w600,
+                      color: ColorConstant.black,
+                      fontWeight: FontWeight.w600,
                     ),
                     SizedBox(height: getSize(5),),
                     MyText(
                       title: "lbl_please_select_order_type".tr,
                       fontSize: 16,
-                      clr: ColorConstant.black,
-                      customWeight: FontWeight.w400,
+                      color: ColorConstant.black,
+                      fontWeight: FontWeight.w400,
                     ),
                     SizedBox(height: getSize(30),),
                     CustomGetStartedButton(

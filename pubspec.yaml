@@ -47,6 +47,7 @@ dependencies:
   rounded_loading_button: ^2.1.0
   connectivity_plus: ^4.0.1
   scrollable_positioned_list: ^0.3.8
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

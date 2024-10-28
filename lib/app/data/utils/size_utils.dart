@@ -107,16 +107,16 @@ EdgeInsetsGeometry getMarginOrPadding({
     bottom = all;
   }
   return EdgeInsets.only(
-    left: getHorizontalSize(
+    left: getSize(
       left ?? 0,
     ),
-    top: getVerticalSize(
+    top: getSize(
       top ?? 0,
     ),
-    right: getHorizontalSize(
+    right: getSize(
       right ?? 0,
     ),
-    bottom: getVerticalSize(
+    bottom: getSize(
       bottom ?? 0,
     ),
   );

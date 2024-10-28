@@ -41,7 +41,7 @@ class CustomGetStartedButton extends StatelessWidget {
             MyText(
               title: title,
               fontSize: 16,
-              customWeight: FontWeight.w600,
+              fontWeight: FontWeight.w600,
             ),
             Spacer(),
             Icon(Icons.arrow_forward_ios)

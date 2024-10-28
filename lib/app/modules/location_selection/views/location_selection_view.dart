@@ -48,7 +48,7 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                         MyText(
                           title: "lbl_please_select_location".tr,
                           fontSize: 16,
-                          customWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w600,
                         ),
                         SizedBox(height: getSize(15),),
                         CustomTextFormField(
@@ -56,7 +56,7 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                             if(controller.cityModel?.data?.cities != null){
                               controller.showCitySheet(context);
                             }else{
-                              CustomSnackBar.showCustomToast(message: "No cities available at the moment please try later");
+                              CustomSnackBar.showCustomToast(message: "lbl_no_cities_available".tr);
                             }
                           },
                           controller: controller.cityController,

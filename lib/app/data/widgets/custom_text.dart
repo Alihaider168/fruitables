@@ -7,12 +7,11 @@ TextStyle textStyle =
 
 class MyText extends StatefulWidget {
   final String title;
-  final String? weight;
   final String? family;
-  final FontWeight? customWeight;
+  final FontWeight? fontWeight;
   final double? fontSize, height, letterSpacing;
-  final Color? clr;
-  final TextOverflow? toverflow;
+  final Color? color;
+  final TextOverflow? overflow;
   final bool? center;
   final bool? alignRight;
   final int? line;
@@ -24,16 +23,15 @@ class MyText extends StatefulWidget {
       required this.title,
       this.family,
       this.fontSize,
-      this.clr,
+      this.color,
       this.fontFeatures,
-      this.weight,
-      this.customWeight,
+      this.fontWeight,
       this.height,
       this.center,
       this.alignRight,
       this.line,
       this.under,
-      this.toverflow,
+      this.overflow,
       this.cut,
       this.letterSpacing});
 
@@ -46,7 +44,7 @@ class MyTextState extends State<MyText> {
   Widget build(BuildContext context) {
     return Text(
       widget.title,
-      overflow: widget.toverflow ?? TextOverflow.visible,
+      overflow: widget.overflow ?? TextOverflow.visible,
       maxLines: widget.line,
       textScaleFactor: 1.0,
       style: GoogleFonts.getFont(widget.family ?? "Manrope",
@@ -58,15 +56,8 @@ class MyTextState extends State<MyText> {
                   ? TextDecoration.lineThrough
                   : TextDecoration.none,
           fontSize: getFontSize(widget.fontSize ?? 16),
-          color: widget.clr ?? ColorConstant.black,
-          fontWeight: widget.customWeight ??
-              (widget.weight == null
-                  ? FontWeight.normal
-                  : widget.weight == "Bold"
-                      ? FontWeight.bold
-                      : widget.weight == "Semi Bold"
-                          ? FontWeight.w600
-                          : FontWeight.normal)),
+          color: widget.color ?? ColorConstant.black,
+          fontWeight: widget.fontWeight ),
       textAlign: widget.center == null
           ? widget.alignRight != null
               ? TextAlign.right

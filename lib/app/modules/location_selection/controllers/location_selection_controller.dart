@@ -230,7 +230,7 @@ class LocationSelectionController extends GetxController {
                           controller: _searchController,
                           decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.search, color: Colors.pink),
-                            hintText: 'Search',
+                            hintText: 'lbl_search'.tr,
                             contentPadding: const EdgeInsets.all(10),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -245,9 +245,9 @@ class LocationSelectionController extends GetxController {
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: MyText(
-                          title: 'Close',
-                          clr: ColorConstant.primaryPink,
-                          customWeight: FontWeight.bold,
+                          title: 'lbl_close'.tr,
+                          color: ColorConstant.primaryPink,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
@@ -257,7 +257,7 @@ class LocationSelectionController extends GetxController {
                   // List of locations
                   Expanded(
                       child: Obx(()=> filteredLocations.isEmpty
-                          ? const Center(child: Text('No results found'))
+                          ? Center(child: MyText(title: 'lbl_no_results'.tr))
                           : ListView.builder(
                         itemCount: filteredLocations.length,
                         itemBuilder: (context, index) {

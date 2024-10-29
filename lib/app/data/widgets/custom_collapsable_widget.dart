@@ -21,7 +21,8 @@ class CustomCollapsableWidget extends StatelessWidget {
           expandedHeight: 200.0, // Adjust height as needed
           floating: false,
           pinned: false,
-          backgroundColor: Colors.blue,
+          leading: Offstage(),
+          backgroundColor: ColorConstant.white,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           alignment: Alignment.bottomCenter,
@@ -71,21 +72,32 @@ class CustomCollapsableWidget extends StatelessWidget {
           ],
         )),
         ),
-        // Collapsible view at the bottom of AppBar
-        SliverPersistentHeader(
-          pinned: true,
-          delegate: _CollapsibleViewDelegate(
-            minHeight: getSize(80),  // Minimum height when collapsed
-            maxHeight: getSize(80), // Maximum height when expanded
-            child: header
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [header], // Using the passed Column as child
           ),
         ),
-        // Main content below the collapsible view
+        // Collapsible view at the bottom of AppBar
         SliverList(
           delegate: SliverChildListDelegate(
             [child], // Using the passed Column as child
           ),
         ),
+
+        // SliverPersistentHeader(
+        //   pinned: true,
+        //   delegate: _CollapsibleViewDelegate(
+        //     minHeight: getSize(400),  // Minimum height when collapsed
+        //     maxHeight: getSize(400), // Maximum height when expanded
+        //     child: header
+        //   ),
+        // ),
+        // Main content below the collapsible view
+        // SliverList(
+        //   delegate: SliverChildListDelegate(
+        //     [child], // Using the passed Column as child
+        //   ),
+        // ),
       ],
     );
   }

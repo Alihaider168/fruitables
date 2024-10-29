@@ -6,37 +6,41 @@ import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MainMenuController extends GetxController {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
   var selectedCategoryIndex = 0.obs;
 
+  RxBool showAllCategories = false.obs;
+
   Cart cart = Cart();
 
-  final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  // final ItemScrollController itemScrollController = ItemScrollController();
+  // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void onInit() {
     super.onInit();
     getMenu();
 
-    itemPositionsListener.itemPositions.addListener(() {
-      final positions = itemPositionsListener.itemPositions.value;
-      if (positions.isNotEmpty) {
-        final firstVisible = positions.first.index;
-        onVerticalScroll(firstVisible);
-      }
-    });
+    // itemPositionsListener.itemPositions.addListener(() {
+    //   final positions = itemPositionsListener.itemPositions.value;
+    //   if (positions.isNotEmpty) {
+    //     final firstVisible = positions.first.index;
+    //     onVerticalScroll(firstVisible);
+    //   }
+    // });
   }
 
-  void scrollToCategory(int index) {
-    selectedCategoryIndex.value = index;
-    itemScrollController.scrollTo(
-      index: index,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
-  }
+  // void scrollToCategory(int index) {
+  //   selectedCategoryIndex.value = index;
+  //   itemScrollController.scrollTo(
+  //     index: index,
+  //     duration: const Duration(milliseconds: 500),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   void onVerticalScroll(int firstVisibleIndex) {
     selectedCategoryIndex.value = firstVisibleIndex;

@@ -7,6 +7,7 @@ abstract class Routes {
   static const GET_STARTED = _Paths.GET_STARTED;
   static const LOCATION_SELECTION = _Paths.LOCATION_SELECTION;
   static const MAIN_MENU = _Paths.MAIN_MENU;
+  static const CATEGORY_DETAIL = _Paths.CATEGORY_DETAIL;
 }
 
 abstract class _Paths {
@@ -15,4 +16,5 @@ abstract class _Paths {
   static const GET_STARTED = '/get-started';
   static const LOCATION_SELECTION = '/location-selection';
   static const MAIN_MENU = '/main-menu';
+  static const CATEGORY_DETAIL = '/category-detail';
 }

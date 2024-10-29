@@ -49,17 +49,20 @@ class Data {
 class Categories {
   String? englishName;
   String? urduName;
+  String? image;
   String? id;
 
   Categories({
     this.englishName,
     this.urduName,
+    this.image,
     this.id,
   });
 
   Categories.fromJson(Map<String, dynamic> json) {
     englishName = json['englishName'] as String?;
     urduName = json['urduName'] as String?;
+    image = json['image'] as String?;
     id = json['id'] as String?;
   }
 
@@ -67,6 +70,7 @@ class Categories {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['englishName'] = englishName;
     json['urduName'] = urduName;
+    json['image'] = image;
     json['id'] = id;
     return json;
   }

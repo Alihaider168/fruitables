@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/category_detail/bindings/category_detail_binding.dart';
+import '../modules/category_detail/views/category_detail_view.dart';
 import '../modules/get_started/bindings/get_started_binding.dart';
 import '../modules/get_started/views/get_started_view.dart';
 import '../modules/location_selection/bindings/location_selection_binding.dart';
@@ -34,8 +36,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MAIN_MENU,
-      page: () =>  const MainMenuView(),
+      page: () => const MainMenuView(),
       binding: MainMenuBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY_DETAIL,
+      page: () => const CategoryDetailView(),
+      binding: CategoryDetailBinding(),
     ),
   ];
 }

@@ -83,7 +83,11 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                   CustomButton(
                     onTap: (){
                       if(controller.cityController.text.isNotEmpty && controller.regionController.text.isNotEmpty){
-                        Get.offAllNamed(Routes.MAIN_MENU);
+
+                        Get.offAllNamed(Routes.MAIN_MENU,arguments: {
+                          "city": controller.selectedCityModel,
+                          "area" : controller.selectedRegionModel,
+                        });
                       }
                     },
                     text: "lbl_confirm_location".tr,

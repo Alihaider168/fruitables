@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/city_model.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,17 @@ class MainMenuController extends GetxController {
 
   Cart cart = Cart();
 
+  Branches? branch;
+
   // final ItemScrollController itemScrollController = ItemScrollController();
   // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void onInit() {
+    var data = Get.arguments;
+    if(data!= null && data["area"] != null){
+      branch = data["area"];
+    }
     super.onInit();
     getMenu();
 
@@ -145,6 +152,62 @@ class MainMenuController extends GetxController {
                                 SizedBox(height: getSize(10),),
                                 Row(
                                   children: [
+                                    Obx(()=> selectedSize.value!='small' ?
+                                    selectedSize.value=='medium'?
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+
+                                          TextSpan(
+                                            text: "${'lbl_rs'.tr} ${item.mediumDiscountedPrice != 0 ? item.mediumDiscountedPrice : item.mediumPrice}  ",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black, // Change this to the desired color
+                                            ),
+                                          ),
+
+                                          // Conditionally show the original price if a discount is present
+                                          if (item.mediumDiscountedPrice != 0)
+                                            TextSpan(
+                                              text: "${'lbl_rs'.tr} ${item.mediumPrice}",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                                                decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ):
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+
+                                          TextSpan(
+                                            text: "${'lbl_rs'.tr} ${item.largeDiscountedPrice != 0 ? item.largeDiscountedPrice : item.largePrice}  ",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black, // Change this to the desired color
+                                            ),
+                                          ),
+
+                                          // Conditionally show the original price if a discount is present
+                                          if (item.largeDiscountedPrice != 0)
+                                            TextSpan(
+                                              text: "${'lbl_rs'.tr} ${item.largePrice}",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                                                decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ):
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -182,9 +245,14 @@ class MainMenuController extends GetxController {
                                             ),
                                         ],
                                       ),
-                                    ),
+                                    )),
                                     Visibility(
-                                      visible: checkForDiscountedPrice(item)!= 0,
+                                      visible:
+                                      ( selectedSize.value!='small' ?
+                                      selectedSize.value=='medium'?
+                                      item.mediumDiscountedPercentage!= null && item.mediumDiscountedPercentage != 0 :
+                                      item.largeDiscountedPercentage!= null && item.largeDiscountedPercentage != 0 :
+                                      checkForDiscountedPrice(item)!= 0),
                                       child: Container(
                                         margin: getMargin(left: 15),
                                         padding: getPadding(left: 10,right: 10,top: 5,bottom: 5),
@@ -192,11 +260,16 @@ class MainMenuController extends GetxController {
                                             color: ColorConstant.grayBackground,
                                             borderRadius: BorderRadius.circular(getSize(15))
                                         ),
-                                        child: MyText(
-                                          title: "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
+                                        child: Obx(()=> MyText(
+                                          title:
+                                          selectedSize.value!='small' ?
+                                          selectedSize.value=='medium' ?
+                                          "${item.mediumDiscountedPercentage ?? ""}% ${'lbl_off'.tr}":
+                                          "${item.largeDiscountedPercentage ?? ""}% ${'lbl_off'.tr}":
+                                          "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                        ),
+                                        )),
                                       ),
                                     ),
                                   ],

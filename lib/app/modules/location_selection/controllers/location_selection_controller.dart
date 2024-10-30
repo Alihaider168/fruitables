@@ -22,6 +22,9 @@ class LocationSelectionController extends GetxController {
   TextEditingController regionController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
 
+  Cities? selectedCityModel ;
+  Branches? selectedRegionModel ;
+
 
   // List to hold filtered search results
   RxList<Branches> filteredLocations = <Branches>[].obs;
@@ -176,8 +179,10 @@ class LocationSelectionController extends GetxController {
                     padding: getPadding(top: 30),
                     child: CustomButton(
                       onTap: (){
+
                         selectedCity = _selectedCityIndex;
-                        cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.data?.cities?[selectedCity].name??"") : (cityModel?.data?.cities?[selectedCity].englishName??"");
+                        selectedCityModel = cityModel?.data?.cities?[selectedCity];
+                            cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.data?.cities?[selectedCity].name??"") : (cityModel?.data?.cities?[selectedCity].englishName??"");
                         filteredLocations.value = (cityModel?.data?.branches??[]).where((element)=> (Utils.checkIfUrduLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
                         filteredLocations.refresh();
                         Get.back();
@@ -263,6 +268,7 @@ class LocationSelectionController extends GetxController {
                         itemBuilder: (context, index) {
                           return ListTile(
                             onTap: (){
+                              selectedRegionModel = cityModel?.data?.branches?[index];
                               regionController.text = Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
                               Get.back();
                             },

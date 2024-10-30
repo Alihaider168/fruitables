@@ -27,6 +27,7 @@ class CustomImageView extends StatelessWidget {
   Alignment? alignment;
   VoidCallback? onTap;
   EdgeInsetsGeometry? margin;
+  EdgeInsetsGeometry? padding;
   BorderRadiusGeometry? radius;
   BoxBorder? border;
   bool boxShadow = false;
@@ -44,6 +45,7 @@ class CustomImageView extends StatelessWidget {
       this.color,
       this.fit,
       this.alignment,
+      this.padding,
       this.onTap,
       this.radius,
       this.margin,
@@ -88,6 +90,7 @@ class CustomImageView extends StatelessWidget {
   _buildImageWithBorder() {
     if (border != null) {
       return Container(
+        padding: padding,
         decoration: BoxDecoration(
           border: border,
           borderRadius: radius,

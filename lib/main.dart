@@ -65,6 +65,12 @@ class _MyAppState extends State<MyApp> {
         title: 'Fruitables',
         initialBinding: InitialBindings(),
         // showSemanticsDebugger: true,
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: ColorConstant.primaryPink,
+          ),
+          scaffoldBackgroundColor: ColorConstant.white,
+        ),
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         builder: (context, child) {

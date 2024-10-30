@@ -23,7 +23,33 @@ class MainMenuView extends GetView<MainMenuController> {
           },
           icon: Icon(Icons.menu,color: ColorConstant.white,),
         ),
-        title: const Text('MainMenuView'),
+        title: GestureDetector(
+          onTap: (){
+            Get.toNamed(Routes.LOCATION_SELECTION);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  MyText(
+                    title: "lbl_deliver_to".tr,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstant.white,
+                  ),
+                  Icon(Icons.keyboard_arrow_down,color: ColorConstant.white,size: getSize(20),)
+                ],
+              ),
+              MyText(
+                title: controller.branch?.address??"",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: ColorConstant.white,
+              )
+            ],
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: (){
@@ -70,8 +96,10 @@ class MainMenuView extends GetView<MainMenuController> {
                           CustomImageView(
                             url: cat.image,
                             height: getSize(80),
+                            padding: getPadding(all: getSize(5)),
+                            margin: getMargin(bottom: getSize(5)),
                             width: size.width,
-                            border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.7)),
+                            border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
                           MyText(
                             title: Utils.checkIfUrduLocale() ? cat.urduName??"" : cat.englishName??"",
@@ -139,8 +167,8 @@ class MainMenuView extends GetView<MainMenuController> {
                                     onTap:(){
                                       Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
                                     },
-                                    child: const MyText(
-                                      title: "View all",
+                                    child: MyText(
+                                      title: 'lbl_view_all'.tr,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       under: true,
@@ -248,54 +276,57 @@ class MainMenuView extends GetView<MainMenuController> {
           ],
         ),
         child: Center(
-          child: Container(
-            width: size.width,
-            // height: getSize(50),
-            decoration: BoxDecoration(
-              color: ColorConstant.primaryPink,
-              borderRadius: BorderRadius.circular(getSize(5))
-            ),
-            padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
-            child: Row(
-              children: [
-                Container(
-                  padding: getPadding(all: 8),
-                  margin: getMargin(right: 10),
-                  decoration: BoxDecoration(
-                      color: ColorConstant.white,
-                     shape: BoxShape.circle
+          child: GestureDetector(
+            onTap: ()=> Get.toNamed(Routes.CART),
+            child: Container(
+              width: size.width,
+              // height: getSize(50),
+              decoration: BoxDecoration(
+                color: ColorConstant.primaryPink,
+                borderRadius: BorderRadius.circular(getSize(5))
+              ),
+              padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
+              child: Row(
+                children: [
+                  Container(
+                    padding: getPadding(all: 8),
+                    margin: getMargin(right: 10),
+                    decoration: BoxDecoration(
+                        color: ColorConstant.white,
+                       shape: BoxShape.circle
+                    ),
+                    child: Obx(()=> MyText(
+                      title: '${controller.cart.items.value.length}',
+                      color: ColorConstant.primaryPink,
+                    )),
                   ),
-                  child: Obx(()=> MyText(
-                    title: '${controller.cart.items.value.length}',
-                    color: ColorConstant.primaryPink,
-                  )),
-                ),
-                MyText(
-                  title: "View Cart",
-                  fontSize: 18,
-                  color: ColorConstant.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                Spacer(),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    MyText(
-                      title: '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
-                      fontSize: 14,
-                      color: ColorConstant.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    MyText(
-                      title: 'Price Exclusive TAX',
-                      fontSize: 12,
-                      color: ColorConstant.white,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ],
-                )
-              ],
+                  MyText(
+                    title: "lbl_view_cart".tr,
+                    fontSize: 18,
+                    color: ColorConstant.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Spacer(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      MyText(
+                        title: '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
+                        fontSize: 14,
+                        color: ColorConstant.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      MyText(
+                        title: 'Price Exclusive TAX',
+                        fontSize: 12,
+                        color: ColorConstant.white,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -317,86 +348,106 @@ class CustomItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: getSize(180),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Discount Badge
+    return GestureDetector(
+      onTap: (){
+        if(!controller.checkForMultipleValues(item)){
+          controller.addItemsToCart(item,size: "small");
+          quantity.value += 1;
+          controller.bottomBar.value = true;
+        }else{
+          controller.showAddToCartItemSheet(context, item);
+        }
+      },
+      child: SizedBox(
+        width: getSize(180),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Discount Badge
 
-            SizedBox(height: 4),
+              SizedBox(height: 4),
 
-            // Product Image
-            Stack(
-              children: [
-
-                CustomImageView(
-                  url: item.image,
-                  height: getSize(150),
-                  width: getSize(180),
-                  fit: BoxFit.cover,
-                ),
-                controller.checkForDiscountedPercentage(item)!= 0 ?Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: getMargin(left: 5,top: 5),
-                    padding: getPadding(left: 6,right: 6,top: 4,bottom: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: MyText(
-                      title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: ColorConstant.white,
-                    ),
-                  ),
-                ) : Offstage(),
-                // Add Button
-                Positioned(
-                  right: getSize(5),
-                  bottom: getSize(5),
-                  child: GestureDetector(
-                    onTap: (){
-                      if(!controller.checkForMultipleValues(item)){
-                        controller.addItemsToCart(item,size: "small");
-                        quantity.value += 1;
-                        controller.bottomBar.value = true;
-                      }else{
-                        controller.showAddToCartItemSheet(context, item);
-                      }
-
-                    },
-                    child: Container(
-                      width: getSize(35),
-                      height: getSize(35),
-                      decoration: BoxDecoration(
-                          color: ColorConstant.yellow,
-                          shape: BoxShape.circle
-                      ),
-                      alignment: Alignment.center,
-                      child: Obx(()=> quantity.value == 0
-                          ? Icon(Icons.add,color: ColorConstant.white,)
-                          : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
-                      ),
-                    ),
-                  )
-                ),
-              ],
-            ),
-            SizedBox(height: getSize(10)),
-
-            // Pricing
-            RichText(
-              text: TextSpan(
+              // Product Image
+              Stack(
                 children: [
-                  // Check if the prefix 'From' should be added
-                  if (controller.checkForMultipleValues(item))
+
+                  CustomImageView(
+                    url: item.image,
+                    height: getSize(150),
+                    width: getSize(180),
+                    fit: BoxFit.cover,
+                  ),
+                  controller.checkForDiscountedPercentage(item)!= 0 ?Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      margin: getMargin(left: 5,top: 5),
+                      padding: getPadding(left: 6,right: 6,top: 4,bottom: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: MyText(
+                        title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: ColorConstant.white,
+                      ),
+                    ),
+                  ) : Offstage(),
+                  // Add Button
+                  Positioned(
+                    right: getSize(5),
+                    bottom: getSize(5),
+                    child: GestureDetector(
+                      onTap: (){
+                        if(!controller.checkForMultipleValues(item)){
+                          controller.addItemsToCart(item,size: "small");
+                          quantity.value += 1;
+                          controller.bottomBar.value = true;
+                        }else{
+                          controller.showAddToCartItemSheet(context, item);
+                        }
+
+                      },
+                      child: Container(
+                        width: getSize(35),
+                        height: getSize(35),
+                        decoration: BoxDecoration(
+                            color: ColorConstant.yellow,
+                            shape: BoxShape.circle
+                        ),
+                        alignment: Alignment.center,
+                        child: Obx(()=> quantity.value == 0
+                            ? Icon(Icons.add,color: ColorConstant.white,)
+                            : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
+                        ),
+                      ),
+                    )
+                  ),
+                ],
+              ),
+              SizedBox(height: getSize(10)),
+
+              // Pricing
+              RichText(
+                text: TextSpan(
+                  children: [
+                    // Check if the prefix 'From' should be added
+                    if (controller.checkForMultipleValues(item))
+                      TextSpan(
+                        text: '${'lbl_from'.tr} ', // Prefix text
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black, // Change this to the desired color
+                        ),
+                      ),
+
+                    // Display the price
                     TextSpan(
-                      text: '${'lbl_from'.tr} ', // Prefix text
+                      text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -404,40 +455,31 @@ class CustomItemCard extends StatelessWidget {
                       ),
                     ),
 
-                  // Display the price
-                  TextSpan(
-                    text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black, // Change this to the desired color
-                    ),
-                  ),
-
-                  // Conditionally show the original price if a discount is present
-                  if (controller.checkForDiscountedPrice(item) != 0)
-                    TextSpan(
-                      text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                        decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                    // Conditionally show the original price if a discount is present
+                    if (controller.checkForDiscountedPrice(item) != 0)
+                      TextSpan(
+                        text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                          decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            MyText(
-              title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              line: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+              MyText(
+                title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                line: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
 
 
-          ],
+            ],
+          ),
         ),
       ),
     );

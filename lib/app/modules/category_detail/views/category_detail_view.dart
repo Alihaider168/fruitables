@@ -133,7 +133,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
         )
 
       ),
-      bottomNavigationBar:Obx(()=>  controller.bottomBar.value
+      bottomNavigationBar:Obx(()=>  controller.mainMenuController.bottomBar.value
           ? Container(
         width: size.width,
         height: size.height*0.12,
@@ -192,7 +192,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                   )),
                 ),
                 MyText(
-                  title: "View Cart",
+                  title: "lbl_view_cart".tr,
                   fontSize: 18,
                   color: ColorConstant.white,
                   fontWeight: FontWeight.bold,
@@ -257,7 +257,8 @@ class ItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  item.isNew == true? Row(
+                  (item.isNew == true || item.isHot == true || item.isTrending == true) ?
+                  Row(
                     children: [
                       Container(
                         // width: getSize(70),
@@ -265,50 +266,16 @@ class ItemWidget extends StatelessWidget {
                         margin: getMargin(bottom: 20),
                         padding: getPadding(left: 15,right: 15),
                         decoration: BoxDecoration(
-                            color: ColorConstant.black,
+                            color: ColorConstant.primaryPink,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(getSize(50)),
                               bottomRight: Radius.circular(getSize(50)),
                             )
                         ),
                         alignment: Alignment.center,
-                        child: MyText(title: "lbl_new".tr,color: ColorConstant.white,fontWeight: FontWeight.bold,),
-                      ),
-                    ],
-                  ):  item.isHot == true? Row(
-                    children: [
-                      Container(
-                        // width: getSize(70),
-                        height: getSize(30),
-                        margin: getMargin(bottom: 20),
-                        padding: getPadding(left: 15,right: 15),
-                        decoration: BoxDecoration(
-                            color: ColorConstant.black,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(getSize(50)),
-                              bottomRight: Radius.circular(getSize(50)),
-                            )
-                        ),
-                        alignment: Alignment.center,
-                        child: MyText(title: "lbl_hot".tr,color: ColorConstant.white,fontWeight: FontWeight.bold,),
-                      ),
-                    ],
-                  ): item.isTrending == true? Row(
-                    children: [
-                      Container(
-                        // width: getSize(70),
-                        height: getSize(30),
-                        margin: getMargin(bottom: 20),
-                        padding: getPadding(left: 15,right: 15),
-                        decoration: BoxDecoration(
-                            color: ColorConstant.black,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(getSize(50)),
-                              bottomRight: Radius.circular(getSize(50)),
-                            )
-                        ),
-                        alignment: Alignment.center,
-                        child: MyText(title: "lbl_trending".tr,color: ColorConstant.white,fontWeight: FontWeight.bold,),
+                        child: MyText(title: item.isNew == true ? "lbl_new".tr : item.isHot == true ? "lbl_hot".tr : item.isTrending == true ? "lbl_trending".tr : "",
+                          color: ColorConstant.white,fontWeight: FontWeight.bold,
+                          ),
                       ),
                     ],
                   ): Offstage(),

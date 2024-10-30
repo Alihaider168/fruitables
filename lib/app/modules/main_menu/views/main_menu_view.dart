@@ -42,7 +42,7 @@ class MainMenuView extends GetView<MainMenuController> {
                 ],
               ),
               MyText(
-                title: controller.branch?.address??"",
+                title: Constants.selectedBranch?.address??"",
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: ColorConstant.white,

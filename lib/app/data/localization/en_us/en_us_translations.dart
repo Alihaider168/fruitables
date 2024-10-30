@@ -35,5 +35,15 @@ final Map<String, String> enUs = {
   'lbl_req_account_deletion':'Req Account Deletion',
   'lbl_add_to_cart':'Add to cart',
   'lbl_view_cart':'View Cart',
+  'lbl_cart':'Cart',
+  'lbl_change':'Change',
+  'lbl_use_wallet':'Use Wallet',
+  'lbl_apply_promo':'Apply Promo',
+  'lbl_subtotal':'Subtotal',
+  'lbl_total':'Total',
+  'lbl_grand_total':'Grand Total',
+  'lbl_delivery_fee':'Delivery Fee',
+  'lbl_tax':'TAX',
+  'lbl_size':'Size',
 
 };

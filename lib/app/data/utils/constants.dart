@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:fruitables/app/data/models/city_model.dart';
+
 class Constants {
 
   static const int EMAIL_VALIDATION = 35;
@@ -17,5 +19,8 @@ class Constants {
   static bool showNoInternetToast = false;
 
   static const debounceDuration = Duration(milliseconds: 1000);
+
+  static Cities? selectedCity;
+  static Branches? selectedBranch;
 
 }

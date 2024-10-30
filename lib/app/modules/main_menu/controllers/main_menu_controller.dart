@@ -17,17 +17,11 @@ class MainMenuController extends GetxController {
 
   Cart cart = Cart();
 
-  Branches? branch;
-
   // final ItemScrollController itemScrollController = ItemScrollController();
   // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void onInit() {
-    var data = Get.arguments;
-    if(data!= null && data["area"] != null){
-      branch = data["area"];
-    }
     super.onInit();
     getMenu();
 
@@ -72,12 +66,8 @@ class MainMenuController extends GetxController {
     });
   }
 
-  void addItemsToCart(Items item, {String size = 'small'}){
-    cart.addItem(item, size);
-  }
-
-  void removeItemFromCart(String id){
-    cart.removeItem(id);
+  void addItemsToCart(Items item, {String size = 'small',int quantity = 1}){
+    cart.addItem(item, size, quantity);
   }
 
 
@@ -404,9 +394,7 @@ class MainMenuController extends GetxController {
                           Expanded(
                             child: CustomButton(
                               onTap: () {
-                                for(int i = 0; i<quantity.value;i++){
-                                  addItemsToCart(item,size: selectedSize.value);
-                                }
+                                addItemsToCart(item,size: selectedSize.value,quantity: quantity.value);
                                 bottomBar.value = true;
                                 Get.back();
                               },
@@ -483,5 +471,30 @@ class MainMenuController extends GetxController {
       return item.largeDiscountedPercentage??0;
     }
     return 0;
+  }
+
+
+  checkPricesForCheckout(Items item,String size){
+    if(size == 'small'){
+      if(item.smallDiscountedPrice != null && item.smallDiscountedPrice != 0){
+        return item.smallDiscountedPrice??0;
+      }else{
+        return item.smallPrice??0;
+      }
+    }
+    if(size == 'medium'){
+      if(item.mediumDiscountedPrice != null && item.mediumDiscountedPrice != 0){
+        return item.mediumDiscountedPrice??0;
+      }else{
+        return item.mediumPrice??0;
+      }
+    }
+    if(size == 'large'){
+      if(item.largeDiscountedPrice != null && item.largeDiscountedPrice != 0){
+        return item.largeDiscountedPrice??0;
+      }else{
+        return item.largePrice??0;
+      }
+    }
   }
 }

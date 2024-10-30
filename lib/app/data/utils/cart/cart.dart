@@ -4,21 +4,43 @@ import 'package:fruitables/app/data/models/menu_model.dart';
 class CartItem {
   Items item;
   String size; // 'small', 'medium', or 'large'
+  int quantity;
 
-  CartItem({required this.item, required this.size});
+  CartItem({required this.item, required this.size,this.quantity = 0});
 }
 
 class Cart {
   RxList<CartItem> _cartItems = <CartItem>[].obs;
 
   // Add an item to the cart with specified size
-  void addItem(Items item, String size) {
-    _cartItems.add(CartItem(item: item, size: size));
+  void addItem(Items item, String size, int quantity) {
+    bool itemExists = false;
+
+    for (var cartItem in _cartItems) {
+      // Check if the item and size already exist in the cart
+      if (cartItem.item == item && cartItem.size == size) {
+        // If exists, increase the quantity
+        cartItem.quantity += quantity;
+        itemExists = true;
+        break;
+      }
+    }
+
+    // If item and size don't exist, add the new item to the cart
+    if (!itemExists) {
+      _cartItems.add(CartItem(item: item, size: size,quantity: quantity));
+    }
+
   }
 
   // Remove an item from the cart by ID
-  void removeItem(String id) {
-    _cartItems.removeWhere((cartItem) => cartItem.item.id == id);
+  void removeItem(int index,) {
+    if(_cartItems[index].quantity > 1){
+      _cartItems[index].quantity -=1;
+    }else{
+      _cartItems.removeAt(index);
+    }
+    // _cartItems.removeWhere((cartItem) => cartItem.item.id == id && cartItem.size == size);
   }
 
   // Get the total price of items in the cart

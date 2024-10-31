@@ -14,6 +14,7 @@ class Constants {
   static const int MAX_INPUT_LIMIT = 30;
   static const int refreshDelay = 800;
   static const int MAX_IMAGE_SIZE = 3; // in Mbs
+  static const int DELIVERY_FEES = 200; // in Mbs
 
   static bool showToast = true;
   static bool showNoInternetToast = false;

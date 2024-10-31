@@ -173,25 +173,31 @@ class _CartViewState extends State<CartView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Use Wallet: Rs. 0.00"),
-              Switch(value: false, onChanged: (value) {}),
+              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} 0.00"),
+              Obx(()=> Switch(
+                value: controller.useWallet.value,
+                onChanged: (value) {
+                  controller.useWallet.value = value;
+                },
+                activeColor: ColorConstant.primaryPink,
+                inactiveTrackColor: ColorConstant.grayBackground,
+              ),)
             ],
           ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.add),
-            label: Text("Apply Promo"),
-            style: ElevatedButton.styleFrom(
-              // primary: Colors.pinkAccent,
-              // onPrimary: Colors.white,
+          CustomButton(
+            text: "lbl_apply_promo".tr,
+            prefixWidget: Container(
+              padding: getPadding(right: 10),
+              child: Icon(Icons.add,color: ColorConstant.white,
+              ),
             ),
           ),
-          SizedBox(height: 16),
-          _buildSummaryRow("Subtotal", "Rs. 18,754.00"),
-          _buildSummaryRow("Delivery Fee", "Rs. 200.00"),
-          _buildSummaryRow("TAX (15.0%)", "Rs. 2,867.54"),
+          SizedBox(height: getSize(16)),
+          _buildSummaryRow("lbl_subtotal".tr, "${"lbl_rs".tr} ${controller.menuController.cart.getTotalDiscountedPrice()}"),
+          _buildSummaryRow("lbl_delivery_fee".tr, "${"lbl_rs".tr} ${Constants.DELIVERY_FEES}"),
+          _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${"lbl_rs".tr} ${controller.menuController.cart.getTax()}"),
           Divider(),
-          _buildSummaryRow("Grand Total", "Rs. 21,821.55", isBold: true),
+          _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
         ],
       ),
     );
@@ -203,8 +209,8 @@ class _CartViewState extends State<CartView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-          Text(amount, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
         ],
       ),
     );
@@ -214,27 +220,11 @@ class _CartViewState extends State<CartView> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: Colors.white,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Total", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("Rs. 21,821.55", style: TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text("Proceed to Checkout"),
-            style: ElevatedButton.styleFrom(
-              // primary: Colors.pink,
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              minimumSize: Size(double.infinity, 40),
-            ),
-          ),
-        ],
+      child: CustomButton(
+        text: "lbl_proceed_to_checkout".tr,
+        onTap: (){
+          CustomSnackBar.showCustomToast(message: "Working In Progress");
+        },
       ),
     );
   }

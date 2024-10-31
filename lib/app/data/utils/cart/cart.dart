@@ -63,14 +63,19 @@ class Cart {
     int totalPrice = 0;
     for (var cartItem in _cartItems) {
       if (cartItem.size == 'small') {
-        totalPrice += (cartItem.item.smallDiscountedPrice ?? 0);
+        totalPrice += ((cartItem.item.smallDiscountedPrice ?? 0) * cartItem.quantity);
       } else if (cartItem.size == 'medium') {
-        totalPrice += (cartItem.item.mediumDiscountedPrice ?? 0);
+        totalPrice += ((cartItem.item.mediumDiscountedPrice ?? 0)* cartItem.quantity);
       } else if (cartItem.size == 'large') {
-        totalPrice += (cartItem.item.largeDiscountedPrice ?? 0);
+        totalPrice += ((cartItem.item.largeDiscountedPrice ?? 0)* cartItem.quantity);
       }
     }
     return totalPrice;
+  }
+
+  num getTax(){
+    int total = getTotalDiscountedPrice();
+    return total * 15 / 100;
   }
 
   // Get all items in the cart

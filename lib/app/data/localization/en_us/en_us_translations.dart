@@ -45,5 +45,6 @@ final Map<String, String> enUs = {
   'lbl_delivery_fee':'Delivery Fee',
   'lbl_tax':'TAX',
   'lbl_size':'Size',
+  'lbl_proceed_to_checkout':'Proceed To Checkout',
 
 };

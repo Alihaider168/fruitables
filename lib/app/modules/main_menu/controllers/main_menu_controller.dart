@@ -1,51 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/city_model.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
-import 'package:get/get.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
-  var selectedCategoryIndex = 0.obs;
 
   RxBool showAllCategories = false.obs;
 
   Cart cart = Cart();
 
-  // final ItemScrollController itemScrollController = ItemScrollController();
-  // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-
   @override
   void onInit() {
     super.onInit();
     getMenu();
-
-    // itemPositionsListener.itemPositions.addListener(() {
-    //   final positions = itemPositionsListener.itemPositions.value;
-    //   if (positions.isNotEmpty) {
-    //     final firstVisible = positions.first.index;
-    //     onVerticalScroll(firstVisible);
-    //   }
-    // });
-  }
-
-  // void scrollToCategory(int index) {
-  //   selectedCategoryIndex.value = index;
-  //   itemScrollController.scrollTo(
-  //     index: index,
-  //     duration: const Duration(milliseconds: 500),
-  //     curve: Curves.easeInOut,
-  //   );
-  // }
-
-  void onVerticalScroll(int firstVisibleIndex) {
-    selectedCategoryIndex.value = firstVisibleIndex;
-    // Here, you can add additional logic if needed, e.g., to highlight the selected category in the horizontal view
   }
 
   Future<dynamic> getMenu() async {

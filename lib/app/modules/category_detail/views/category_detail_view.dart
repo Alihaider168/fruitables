@@ -15,9 +15,47 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorConstant.primaryPink,
-        title: const Text('MainMenuView'),
-        centerTitle: true,
+        leading: IconButton(
+          onPressed: (){
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
+        ),
+        title: GestureDetector(
+          onTap: (){
+            Get.toNamed(Routes.LOCATION_SELECTION);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  MyText(
+                    title: "lbl_deliver_to".tr,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstant.white,
+                  ),
+                  Icon(Icons.keyboard_arrow_down,color: ColorConstant.white,size: getSize(20),)
+                ],
+              ),
+              MyText(
+                title: Constants.selectedBranch?.address??"",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: ColorConstant.white,
+              )
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: (){
+              // controller.scaffoldKey.currentState!.openDrawer();
+            },
+            icon: Icon(Icons.search,color: ColorConstant.white,),
+          )
+        ],
       ),
       body:Padding(
         padding: getPadding(bottom: 16),
@@ -169,54 +207,57 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
           ],
         ),
         child: Center(
-          child: Container(
-            width: size.width,
-            // height: getSize(50),
-            decoration: BoxDecoration(
-                color: ColorConstant.primaryPink,
-                borderRadius: BorderRadius.circular(getSize(5))
-            ),
-            padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
-            child: Row(
-              children: [
-                Container(
-                  padding: getPadding(all: 8),
-                  margin: getMargin(right: 10),
-                  decoration: BoxDecoration(
-                      color: ColorConstant.white,
-                      shape: BoxShape.circle
+          child: GestureDetector(
+            onTap: ()=> Get.toNamed(Routes.CART),
+            child: Container(
+              width: size.width,
+              // height: getSize(50),
+              decoration: BoxDecoration(
+                  color: ColorConstant.primaryPink,
+                  borderRadius: BorderRadius.circular(getSize(5))
+              ),
+              padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
+              child: Row(
+                children: [
+                  Container(
+                    padding: getPadding(all: 8),
+                    margin: getMargin(right: 10),
+                    decoration: BoxDecoration(
+                        color: ColorConstant.white,
+                        shape: BoxShape.circle
+                    ),
+                    child: Obx(()=> MyText(
+                      title: '${controller.mainMenuController.cart.items.value.length}',
+                      color: ColorConstant.primaryPink,
+                    )),
                   ),
-                  child: Obx(()=> MyText(
-                    title: '${controller.cart.items.value.length}',
-                    color: ColorConstant.primaryPink,
-                  )),
-                ),
-                MyText(
-                  title: "lbl_view_cart".tr,
-                  fontSize: 18,
-                  color: ColorConstant.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                Spacer(),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    MyText(
-                      title: '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
-                      fontSize: 14,
-                      color: ColorConstant.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    MyText(
-                      title: 'Price Exclusive TAX',
-                      fontSize: 12,
-                      color: ColorConstant.white,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ],
-                )
-              ],
+                  MyText(
+                    title: "lbl_view_cart".tr,
+                    fontSize: 18,
+                    color: ColorConstant.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Spacer(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      MyText(
+                        title: '${'lbl_rs'.tr} ${controller.mainMenuController.cart.getTotalDiscountedPrice().toDouble()}',
+                        fontSize: 14,
+                        color: ColorConstant.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      MyText(
+                        title: 'Price Exclusive TAX',
+                        fontSize: 12,
+                        color: ColorConstant.white,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

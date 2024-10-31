@@ -15,8 +15,6 @@ class CategoryDetailController extends GetxController {
   final ScrollController scrollController = ScrollController();
   final double itemWidth = 150; // Adjust this based on your item width
 
-  Cart cart = Cart();
-
   bool isInit = false;
 
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -41,7 +39,7 @@ class CategoryDetailController extends GetxController {
       if(!isInit){
         isInit = true;
         if(data!= null && data['category']!= null){
-          await Future.delayed(1.seconds);
+          await Future.delayed(300.milliseconds);
           scrollToCategory(data['category']);
           horizontalItemScrollController.scrollTo(
             index: data['category'],
@@ -60,7 +58,7 @@ class CategoryDetailController extends GetxController {
     selectedCategoryIndex.value = index;
     itemScrollController.scrollTo(
       index: index,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 100),
       curve: Curves.easeInOut,
     );
   }
@@ -69,7 +67,7 @@ class CategoryDetailController extends GetxController {
     selectedCategoryIndex.value = firstVisibleIndex;
     horizontalItemScrollController.scrollTo(
       index: firstVisibleIndex,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 100),
       curve: Curves.easeInOut,
     );}
 

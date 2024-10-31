@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class CartController extends GetxController {
   MainMenuController menuController = Get.put(MainMenuController());
 
+  RxBool useWallet = false.obs;
+
   @override
   void onInit() {
     super.onInit();

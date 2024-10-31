@@ -58,7 +58,7 @@ class CategoryDetailController extends GetxController {
     selectedCategoryIndex.value = index;
     itemScrollController.scrollTo(
       index: index,
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
     );
   }

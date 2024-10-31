@@ -28,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
       this.suffix,
       this.suffixConstraints,
       this.labelText,
+      this.onChanged,
       this.validator});
 
   final TextFormFieldShape? shape;
@@ -75,6 +76,8 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final void Function(String?)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -96,6 +99,7 @@ class CustomTextFormField extends StatelessWidget {
         autofocus: autofocus!,
         readOnly: readOnly,
         style: _setFontStyle(),
+        onChanged: onChanged,
         obscureText: isObscureText!,
         textInputAction: textInputAction,
         keyboardType: textInputType,

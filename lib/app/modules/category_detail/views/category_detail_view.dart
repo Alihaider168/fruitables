@@ -51,7 +51,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
         actions: [
           IconButton(
             onPressed: (){
-              // controller.scaffoldKey.currentState!.openDrawer();
+              Get.toNamed(Routes.SEARCH);
             },
             icon: Icon(Icons.search,color: ColorConstant.white,),
           )
@@ -77,9 +77,10 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         controller.selectedCategoryIndex.value = index; // Update the selected index
                         controller.horizontalItemScrollController.scrollTo(
                           index: index,
-                          duration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
+                        controller.scrollToCategory(index);
                       },
                       child: Container(
                         margin: getMargin(right: 15),
@@ -345,7 +346,7 @@ class ItemWidget extends StatelessWidget {
                                 TextSpan(
                                   text: '${'lbl_from'.tr}  ', // Prefix text
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.black, // Change this to the desired color
                                   ),
@@ -355,7 +356,7 @@ class ItemWidget extends StatelessWidget {
                               TextSpan(
                                 text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black, // Change this to the desired color
                                 ),
@@ -366,7 +367,7 @@ class ItemWidget extends StatelessWidget {
                                 TextSpan(
                                   text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                     color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                                     decoration: TextDecoration.lineThrough, // Strikethrough for original price
@@ -388,7 +389,7 @@ class ItemWidget extends StatelessWidget {
                           ),
                           child: MyText(
                             title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -398,7 +399,7 @@ class ItemWidget extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: getSize(20),),
+            SizedBox(width: getSize(10),),
             SizedBox(
               width: getSize(120),
               height: getSize(120),

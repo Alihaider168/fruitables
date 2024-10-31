@@ -53,7 +53,7 @@ class MainMenuView extends GetView<MainMenuController> {
         actions: [
           IconButton(
             onPressed: (){
-              // controller.scaffoldKey.currentState!.openDrawer();
+             Get.toNamed(Routes.SEARCH);
             },
             icon: Icon(Icons.search,color: ColorConstant.white,),
           )
@@ -118,11 +118,19 @@ class MainMenuView extends GetView<MainMenuController> {
                 onTap: (){
                   controller.showAllCategories.value = !controller.showAllCategories.value;
                 },
-                child: MyText(
-                  title: controller.showAllCategories.value ? "Hide Categories \u25B2" : "View All Categories \u25BC",
-                  under: true,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+                    SizedBox(
+                      width: getSize(10),
+                    ),
+                    MyText(
+                      title: controller.showAllCategories.value ? "Hide Categories" : "View All Categories",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ],
                 ),
               )
             ],
@@ -179,7 +187,7 @@ class MainMenuView extends GetView<MainMenuController> {
                             ),
                           ),
                           Container(
-                            height: getSize(270),
+                            height: getSize(180),
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: items.length>4 ? 4 : items.length,
@@ -350,13 +358,7 @@ class CustomItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        if(!controller.checkForMultipleValues(item)){
-          controller.addItemsToCart(item,size: "small");
-          quantity.value += 1;
-          controller.bottomBar.value = true;
-        }else{
-          controller.showAddToCartItemSheet(context, item);
-        }
+        controller.showAddToCartItemSheet(context,item);
       },
       child: SizedBox(
         width: getSize(180),
@@ -375,7 +377,7 @@ class CustomItemCard extends StatelessWidget {
 
                   CustomImageView(
                     url: item.image,
-                    height: getSize(150),
+                    height: getSize(155),
                     width: getSize(180),
                     fit: BoxFit.cover,
                   ),
@@ -383,14 +385,14 @@ class CustomItemCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: Container(
                       margin: getMargin(left: 5,top: 5),
-                      padding: getPadding(left: 6,right: 6,top: 4,bottom: 4),
+                      padding: getPadding(left: 10,right: 10,top: 4,bottom: 4),
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: MyText(
                         title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: ColorConstant.white,
                       ),
@@ -428,54 +430,54 @@ class CustomItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: getSize(10)),
+              // SizedBox(height: getSize(10)),
 
-              // Pricing
-              RichText(
-                text: TextSpan(
-                  children: [
-                    // Check if the prefix 'From' should be added
-                    if (controller.checkForMultipleValues(item))
-                      TextSpan(
-                        text: '${'lbl_from'.tr} ', // Prefix text
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black, // Change this to the desired color
-                        ),
-                      ),
-
-                    // Display the price
-                    TextSpan(
-                      text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black, // Change this to the desired color
-                      ),
-                    ),
-
-                    // Conditionally show the original price if a discount is present
-                    if (controller.checkForDiscountedPrice(item) != 0)
-                      TextSpan(
-                        text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                          decoration: TextDecoration.lineThrough, // Strikethrough for original price
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              MyText(
-                title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                line: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              // // Pricing
+              // RichText(
+              //   text: TextSpan(
+              //     children: [
+              //       // Check if the prefix 'From' should be added
+              //       if (controller.checkForMultipleValues(item))
+              //         TextSpan(
+              //           text: '${'lbl_from'.tr} ', // Prefix text
+              //           style: TextStyle(
+              //             fontSize: 16,
+              //             fontWeight: FontWeight.w700,
+              //             color: Colors.black, // Change this to the desired color
+              //           ),
+              //         ),
+              //
+              //       // Display the price
+              //       TextSpan(
+              //         text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
+              //         style: TextStyle(
+              //           fontSize: 16,
+              //           fontWeight: FontWeight.w700,
+              //           color: Colors.black, // Change this to the desired color
+              //         ),
+              //       ),
+              //
+              //       // Conditionally show the original price if a discount is present
+              //       if (controller.checkForDiscountedPrice(item) != 0)
+              //         TextSpan(
+              //           text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
+              //           style: TextStyle(
+              //             fontSize: 16,
+              //             fontWeight: FontWeight.w700,
+              //             color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+              //             decoration: TextDecoration.lineThrough, // Strikethrough for original price
+              //           ),
+              //         ),
+              //     ],
+              //   ),
+              // ),
+              // MyText(
+              //   title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+              //   fontSize: 18,
+              //   fontWeight: FontWeight.w700,
+              //   line: 2,
+              //   overflow: TextOverflow.ellipsis,
+              // ),
 
 
             ],

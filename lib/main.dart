@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/localization/app_localization.dart';
 import 'package:fruitables/app/data/utils/initial_bindings.dart';
+import 'package:fruitables/app/data/utils/language_utils.dart';
 
 import 'package:get/get.dart';
 
@@ -25,12 +26,17 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  final languagePreference = LanguageUtils();
+  String? language = await languagePreference.getLanguage();
 
-  runApp(const MyApp());
+
+  runApp(MyApp(language: language));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.language});
+
+  final String? language;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -60,7 +66,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         translations: AppLocalization(),
         // locale: Get.deviceLocale,
-        locale: const Locale('en', 'US'),
+        locale: widget.language!= null && widget.language == 'اردو' ? const Locale('ur', 'PK'):const Locale('en', 'US'),
         fallbackLocale: const Locale('en', 'US'),
         title: 'Fruitables',
         initialBinding: InitialBindings(),

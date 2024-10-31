@@ -47,7 +47,7 @@ class MyTextState extends State<MyText> {
       overflow: widget.overflow ?? TextOverflow.visible,
       maxLines: widget.line,
       textScaleFactor: 1.0,
-      style: GoogleFonts.getFont(widget.family ?? "Manrope",
+      style: GoogleFonts.getFont(widget.family ?? "Nunito",
           wordSpacing: widget.letterSpacing,
           height: widget.height,
           decoration: widget.under == true

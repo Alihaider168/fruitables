@@ -223,7 +223,7 @@ class _CartViewState extends State<CartView> {
       child: CustomButton(
         text: "lbl_proceed_to_checkout".tr,
         onTap: (){
-          CustomSnackBar.showCustomToast(message: "Working In Progress");
+          Get.toNamed(Routes.CHECKOUT);
         },
       ),
     );

@@ -33,6 +33,7 @@ final Map<String, String> enUs = {
   'lbl_support_center':'Support Center',
   'lbl_logout':'Logout',
   'lbl_req_account_deletion':'Req Account Deletion',
+  'lbl_change_language':'Change Language',
   'lbl_add_to_cart':'Add to cart',
   'lbl_view_cart':'View Cart',
   'lbl_cart':'Cart',
@@ -46,5 +47,6 @@ final Map<String, String> enUs = {
   'lbl_tax':'TAX',
   'lbl_size':'Size',
   'lbl_proceed_to_checkout':'Proceed To Checkout',
+  'lbl_search_products':'Search Products',
 
 };

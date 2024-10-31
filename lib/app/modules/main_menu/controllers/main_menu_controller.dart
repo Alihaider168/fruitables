@@ -44,23 +44,72 @@ class MainMenuController extends GetxController {
 
   showAddToCartItemSheet(BuildContext ctx, Items item) {
     RxInt quantity = 1.obs;
-    RxString selectedSize = 'small'.obs;
+    RxnString selectedSize = RxnString(null);
     RxBool isLiked =false.obs;
+
+    Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: getSize(40),
+                  child: Obx(()=> RadioListTile<String>(
+                    title: MyText(title: title,fontSize: 18,fontWeight: FontWeight.w600,),
+                    value: value,
+                    activeColor: ColorConstant.primaryPink,
+                    groupValue: selectedSize.value,
+                    onChanged: (value) {
+                      selectedSize.value = value!;
+                    },
+                    contentPadding: EdgeInsets.symmetric(horizontal: 4.0), // Smaller padding
+                  ),),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  MyText(
+                    title: "${'lbl_rs'.tr} ${discountedPrice != 0 ? discountedPrice : price}",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black, // Change this to the desired color
+                  ),
+
+                  // Conditionally show the original price if a discount is present
+                  if (discountedPrice != 0)
+                    MyText(
+                      title: "${'lbl_rs'.tr} ${price}",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                      cut: true, // Strikethrough for original price
+                    ),
+                ],
+              )
+            ],
+          ),
+          SizedBox(height: getSize(10),)
+        ],
+      );
+    }
 
 
     showModalBottomSheet(
       context: ctx,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(14),
-            topRight: Radius.circular(14),
+            topLeft: Radius.circular(getSize(15)),
+            topRight: Radius.circular(getSize(15)),
           )),
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
             initialChildSize: 0.9,
-            maxChildSize: 0.99,
-            minChildSize: 0.7,
+            minChildSize: 0.9,
+            maxChildSize: 1.0,
             builder: (context, scrollController) {
               return Container(
                 decoration: const BoxDecoration(
@@ -87,6 +136,8 @@ class MainMenuController extends GetxController {
                                   child: CustomImageView(
                                     url: item.image,
                                     width: getSize(200),
+                                    height: getSize(200),
+                                    fit: BoxFit.contain,
                                     margin: getMargin(bottom: 20),
                                   ),
                                 ),
@@ -104,7 +155,8 @@ class MainMenuController extends GetxController {
                                       onTap: (){
                                         isLiked.value = !isLiked.value;
                                       },
-                                      child: Obx(()=> Icon(isLiked.value ? Icons.heart_broken : Icons.heart_broken_outlined,
+                                      child: Obx(()=> CustomImageView(
+                                        svgPath: isLiked.value ? ImageConstant.likeActive : ImageConstant.likeInactive,
                                         color: isLiked.value ? ColorConstant.primaryPink : ColorConstant.black,
                                       )),
                                     ),
@@ -113,62 +165,6 @@ class MainMenuController extends GetxController {
                                 SizedBox(height: getSize(10),),
                                 Row(
                                   children: [
-                                    Obx(()=> selectedSize.value!='small' ?
-                                    selectedSize.value=='medium'?
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-
-                                          TextSpan(
-                                            text: "${'lbl_rs'.tr} ${item.mediumDiscountedPrice != 0 ? item.mediumDiscountedPrice : item.mediumPrice}  ",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black, // Change this to the desired color
-                                            ),
-                                          ),
-
-                                          // Conditionally show the original price if a discount is present
-                                          if (item.mediumDiscountedPrice != 0)
-                                            TextSpan(
-                                              text: "${'lbl_rs'.tr} ${item.mediumPrice}",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                                                decoration: TextDecoration.lineThrough, // Strikethrough for original price
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ):
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-
-                                          TextSpan(
-                                            text: "${'lbl_rs'.tr} ${item.largeDiscountedPrice != 0 ? item.largeDiscountedPrice : item.largePrice}  ",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black, // Change this to the desired color
-                                            ),
-                                          ),
-
-                                          // Conditionally show the original price if a discount is present
-                                          if (item.largeDiscountedPrice != 0)
-                                            TextSpan(
-                                              text: "${'lbl_rs'.tr} ${item.largePrice}",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                                                decoration: TextDecoration.lineThrough, // Strikethrough for original price
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ):
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -206,14 +202,9 @@ class MainMenuController extends GetxController {
                                             ),
                                         ],
                                       ),
-                                    )),
+                                    ),
                                     Visibility(
-                                      visible:
-                                      ( selectedSize.value!='small' ?
-                                      selectedSize.value=='medium'?
-                                      item.mediumDiscountedPercentage!= null && item.mediumDiscountedPercentage != 0 :
-                                      item.largeDiscountedPercentage!= null && item.largeDiscountedPercentage != 0 :
-                                      checkForDiscountedPrice(item)!= 0),
+                                      visible: checkForDiscountedPrice(item)!= 0,
                                       child: Container(
                                         margin: getMargin(left: 15),
                                         padding: getPadding(left: 10,right: 10,top: 5,bottom: 5),
@@ -221,16 +212,12 @@ class MainMenuController extends GetxController {
                                             color: ColorConstant.grayBackground,
                                             borderRadius: BorderRadius.circular(getSize(15))
                                         ),
-                                        child: Obx(()=> MyText(
+                                        child: MyText(
                                           title:
-                                          selectedSize.value!='small' ?
-                                          selectedSize.value=='medium' ?
-                                          "${item.mediumDiscountedPercentage ?? ""}% ${'lbl_off'.tr}":
-                                          "${item.largeDiscountedPercentage ?? ""}% ${'lbl_off'.tr}":
                                           "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                        )),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -247,45 +234,23 @@ class MainMenuController extends GetxController {
                                 SizedBox(height: getSize(20),),
                                 checkForMultipleValues(item) ? Column(
                                   children: [
-                                    SizedBox(
-                                      height: getSize(40),
-                                      child: Obx(()=> RadioListTile<String>(
-                                        title: MyText(title: 'lbl_small'.tr,fontSize: 18,fontWeight: FontWeight.w600,),
-                                        value: 'small',
-                                        activeColor: ColorConstant.primaryPink,
-                                        groupValue: selectedSize.value,
-                                        onChanged: (value) {
-                                          selectedSize.value = value!;
-                                        },
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 4.0), // Smaller padding
-                                      ),),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            MyText(title: "Variation",fontWeight: FontWeight.bold,),
+                                            MyText(title: "Please select any one option to continue",fontSize: 12,),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        MyText(title: "required *  ",fontSize: 14,color: ColorConstant.red,),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: getSize(40),
-                                      child: Obx(()=> RadioListTile<String>(
-                                        title: MyText(title:'lbl_medium'.tr,fontSize: 18,fontWeight: FontWeight.w600,),
-                                        value: 'medium',
-                                        activeColor: ColorConstant.primaryPink,
-                                        groupValue: selectedSize.value,
-                                        onChanged: (value) {
-                                          selectedSize.value = value!;
-                                        },
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 4.0), // Smaller padding
-                                      ),),
-                                    ),
-                                    SizedBox(
-                                      height: getSize(40),
-                                      child: Obx(()=> RadioListTile<String>(
-                                        title: MyText(title:'lbl_large'.tr,fontSize: 18,fontWeight: FontWeight.w600,),
-                                        value: 'large',
-                                        activeColor: ColorConstant.primaryPink,
-                                        groupValue: selectedSize.value,
-                                        onChanged: (value) {
-                                          selectedSize.value = value!;
-                                        },
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 4.0), // Smaller padding
-                                      ),),
-                                    ),
+                                    getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.smallDiscountedPrice??0),
+                                    getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mediumDiscountedPrice??0),
+                                    getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.largeDiscountedPrice??0),
                                   ],
                                 ): Offstage()
                               ],
@@ -365,9 +330,14 @@ class MainMenuController extends GetxController {
                           Expanded(
                             child: CustomButton(
                               onTap: () {
-                                addItemsToCart(item,size: selectedSize.value,quantity: quantity.value);
-                                bottomBar.value = true;
-                                Get.back();
+                                if(selectedSize.value!= null || !checkForMultipleValues(item)){
+                                  addItemsToCart(item,size: selectedSize.value??'small',quantity: quantity.value);
+                                  bottomBar.value = true;
+                                  Get.back();
+                                }else{
+                                  CustomSnackBar.showCustomErrorToast(message: "Please select size");
+                                }
+
                               },
                               text: "lbl_add_to_cart".tr,
                             ),
@@ -382,6 +352,9 @@ class MainMenuController extends GetxController {
             );
       },
     );
+
+
+
   }
 
 

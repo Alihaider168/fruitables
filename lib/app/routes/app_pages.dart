@@ -1,17 +1,31 @@
 import 'package:get/get.dart';
 
+import '../modules/add_address/bindings/add_address_binding.dart';
+import '../modules/add_address/views/add_address_view.dart';
+import '../modules/add_payment/bindings/add_payment_binding.dart';
+import '../modules/add_payment/views/add_payment_view.dart';
+import '../modules/addresses/bindings/addresses_binding.dart';
+import '../modules/addresses/views/addresses_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/category_detail/bindings/category_detail_binding.dart';
 import '../modules/category_detail/views/category_detail_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
+import '../modules/favourites/bindings/favourites_binding.dart';
+import '../modules/favourites/views/favourites_view.dart';
 import '../modules/get_started/bindings/get_started_binding.dart';
 import '../modules/get_started/views/get_started_view.dart';
 import '../modules/location_selection/bindings/location_selection_binding.dart';
 import '../modules/location_selection/views/location_selection_view.dart';
 import '../modules/main_menu/bindings/main_menu_binding.dart';
 import '../modules/main_menu/views/main_menu_view.dart';
+import '../modules/order_detail/bindings/order_detail_binding.dart';
+import '../modules/order_detail/views/order_detail_view.dart';
+import '../modules/order_placed/bindings/order_placed_binding.dart';
+import '../modules/order_placed/views/order_placed_view.dart';
+import '../modules/orders/bindings/orders_binding.dart';
+import '../modules/orders/views/orders_view.dart';
 import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -64,6 +78,41 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDRESSES,
+      page: () => const AddressesView(),
+      binding: AddressesBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDERS,
+      page: () => const OrdersView(),
+      binding: OrdersBinding(),
+    ),
+    GetPage(
+      name: _Paths.FAVOURITES,
+      page: () => const FavouritesView(),
+      binding: FavouritesBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_ADDRESS,
+      page: () => const AddAddressView(),
+      binding: AddAddressBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_PAYMENT,
+      page: () => const AddPaymentView(),
+      binding: AddPaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PLACED,
+      page: () => const OrderPlacedView(),
+      binding: OrderPlacedBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DETAIL,
+      page: () => const OrderDetailView(),
+      binding: OrderDetailBinding(),
     ),
   ];
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
 
@@ -32,9 +33,9 @@ class Utils {
 
   static String? otpValidate(String value) {
     if (value.isEmpty) {
-      return "OTP is required";
+      return "otp_required".tr;
     } else if (value.length < 4) {
-      return "Kindly enter valid OTP Code";
+      return "enter_valid_otp".tr;
     }
     return null;
   }
@@ -325,6 +326,14 @@ class Utils {
       return true;
     } else {
      return false;
+    }
+  }
+
+  static Future<void> launchURL(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      CustomSnackBar.showCustomErrorToast(message: 'Could not open ${url.scheme} app');
     }
   }
 }

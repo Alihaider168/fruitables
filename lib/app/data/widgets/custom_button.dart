@@ -153,6 +153,8 @@ class CustomButton extends StatelessWidget {
     switch (variant) {
       case ButtonVariant.FillWhite:
         return ColorConstant.white;
+      case ButtonVariant.OutlineGrey:
+        return null;
       default:
         return ColorConstant.primaryPink;
     }
@@ -160,6 +162,10 @@ class CustomButton extends StatelessWidget {
 
   _setTextButtonBorder() {
     switch (variant) {
+      case ButtonVariant.OutlineGrey:
+        return BorderSide(
+          color: ColorConstant.grayBorder
+        );
       default:
         return null;
     }
@@ -210,9 +216,18 @@ class CustomButton extends StatelessWidget {
 
   _setFontStyle() {
     switch (fontStyle) {
+      case ButtonFontStyle.Grey18:
+        return GoogleFonts.getFont(
+          "Nunito",
+          color: ColorConstant.grayBorder,
+          fontSize: getFontSize(
+            16,
+          ),
+          fontWeight: FontWeight.w600,
+        );
       default:
         return GoogleFonts.getFont(
-          "Inter",
+          "Nunito",
           color: ColorConstant.white,
           fontSize: getFontSize(
             16,
@@ -235,9 +250,10 @@ enum ButtonPadding {
 enum ButtonVariant {
   FillWhite,
   FillOrange,
+  OutlineGrey,
 
 }
 
 enum ButtonFontStyle {
-  AgeoMedium18,
+  Grey18,
 }

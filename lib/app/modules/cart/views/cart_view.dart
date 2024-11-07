@@ -32,10 +32,55 @@ class _CartViewState extends State<CartView> {
             _buildDeliveryInfo(),
             _buildCartItemsList(),
             _buildSummarySection(),
-            _buildBottomBar(),
           ],
         ),
       ),
+        bottomNavigationBar: Container(
+          width: size.width,
+          height: size.height*0.12,
+          padding: getPadding(left: 16,right: 16,top: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(getSize(20)),
+              topRight: Radius.circular(getSize(20)),
+            ),
+            boxShadow: [
+              // Top shadow
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: Offset(0, -4), // Move shadow upwards
+              ),
+              // Left shadow
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: Offset(-4, 0), // Move shadow to the left
+              ),
+              // Right shadow
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+                spreadRadius: 1,
+                blurRadius: 8,
+                offset: Offset(4, 0), // Move shadow to the right
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              _buildSummaryRow("lbl_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
+              CustomButton(
+                text: "lbl_proceed_to_checkout".tr,
+                onTap: (){
+                  Get.toNamed(Routes.CHECKOUT);
+                },
+              ),
+            ],
+          ),
+        )
     );
   }
 
@@ -50,13 +95,13 @@ class _CartViewState extends State<CartView> {
             children: [
               MyText(
                 title: "lbl_deliver_to".tr,
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: ColorConstant.textGrey,
               ),
               MyText(
                 title: Constants.selectedBranch?.address??"",
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               )
             ],
@@ -67,6 +112,8 @@ class _CartViewState extends State<CartView> {
             },
             child: MyText(title: "lbl_change".tr,
               color: ColorConstant.primaryPink,
+              fontSize: 14,
+              under: true,
             ),
           ),
         ],
@@ -75,18 +122,15 @@ class _CartViewState extends State<CartView> {
   }
 
   Widget _buildCartItemsList() {
-    return Padding(
-      padding: getPadding(left: 16,right: 16),
-      child:ListView.builder(
-        scrollDirection: Axis.vertical,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: controller.menuController.cart.items.length,
-        itemBuilder: (context, i) {
-          final item = controller.menuController.cart.items[i];
-          return _buildCartItem(item: item,index: i);
-        },
-      ),
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: controller.menuController.cart.items.length,
+      itemBuilder: (context, i) {
+        final item = controller.menuController.cart.items[i];
+        return _buildCartItem(item: item,index: i);
+      },
     );
 
 
@@ -166,14 +210,20 @@ class _CartViewState extends State<CartView> {
   }
 
   Widget _buildSummarySection() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container(
+      margin: getMargin(all: 16),
+      padding: getPadding(all: 16),
+      decoration: BoxDecoration(
+        border: Border.all(color: ColorConstant.grayBorder.withOpacity(.5),width: 0.5),
+        borderRadius: BorderRadius.circular(getSize(5)),
+        color: ColorConstant.opacBlackColor.withOpacity(.03)
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} 0.00"),
+              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} 0.00",fontSize: 15,),
               Obx(()=> Switch(
                 value: controller.useWallet.value,
                 onChanged: (value) {
@@ -209,23 +259,11 @@ class _CartViewState extends State<CartView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
         ],
       ),
     );
   }
 
-  Widget _buildBottomBar() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      color: Colors.white,
-      child: CustomButton(
-        text: "lbl_proceed_to_checkout".tr,
-        onTap: (){
-          Get.toNamed(Routes.CHECKOUT);
-        },
-      ),
-    );
-  }
 }

@@ -15,10 +15,10 @@ class BaseviewAuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.black,
       systemNavigationBarIconBrightness: Brightness.light,
-      statusBarColor: Colors.black,
+      statusBarColor: Colors.black.withOpacity(.5),
       // Dark color for the status bar
       statusBarIconBrightness: Brightness.light,
       // White icons on the status bar

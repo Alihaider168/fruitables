@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
+import 'package:fruitables/app/data/widgets/cart_bottom.dart';
 import 'package:fruitables/app/data/widgets/custom_collapsable_widget.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
@@ -32,7 +33,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                 children: [
                   MyText(
                     title: "lbl_deliver_to".tr,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: ColorConstant.white,
                   ),
@@ -41,7 +42,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
               ),
               MyText(
                 title: Constants.selectedBranch?.address??"",
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: ColorConstant.white,
               )
@@ -64,7 +65,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
             Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
             Card(
               child: Container(
-                height: getSize(80),
+                height: getSize(60),
                 padding: getPadding(all: 10),
                 child:ScrollablePositionedList.builder(
                   itemScrollController: controller.horizontalItemScrollController,
@@ -77,7 +78,8 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         controller.selectedCategoryIndex.value = index; // Update the selected index
                         controller.horizontalItemScrollController.scrollTo(
                           index: index,
-                          duration: Duration(milliseconds: 200),
+                          alignment: 0.3, // Center the selected item
+                          duration: Duration(milliseconds: 1),
                           curve: Curves.easeInOut,
                         );
                         controller.scrollToCategory(index);
@@ -156,7 +158,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         child: MyText(
                           title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
                           // style: const TextStyle(
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           // ),
                         ),
@@ -172,109 +174,20 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
         )
 
       ),
-      bottomNavigationBar:Obx(()=>  controller.mainMenuController.bottomBar.value
-          ? Container(
-        width: size.width,
-        height: size.height*0.12,
-        padding: getPadding(left: 16,right: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(getSize(20)),
-            topRight: Radius.circular(getSize(20)),
-          ),
-          boxShadow: [
-            // Top shadow
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-              spreadRadius: 1,
-              blurRadius: 8,
-              offset: Offset(0, -4), // Move shadow upwards
-            ),
-            // Left shadow
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-              spreadRadius: 1,
-              blurRadius: 8,
-              offset: Offset(-4, 0), // Move shadow to the left
-            ),
-            // Right shadow
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-              spreadRadius: 1,
-              blurRadius: 8,
-              offset: Offset(4, 0), // Move shadow to the right
-            ),
-          ],
-        ),
-        child: Center(
-          child: GestureDetector(
-            onTap: ()=> Get.toNamed(Routes.CART),
-            child: Container(
-              width: size.width,
-              // height: getSize(50),
-              decoration: BoxDecoration(
-                  color: ColorConstant.primaryPink,
-                  borderRadius: BorderRadius.circular(getSize(5))
-              ),
-              padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
-              child: Row(
-                children: [
-                  Container(
-                    padding: getPadding(all: 8),
-                    margin: getMargin(right: 10),
-                    decoration: BoxDecoration(
-                        color: ColorConstant.white,
-                        shape: BoxShape.circle
-                    ),
-                    child: Obx(()=> MyText(
-                      title: '${controller.mainMenuController.cart.items.value.length}',
-                      color: ColorConstant.primaryPink,
-                    )),
-                  ),
-                  MyText(
-                    title: "lbl_view_cart".tr,
-                    fontSize: 18,
-                    color: ColorConstant.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Spacer(),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      MyText(
-                        title: '${'lbl_rs'.tr} ${controller.mainMenuController.cart.getTotalDiscountedPrice().toDouble()}',
-                        fontSize: 14,
-                        color: ColorConstant.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      MyText(
-                        title: 'Price Exclusive TAX',
-                        fontSize: 12,
-                        color: ColorConstant.white,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      )
-          : Offstage()),
+      bottomNavigationBar:CartBottom(),
     );
   }
 }
 
 
 class ItemWidget extends StatelessWidget {
-  ItemWidget({super.key, required this.item});
+  ItemWidget({super.key, required this.item,this.fromFav = false,this.onFavTap});
 
   final MainMenuController controller = Get.put(MainMenuController());
 
   final Items item;
+  final bool fromFav;
+  final void Function()? onFavTap;
 
   RxInt quantity = 0.obs;
 
@@ -282,7 +195,7 @@ class ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        controller.showAddToCartItemSheet(context,item);
+        controller.showAddToCartItemSheet(context,item,fromFav: fromFav,onFavTap: onFavTap);
       },
       child: Container(
         padding: getPadding(top: 15,bottom: 20,left: 16,right: 16),
@@ -317,6 +230,7 @@ class ItemWidget extends StatelessWidget {
                         alignment: Alignment.center,
                         child: MyText(title: item.isNew == true ? "lbl_new".tr : item.isHot == true ? "lbl_hot".tr : item.isTrending == true ? "lbl_trending".tr : "",
                           color: ColorConstant.white,fontWeight: FontWeight.bold,
+                          fontSize: 15,
                           ),
                       ),
                     ],
@@ -324,13 +238,13 @@ class ItemWidget extends StatelessWidget {
 
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                   ),
                   SizedBox(height: getSize(3),),
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: ColorConstant.textGrey,
                   ),
@@ -346,7 +260,7 @@ class ItemWidget extends StatelessWidget {
                                 TextSpan(
                                   text: '${'lbl_from'.tr}  ', // Prefix text
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.black, // Change this to the desired color
                                   ),
@@ -356,7 +270,7 @@ class ItemWidget extends StatelessWidget {
                               TextSpan(
                                 text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black, // Change this to the desired color
                                 ),
@@ -367,7 +281,7 @@ class ItemWidget extends StatelessWidget {
                                 TextSpan(
                                   text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                                     decoration: TextDecoration.lineThrough, // Strikethrough for original price
@@ -389,7 +303,7 @@ class ItemWidget extends StatelessWidget {
                           ),
                           child: MyText(
                             title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -421,7 +335,7 @@ class ItemWidget extends StatelessWidget {
                           quantity.value += 1;
                           controller.bottomBar.value = true;
                         }else{
-                          controller.showAddToCartItemSheet(context, item);
+                          controller.showAddToCartItemSheet(context,item,fromFav: fromFav,onFavTap: onFavTap);
                         }
 
                       },

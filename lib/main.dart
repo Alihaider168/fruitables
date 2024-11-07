@@ -49,8 +49,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.black,
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+      statusBarColor: Colors.black.withOpacity(.5),
       // Dark color for the status bar
       statusBarIconBrightness: Brightness.light,
       // White icons on the status bar

@@ -1,16 +1,39 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
+import 'package:get/get.dart';
 
 class CartItem {
   Items item;
   String size; // 'small', 'medium', or 'large'
   int quantity;
 
-  CartItem({required this.item, required this.size,this.quantity = 0});
+  CartItem({required this.item, required this.size, this.quantity = 0});
+
+  // Convert CartItem to Map for JSON encoding
+  Map<String, dynamic> toMap() {
+    return {
+      'item': item.toJson(), // Assuming item also has toMap() method
+      'size': size,
+      'quantity': quantity,
+    };
+  }
+
+  // Create a CartItem from a Map
+  factory CartItem.fromMap(Map<String, dynamic> map) {
+    return CartItem(
+      item: Items.fromJson(map['item']), // Assuming Items has fromMap() method
+      size: map['size'],
+      quantity: map['quantity'],
+    );
+  }
 }
 
 class Cart {
   RxList<CartItem> _cartItems = <CartItem>[].obs;
+
+  static const String cartKey = 'cart_items';
 
   // Add an item to the cart with specified size
   void addItem(Items item, String size, int quantity) {
@@ -30,7 +53,7 @@ class Cart {
     if (!itemExists) {
       _cartItems.add(CartItem(item: item, size: size,quantity: quantity));
     }
-
+    saveCartToPreferences();
   }
 
   // Remove an item from the cart by ID
@@ -40,6 +63,7 @@ class Cart {
     }else{
       _cartItems.removeAt(index);
     }
+    saveCartToPreferences();
     // _cartItems.removeWhere((cartItem) => cartItem.item.id == id && cartItem.size == size);
   }
 
@@ -81,9 +105,28 @@ class Cart {
   // Get all items in the cart
   RxList<CartItem> get items => _cartItems;
 
-  // Clear the cart
   void clearCart() {
     _cartItems.clear();
+    saveCartToPreferences(); // Save cart to preferences after clearing
+  }
+
+  // Save the cart to shared preferences
+  Future<void> saveCartToPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> cartJsonList = _cartItems.map((item) => jsonEncode(item.toMap())).toList();
+    await prefs.setStringList(cartKey, cartJsonList);
+  }
+
+  // Load the cart from shared preferences
+  Future<void> loadCartFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? cartJsonList = prefs.getStringList(cartKey);
+
+    if (cartJsonList != null) {
+      _cartItems.value = cartJsonList
+          .map((itemJson) => CartItem.fromMap(jsonDecode(itemJson)))
+          .toList();
+    }
   }
 
   // Display cart items

@@ -10,13 +10,22 @@ class MainMenuController extends GetxController {
   RxBool bottomBar = false.obs;
 
   RxBool showAllCategories = false.obs;
+  RxBool orderAdded = false.obs;
 
   Cart cart = Cart();
 
   @override
   void onInit() {
     super.onInit();
+    loadCart();
     getMenu();
+  }
+
+  Future<void> loadCart() async {
+    await cart.loadCartFromPreferences();
+    if(cart.items.isNotEmpty){
+      bottomBar.value = true;
+    }
   }
 
   Future<dynamic> getMenu() async {
@@ -42,10 +51,10 @@ class MainMenuController extends GetxController {
   }
 
 
-  showAddToCartItemSheet(BuildContext ctx, Items item) {
+  showAddToCartItemSheet(BuildContext ctx, Items item,{bool fromFav = false,void Function()? onFavTap}) {
     RxInt quantity = 1.obs;
     RxnString selectedSize = RxnString(null);
-    RxBool isLiked =false.obs;
+    RxBool isLiked =(fromFav).obs;
 
     Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
       return Column(
@@ -109,7 +118,8 @@ class MainMenuController extends GetxController {
         return DraggableScrollableSheet(
             initialChildSize: 0.9,
             minChildSize: 0.9,
-            maxChildSize: 1.0,
+            maxChildSize: 1,
+            expand: false,
             builder: (context, scrollController) {
               return Container(
                 decoration: const BoxDecoration(

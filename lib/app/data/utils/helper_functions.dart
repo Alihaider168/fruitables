@@ -15,6 +15,15 @@ class HelperFunction {
     }
   }
 
+  static String? otpValidate(String value) {
+    if (value.isEmpty) {
+      return "otp_required".tr;
+    } else if (value.length < Constants.otpLength) {
+      return "enter_valid_otp".tr;
+    }
+    return null;
+  }
+
   static String maskString(String input) {
     if (input.length <= 4) {
       return input; // No need to mask if the string is too short

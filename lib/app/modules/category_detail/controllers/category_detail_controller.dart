@@ -1,10 +1,8 @@
 import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/data/utils/cart/cart.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
-import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 import '../../../data/core/app_export.dart';
+import 'dart:async';
 
 class CategoryDetailController extends GetxController {
   Rx<MenuModel> menuModel = MenuModel().obs;
@@ -27,8 +25,7 @@ class CategoryDetailController extends GetxController {
     super.onInit();
     menuModel.value = mainMenuController.menuModel.value;
 
-
-
+    // Listen to vertical scroll
     itemPositionsListener.itemPositions.addListener(() async {
       final positions = itemPositionsListener.itemPositions.value;
       if (positions.isNotEmpty) {
@@ -36,22 +33,21 @@ class CategoryDetailController extends GetxController {
         onVerticalScroll(firstVisible);
       }
 
-      if(!isInit){
+      // Initialize if not done yet
+      if (!isInit) {
         isInit = true;
-        if(data!= null && data['category']!= null){
+        if (data != null && data['category'] != null) {
           await Future.delayed(300.milliseconds);
           scrollToCategory(data['category']);
-          horizontalItemScrollController.scrollTo(
-            index: data['category'],
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
+          centerSelectedHorizontalItem(data['category']);
         }
       }
-
     });
 
-
+    // Listen for changes to the selected index to center the horizontal item
+    ever(selectedCategoryIndex, (index) {
+      centerSelectedHorizontalItem(index);
+    });
   }
 
   void scrollToCategory(int index) {
@@ -65,10 +61,17 @@ class CategoryDetailController extends GetxController {
 
   void onVerticalScroll(int firstVisibleIndex) {
     selectedCategoryIndex.value = firstVisibleIndex;
-    horizontalItemScrollController.scrollTo(
-      index: firstVisibleIndex,
-      duration: Duration(milliseconds: 100),
-      curve: Curves.easeInOut,
-    );}
+  }
 
+  void centerSelectedHorizontalItem(int index) {
+    horizontalItemScrollController.scrollTo(
+      index: index,
+      alignment: 0.3, // Center alignment for the selected item
+      duration: Duration(milliseconds: 1), // Smooth transition duration
+      curve: Curves.easeInOut,
+    );
+  }
 }
+
+
+

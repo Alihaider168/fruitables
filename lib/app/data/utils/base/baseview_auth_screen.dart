@@ -15,24 +15,12 @@ class BaseviewAuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.black,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarColor: Colors.black.withOpacity(.5),
-      // Dark color for the status bar
-      statusBarIconBrightness: Brightness.light,
-      // White icons on the status bar
-      statusBarBrightness:
-          Brightness.dark, // For iOS: sets status bar text and icons to light
-    ));
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light, // Customize this per your needs
-      child: Scaffold(
-          body: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: child!)),
-    );
+    Utils.setUIOverlay();
+    return Scaffold(
+        body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: child!));
   }
 }

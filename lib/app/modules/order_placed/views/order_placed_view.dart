@@ -32,6 +32,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
             onPressed: ()  {
               controller.menuController.cart.clearCart();
               controller.menuController.orderAdded.value = true;
+              controller.menuController.loadCart();
               Get.offAllNamed(Routes.MAIN_MENU);
               },
           ),

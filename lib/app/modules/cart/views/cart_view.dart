@@ -85,8 +85,10 @@ class _CartViewState extends State<CartView> {
   }
 
   Widget _buildDeliveryInfo() {
-    return Padding(
-      padding: getPadding(all: 16),
+    return Container(
+      color: ColorConstant.grayBackground.withOpacity(.5),
+      margin: getMargin(bottom: 10),
+      padding: getPadding(left: 16,right: 16,top: 10,bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -122,15 +124,28 @@ class _CartViewState extends State<CartView> {
   }
 
   Widget _buildCartItemsList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: controller.menuController.cart.items.length,
-      itemBuilder: (context, i) {
-        final item = controller.menuController.cart.items[i];
-        return _buildCartItem(item: item,index: i);
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: getMargin(left: 16,bottom: 5),
+          child: MyText(title: "items".tr,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: controller.menuController.cart.items.length,
+          itemBuilder: (context, i) {
+            final item = controller.menuController.cart.items[i];
+            return _buildCartItem(item: item,index: i);
+          },
+        ),
+      ],
     );
 
 
@@ -157,49 +172,58 @@ class _CartViewState extends State<CartView> {
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.item.name ?? "" : item.item.englishName ?? "",
                     color: ColorConstant.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          controller.menuController.checkForMultipleValues(item.item) ? MyText(
-                            title: "${"lbl_size".tr}: ${item.size}",
-                            color: ColorConstant.black,
-                            fontSize: 14,
-                          ) : Offstage(),
-                          MyText(
-                            title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
-                            color: ColorConstant.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ],
-                      ))
-                    ],
-                  ),
+                  controller.menuController.checkForMultipleValues(item.item) ? MyText(
+                    title: "${"lbl_size".tr}: ${item.size}",
+                    color: ColorConstant.black,
+                    fontSize: 14,
+                  ) : Offstage(),
 
                 ],
               ),
             ),
-            Row(
+            Column(
               children: [
-                IconButton(
-                  onPressed: () {
-                    controller.menuController.cart.removeItem(index);
-                    setState(() {
-
-                    });
-                  },
-                  icon: Icon(Icons.remove,color: ColorConstant.primaryPink,),
+                MyText(
+                  title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
+                  color: ColorConstant.black,
+                  fontWeight: FontWeight.w500,
                 ),
-                MyText(title: item.quantity.toString()), // Quantity
-                IconButton(
-                  onPressed: () {
-                    controller.menuController.cart.addItem(item.item, item.size, 1);
-                    setState((){});
-                  },
-                  icon: Icon(Icons.add,color: ColorConstant.primaryPink,),
+
+                Container(
+                  padding: getPadding(left: 5,right: 5),
+                  margin: getMargin(top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(getSize(5)),
+                    border: Border.all(color: ColorConstant.grayBorder.withOpacity(.7))
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          controller.menuController.cart.removeItem(index);
+                          setState(() {
+
+                          });
+                        },
+                        child: Icon(Icons.remove,color: ColorConstant.primaryPink,size: getSize(20),),
+                      ),
+                      Container(
+                        padding: getPadding(left: 5,right: 5),
+                        child: MyText(
+                          title: item.quantity.toString(),
+                        ),
+                      ), // Quantity
+                      GestureDetector(
+                        onTap: () {
+                          controller.menuController.cart.addItem(item.item, item.size, 1);
+                          setState((){});
+                        },
+                        child: Icon(Icons.add,color: ColorConstant.primaryPink,size: getSize(20),),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

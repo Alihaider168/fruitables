@@ -71,8 +71,8 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
               ),
               color: ColorConstant.white,
               child: Container(
-                height: getSize(65),
-                padding: getPadding(all: 10),
+                height: getSize(47),
+                padding: getPadding(bottom: 6,left: 5,right: 5),
                 child:ScrollablePositionedList.builder(
                   itemScrollController: controller.horizontalItemScrollController,
                   scrollDirection: Axis.horizontal,

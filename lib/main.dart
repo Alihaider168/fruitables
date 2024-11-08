@@ -49,14 +49,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
-      statusBarColor: Colors.black.withOpacity(.5),
-      // Dark color for the status bar
-      statusBarIconBrightness: Brightness.light,
-      // White icons on the status bar
-      statusBarBrightness:
-      Brightness.dark, // For iOS: sets status bar text and icons to light
-    ));
+    Utils.setUIOverlay();
   }
 
   // This widget is the root of your application.
@@ -73,6 +66,12 @@ class _MyAppState extends State<MyApp> {
         // showSemanticsDebugger: true,
         theme: ThemeData(
           appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.black.withOpacity(0.3), // Adjust opacity as needed
+              statusBarIconBrightness: Brightness.light,
+              systemNavigationBarColor: Colors.black,
+              systemNavigationBarIconBrightness: Brightness.light,
+            ),
             backgroundColor: ColorConstant.primaryPink,
           ),
           scaffoldBackgroundColor: ColorConstant.white,

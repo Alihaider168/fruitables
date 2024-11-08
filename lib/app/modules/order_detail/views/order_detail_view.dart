@@ -23,7 +23,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
         },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
         ),
-        title: MyText(title: "Order Details".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
+        title: MyText(title: "order_details".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

@@ -117,4 +117,7 @@ final Map<String, String> enUs = {
   "you_will_receive_6_digit_otp": "You will receive a 6 digit OTP for email verification",
   "otp_verification": "OTP Verification",
   "we_sent_otp_to_email": "We have sent an OTP to your email",
+  "variation": "Variation",
+  "select_option": "Please select any one option to continue",
+  "items": "Items",
 };

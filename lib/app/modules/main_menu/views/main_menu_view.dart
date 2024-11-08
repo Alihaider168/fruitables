@@ -10,14 +10,29 @@ import 'package:get/get.dart';
 
 import '../controllers/main_menu_controller.dart';
 
-class MainMenuView extends GetView<MainMenuController> {
+class MainMenuView extends StatefulWidget {
   const MainMenuView({super.key});
+
+  @override
+  State<MainMenuView> createState() => _MainMenuViewState();
+}
+
+class _MainMenuViewState extends State<MainMenuView> {
+  final controller = Get.put(MainMenuController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Utils.setUIOverlay();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Utils.setUIOverlay();
     return Scaffold(
       key: controller.scaffoldKey,
       appBar: AppBar(
-        backgroundColor: ColorConstant.primaryPink,
         leading: Padding(
           padding: getPadding(left: 15),
           child: GestureDetector(

@@ -329,6 +329,15 @@ class Utils {
     }
   }
 
+  static setUIOverlay(){
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.black.withOpacity(0.3), // Semi-transparent black
+      statusBarIconBrightness: Brightness.light,     // White icons on status bar
+      systemNavigationBarColor: Colors.black,        // Black navigation bar color
+      systemNavigationBarIconBrightness: Brightness.light,
+    ));
+  }
+
   static Future<void> launchURL(Uri url) async {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);

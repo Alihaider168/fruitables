@@ -25,6 +25,8 @@ class MainMenuController extends GetxController {
     await cart.loadCartFromPreferences();
     if(cart.items.isNotEmpty){
       bottomBar.value = true;
+    }else{
+      bottomBar.value = false;
     }
   }
 
@@ -64,16 +66,16 @@ class MainMenuController extends GetxController {
             children: [
               Expanded(
                 child: SizedBox(
-                  height: getSize(40),
+                  height: getSize(35),
                   child: Obx(()=> RadioListTile<String>(
-                    title: MyText(title: title,fontSize: 18,fontWeight: FontWeight.w600,),
+                    title: MyText(title: title,fontSize: 15,fontWeight: FontWeight.w600,),
                     value: value,
                     activeColor: ColorConstant.primaryPink,
                     groupValue: selectedSize.value,
                     onChanged: (value) {
                       selectedSize.value = value!;
                     },
-                    contentPadding: EdgeInsets.symmetric(horizontal: 4.0), // Smaller padding
+                    contentPadding: getPadding(right: 4.0), // Smaller padding
                   ),),
                 ),
               ),
@@ -82,7 +84,7 @@ class MainMenuController extends GetxController {
                 children: [
                   MyText(
                     title: "${'lbl_rs'.tr} ${discountedPrice != 0 ? discountedPrice : price}",
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: Colors.black, // Change this to the desired color
                   ),
@@ -91,7 +93,7 @@ class MainMenuController extends GetxController {
                   if (discountedPrice != 0)
                     MyText(
                       title: "${'lbl_rs'.tr} ${price}",
-                      fontSize: 16,
+                      fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                       cut: true, // Strikethrough for original price
@@ -100,7 +102,7 @@ class MainMenuController extends GetxController {
               )
             ],
           ),
-          SizedBox(height: getSize(10),)
+          SizedBox(height: getSize(2),)
         ],
       );
     }
@@ -133,11 +135,9 @@ class MainMenuController extends GetxController {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     Expanded(
                       child: Stack(
                         children: [
-
                           SingleChildScrollView(
                             controller: scrollController,
                             child: Column(
@@ -146,10 +146,10 @@ class MainMenuController extends GetxController {
                                 Center(
                                   child: CustomImageView(
                                     url: item.image,
-                                    width: getSize(200),
-                                    height: getSize(200),
+                                    width: getSize(180),
+                                    height: getSize(180),
                                     fit: BoxFit.contain,
-                                    margin: getMargin(bottom: 20),
+                                    margin: getMargin(bottom: 10),
                                   ),
                                 ),
                                 Row(
@@ -157,8 +157,8 @@ class MainMenuController extends GetxController {
                                     Expanded(
                                       child: MyText(
                                         title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
                                       ),
                                     ),
                                     SizedBox(width: getSize(15),),
@@ -169,6 +169,7 @@ class MainMenuController extends GetxController {
                                       child: Obx(()=> CustomImageView(
                                         svgPath: isLiked.value ? ImageConstant.likeActive : ImageConstant.likeInactive,
                                         color: isLiked.value ? ColorConstant.primaryPink : ColorConstant.black,
+                                        height: getSize(20),
                                       )),
                                     ),
                                   ],
@@ -180,21 +181,21 @@ class MainMenuController extends GetxController {
                                       text: TextSpan(
                                         children: [
                                           // Check if the prefix 'From' should be added
-                                          if (checkForMultipleValues(item))
-                                            TextSpan(
-                                              text: '${'lbl_from'.tr}  ', // Prefix text
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.black, // Change this to the desired color
-                                              ),
-                                            ),
+                                          // if (checkForMultipleValues(item))
+                                            // TextSpan(
+                                            //   text: '${'lbl_from'.tr}  ', // Prefix text
+                                            //   style: TextStyle(
+                                            //     fontSize: 16,
+                                            //     fontWeight: FontWeight.w700,
+                                            //     color: Colors.black, // Change this to the desired color
+                                            //   ),
+                                            // ),
 
                                           // Display the price
                                           TextSpan(
                                             text: "${'lbl_rs'.tr} ${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}  ",
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                               color: Colors.black, // Change this to the desired color
                                             ),
@@ -205,7 +206,7 @@ class MainMenuController extends GetxController {
                                             TextSpan(
                                               text: "${'lbl_rs'.tr} ${calculatePrice(item)}",
                                               style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                                                 decoration: TextDecoration.lineThrough, // Strikethrough for original price
@@ -226,23 +227,22 @@ class MainMenuController extends GetxController {
                                         child: MyText(
                                           title:
                                           "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: getSize(20),),
+                                SizedBox(height: getSize(10),),
                                 MyText(
                                   title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorConstant.textGrey,
+                                  fontSize: 14,
+                                  color: ColorConstant.black,
                                 ),
-                                SizedBox(height: getSize(20),),
+                                SizedBox(height: getSize(15),),
                                 Divider(),
-                                SizedBox(height: getSize(20),),
+                                SizedBox(height: getSize(15),),
                                 checkForMultipleValues(item) ? Column(
                                   children: [
                                     Row(
@@ -251,8 +251,8 @@ class MainMenuController extends GetxController {
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            MyText(title: "Variation",fontWeight: FontWeight.bold,),
-                                            MyText(title: "Please select any one option to continue",fontSize: 12,),
+                                            MyText(title: "variation".tr,fontWeight: FontWeight.bold,),
+                                            MyText(title: "select_option".tr,fontSize: 12,),
                                           ],
                                         ),
                                         Spacer(),

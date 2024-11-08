@@ -81,7 +81,6 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                     final item = controller.menuModel.value.data!.categories![index];
                     return Obx(() => GestureDetector(
                       onTap: () {
-                        controller.selectedCategoryIndex.value = index; // Update the selected index
                         controller.horizontalItemScrollController.scrollTo(
                           index: index,
                           alignment: 0.3, // Center the selected item

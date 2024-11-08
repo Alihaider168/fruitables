@@ -93,6 +93,9 @@ class LocationSelectionController extends GetxController {
           onSuccess: (response) async {
             print(response);
             cityModel = CityModel.fromJson(response.data);
+            selectedCity = 0;
+            selectedCityModel = cityModel?.data?.cities?[selectedCity];
+            cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.data?.cities?[selectedCity].name??"") : (cityModel?.data?.cities?[selectedCity].englishName??"");
             return true;
           },
           onError: (error) {
@@ -173,7 +176,6 @@ class LocationSelectionController extends GetxController {
                     padding: getPadding(top: 30),
                     child: CustomButton(
                       onTap: (){
-
                         selectedCity = _selectedCityIndex;
                         selectedCityModel = cityModel?.data?.cities?[selectedCity];
                             cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.data?.cities?[selectedCity].name??"") : (cityModel?.data?.cities?[selectedCity].englishName??"");

@@ -1,23 +1,60 @@
+import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AddAddressController extends GetxController {
-  //TODO: Implement AddAddressController
+  late GoogleMapController mapController;
+  LatLng currentPosition = const LatLng(0, 0);
+  Rx<Marker> currentMarker = const Marker(markerId: MarkerId('current_location'),).obs;
+  Rx<Circle> currentCircle  = const Circle(circleId: CircleId('current_location_circle'),).obs;
+  TextEditingController addressController = TextEditingController();
+  TextEditingController regionController = TextEditingController();
 
-  final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
+    regionController.text = Constants.selectedBranch?.address??"";
+    _getCurrentLocation();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+
+  Future<void> _getCurrentLocation() async {
+    // Request location permission
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.denied) {
+      // Handle the case when permission is denied
+      return;
+    }
+
+    // Get the current location
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentPosition = LatLng(position.latitude, position.longitude);
+    currentMarker.value = Marker(
+      markerId: const MarkerId('current_location'),
+      position: currentPosition,
+    );
+    currentCircle.value = Circle(
+      circleId: const CircleId('current_location_circle'),
+      center: currentPosition,
+      radius: 200, // Change the radius as needed
+      fillColor: Colors.blue.withOpacity(0.3),
+      strokeColor: Colors.blue,
+      strokeWidth: 2,
+    );
+
+    moveToCurrentLocation();
+
+
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  // Move the camera to the current location
+  moveToCurrentLocation(){
+    mapController.animateCamera(CameraUpdate.newLatLng(currentPosition));
   }
 
-  void increment() => count.value++;
+
+
 }

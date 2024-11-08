@@ -20,8 +20,7 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
               circles: {controller.currentCircle.value},
               onMapCreated: (GoogleMapController controller1) {
                 controller.mapController = controller1;
-                controller.isInitialized = true;
-              },
+                },
               initialCameraPosition: CameraPosition(
                 target: controller.currentPosition,
                 zoom: 14,

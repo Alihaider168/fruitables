@@ -100,4 +100,12 @@ final Map<String, String> enUs = {
   "status": "Status",
   "estimated_delivery_time": "Estimated Delivery Time",
 
+
+  "save_address": "Save Address",
+  "new_address": "New Address",
+  "address": "Address",
+  "ok": "OK",
+  "confirm_pin_location": "Confirm Pin Location",
+  "looks_like": "Looks like your selected location is outside the selected region",
+  "to_change_area": "To Change your area please do it from main menu",
 };

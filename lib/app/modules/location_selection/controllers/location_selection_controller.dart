@@ -29,8 +29,6 @@ class LocationSelectionController extends GetxController {
   // List to hold filtered search results
   RxList<Branches> filteredLocations = <Branches>[].obs;
 
-  bool isInitialized = false;
-
   CityModel? cityModel;
 
   int _selectedCityIndex = 0;
@@ -85,11 +83,7 @@ class LocationSelectionController extends GetxController {
 
   // Move the camera to the current location
   moveToCurrentLocation(){
-    if(isInitialized){
-      mapController.animateCamera(CameraUpdate.newLatLng(currentPosition));
-    } else{
-      moveToCurrentLocation();
-    }
+    mapController.animateCamera(CameraUpdate.newLatLng(currentPosition));
   }
 
   Future<dynamic> getRegions() async {

@@ -93,6 +93,14 @@ class AddressesView extends GetView<AddressesController> {
           ),
           child: Center(
             child: CustomButton(
+              onTap: (){
+                Get.toNamed(Routes.ADD_ADDRESS)!.then((address){
+                  if(address!= null){
+                    controller.addresses.add(address);
+                    controller.addresses.refresh();
+                  }
+                });
+              },
               prefixWidget: Padding(
                 padding: getPadding(right: 5),
                 child: Icon(

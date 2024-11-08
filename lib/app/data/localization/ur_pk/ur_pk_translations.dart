@@ -98,5 +98,12 @@ final Map<String, String> urPk = {
   "in_progress": "عمل میں",
   "cancelled": "منسوخ کر دیا گیا",
   "status": "حیثیت",
-  "estimated_delivery_time": "اندازاً ترسیل کا وقت"
+  "estimated_delivery_time": "اندازاً ترسیل کا وقت",
+  "save_address": "پتہ محفوظ کریں",
+  "new_address": "نیا پتہ",
+  "address": "پتہ",
+  "ok": "ٹھیک ہے",
+  "confirm_pin_location": "پن کی جگہ کی تصدیق کریں",
+  "looks_like": "ایسا لگتا ہے کہ آپ کا منتخب کردہ مقام منتخب شدہ علاقے سے باہر ہے",
+  "to_change_area": "اپنا علاقہ تبدیل کرنے کے لئے براہ کرم مین مینو سے کریں"
 };

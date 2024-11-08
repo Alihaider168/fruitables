@@ -111,37 +111,6 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                     ));
                   },
                 ),
-
-                // ListView.builder(
-                //   controller: controller.scrollController,
-                //   scrollDirection: Axis.horizontal,
-                //   itemCount: controller.menuModel.value.data?.categories?.length,
-                //   itemBuilder: (context, index) {
-                //     final item = controller.menuModel.value.data!.categories![index];
-                //     return Obx(()=> GestureDetector(
-                //       onTap: () => controller.scrollToCategory(index),
-                //       child: Container(
-                //         margin:getMargin(right: 15),
-                //         padding: getPadding(left: 20,right: 20,top: 10,bottom: 10),
-                //         decoration: BoxDecoration(
-                //           color: controller.selectedCategoryIndex.value == index
-                //               ? ColorConstant.primaryPink
-                //               : Colors.transparent,
-                //           borderRadius: BorderRadius.circular(10),
-                //         ),
-                //         child: Center(
-                //           child: MyText(
-                //             title: Utils.checkIfUrduLocale() ? item.urduName??"" : item.englishName??"",
-                //             color: controller.selectedCategoryIndex.value == index
-                //                 ? Colors.white
-                //                 : Colors.black,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //         ),
-                //       ),
-                //     ));
-                //   },
-                // ),
               ),
             ) : Offstage()),
             const SizedBox(height: 10),

@@ -60,9 +60,6 @@ class CategoryDetailController extends GetxController {
     selectedCategoryIndex.value = index;
   }
 
-  void onVerticalScroll(int firstVisibleIndex) {
-    selectedCategoryIndex.value = firstVisibleIndex;
-  }
 
   void centerSelectedHorizontalItem(int index) {
     horizontalItemScrollController.scrollTo(
@@ -71,6 +68,12 @@ class CategoryDetailController extends GetxController {
       duration: Duration(microseconds: 1), // Smooth transition duration
       curve: Curves.easeInOut,
     );
+  }
+
+  void onVerticalScroll(int firstVisibleIndex) {
+    if (selectedCategoryIndex.value != firstVisibleIndex) {
+      selectedCategoryIndex.value = firstVisibleIndex;
+    }
   }
 }
 

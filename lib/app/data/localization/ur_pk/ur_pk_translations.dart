@@ -81,7 +81,7 @@ final Map<String, String> urPk = {
   "confirm_order": "آرڈر کی تصدیق کریں",
   "select_payment_method": "براہ کرم ادائیگی کا طریقہ منتخب کریں",
   "select_delivery_address": "براہ کرم ترسیل کا پتہ منتخب کریں",
-  "enter_email": "جاری رکھنے کے لئے براہ کرم اپنی ای میل درج کریں",
+  "enter_email": "ای میل درج کریں",
   "send_email": "ای میل بھیجیں",
   "enter_otp": "براہ کرم اپنی ای میل پر بھیجا گیا OTP درج کریں",
   "verify": "تصدیق کریں",

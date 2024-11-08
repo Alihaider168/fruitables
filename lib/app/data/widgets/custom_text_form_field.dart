@@ -191,7 +191,7 @@ class CustomTextFormField extends StatelessWidget {
       default:
         return BorderRadius.circular(
           getHorizontalSize(
-            14.00,
+            5.00,
           ),
         );
     }

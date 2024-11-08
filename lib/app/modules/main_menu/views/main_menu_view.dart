@@ -18,12 +18,14 @@ class MainMenuView extends GetView<MainMenuController> {
       key: controller.scaffoldKey,
       appBar: AppBar(
         backgroundColor: ColorConstant.primaryPink,
-        leading: IconButton(
-          onPressed: (){
-            controller.scaffoldKey.currentState!.openDrawer();
-          },
-          icon: Icon(Icons.menu,color: ColorConstant.white,),
+        leading: Padding(
+          padding: getPadding(left: 15),
+          child: GestureDetector(
+            onTap: ()=>  controller.scaffoldKey.currentState!.openDrawer(),
+            child: Icon(Icons.menu,color: ColorConstant.white,),
+          ),
         ),
+        leadingWidth: getSize(35),
         title: GestureDetector(
           onTap: (){
             Get.toNamed(Routes.LOCATION_SELECTION);

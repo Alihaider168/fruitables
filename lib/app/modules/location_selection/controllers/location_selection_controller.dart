@@ -96,6 +96,8 @@ class LocationSelectionController extends GetxController {
             selectedCity = 0;
             selectedCityModel = cityModel?.data?.cities?[selectedCity];
             cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.data?.cities?[selectedCity].name??"") : (cityModel?.data?.cities?[selectedCity].englishName??"");
+            filteredLocations.value = (cityModel?.data?.branches??[]).where((element)=> (Utils.checkIfUrduLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
+            filteredLocations.refresh();
             return true;
           },
           onError: (error) {
@@ -112,6 +114,7 @@ class LocationSelectionController extends GetxController {
   showCitySheet(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(14),
@@ -120,9 +123,9 @@ class LocationSelectionController extends GetxController {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          maxChildSize: 0.7,
-          minChildSize: 0.5,
+          initialChildSize: 0.4,
+          maxChildSize: 0.5,
+          minChildSize: 0.3,
           builder: (context, scrollController) {
             return Container(
               decoration: BoxDecoration(
@@ -199,6 +202,7 @@ class LocationSelectionController extends GetxController {
   void showCustomBottomSheet(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(14),
@@ -207,9 +211,9 @@ class LocationSelectionController extends GetxController {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.9,
-          maxChildSize: 0.95,
-          minChildSize: 0.7,
+          initialChildSize: 0.4,
+          maxChildSize: 0.5,
+          minChildSize: 0.3,
           builder: (context, scrollController) {
             return Container(
               decoration: BoxDecoration(
@@ -259,7 +263,7 @@ class LocationSelectionController extends GetxController {
                   Expanded(
                       child: Obx(()=> filteredLocations.isEmpty
                           ? Center(child: MyText(title: 'lbl_no_results'.tr))
-                          : ListView.builder(
+                          : Obx(()=> ListView.builder(
                         itemCount: filteredLocations.length,
                         itemBuilder: (context, index) {
                           return ListTile(
@@ -271,7 +275,7 @@ class LocationSelectionController extends GetxController {
                             title: Text(Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
                           );
                         },
-                      )),
+                      ))),
 
                   )
                 ],

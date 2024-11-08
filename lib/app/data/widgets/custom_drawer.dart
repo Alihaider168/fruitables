@@ -400,10 +400,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   height: getSize(150),
                 ),
                 SizedBox(height: getSize(15)),
-                MyText(
-                  title: "enter_email".tr,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: MyText(
+                    title: "enter_email".tr,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: MyText(
+                    title: "you_will_receive_6_digit_otp".tr,
+                    fontSize: 14,
+                    color: ColorConstant.textGrey,
+                  ),
                 ),
                 SizedBox(height: getSize(10)),
                 CustomTextFormField(
@@ -453,12 +464,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   height: getSize(150),
                 ),
                 SizedBox(height: getSize(15)),
-                MyText(
-                  title: "enter_otp".tr,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: MyText(
+                    title: "otp_verification".tr,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-                SizedBox(height: getSize(10)),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: MyText(
+                    title: "${"we_sent_otp_to_email".tr}\n${emailController.text}",
+                    fontSize: 14,
+                    color: ColorConstant.textGrey,
+                  ),
+                ),
+                SizedBox(height: getSize(20)),
                 Container(
                   margin: getPadding(left: getSize(20), right: getSize(20)),
                   child: OtpTextField(

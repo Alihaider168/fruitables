@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   static Color black = fromHex('#000000');
   static Color gray5001 = fromHex('#fafafa');
-  static Color primaryPink = fromHex('#D70F64').withOpacity(0.7);
+  // static Color primaryPink = fromHex('#FFF28BA0');
+  static Color primaryPink = Color(0xFFEB6F87);
   static Color green = fromHex('#43FF00');
   static Color greenButton = fromHex('#38640A');
   static Color red = fromHex('#FF1A1A');

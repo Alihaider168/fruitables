@@ -16,12 +16,14 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: (){
-            Get.back();
-          },
-          icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
+        leading: Padding(
+          padding: getPadding(left: 15),
+          child: GestureDetector(
+            onTap: ()=>  Get.back(),
+            child: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
+          ),
         ),
+        leadingWidth: getSize(35),
         title: GestureDetector(
           onTap: (){
             Get.toNamed(Routes.LOCATION_SELECTION);
@@ -64,8 +66,12 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
           children: [
             Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
             Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0)
+              ),
+              color: ColorConstant.white,
               child: Container(
-                height: getSize(60),
+                height: getSize(65),
                 padding: getPadding(all: 10),
                 child:ScrollablePositionedList.builder(
                   itemScrollController: controller.horizontalItemScrollController,
@@ -85,8 +91,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         controller.scrollToCategory(index);
                       },
                       child: Container(
-                        margin: getMargin(right: 15),
-                        padding: getPadding(left: 20, right: 20, top: 10, bottom: 10),
+                        padding: getPadding(left: 15, right: 15, top: 10, bottom: 10),
                         decoration: BoxDecoration(
                           color: controller.selectedCategoryIndex.value == index
                               ? ColorConstant.primaryPink
@@ -98,7 +103,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                             title: Utils.checkIfUrduLocale() ? item.urduName ?? "" : item.englishName ?? "",
                             color: controller.selectedCategoryIndex.value == index
                                 ? Colors.white
-                                : Colors.black,
+                                : ColorConstant.textGrey,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -218,7 +223,7 @@ class ItemWidget extends StatelessWidget {
                       Container(
                         // width: getSize(70),
                         height: getSize(30),
-                        margin: getMargin(bottom: 20),
+                        margin: getMargin(bottom: 10),
                         padding: getPadding(left: 15,right: 15),
                         decoration: BoxDecoration(
                             color: ColorConstant.primaryPink,
@@ -230,7 +235,7 @@ class ItemWidget extends StatelessWidget {
                         alignment: Alignment.center,
                         child: MyText(title: item.isNew == true ? "lbl_new".tr : item.isHot == true ? "lbl_hot".tr : item.isTrending == true ? "lbl_trending".tr : "",
                           color: ColorConstant.white,fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 12,
                           ),
                       ),
                     ],
@@ -238,13 +243,13 @@ class ItemWidget extends StatelessWidget {
 
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                   SizedBox(height: getSize(3),),
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: ColorConstant.textGrey,
                   ),
@@ -343,7 +348,7 @@ class ItemWidget extends StatelessWidget {
                         width: getSize(35),
                         height: getSize(35),
                         decoration: BoxDecoration(
-                            color: ColorConstant.yellow,
+                            color: ColorConstant.blue.withOpacity(.7),
                             shape: BoxShape.circle
                         ),
                         alignment: Alignment.center,

@@ -11,7 +11,7 @@ class HelperFunction {
     } else {
       return stringValidateWithMaxAndMinLimit(
           val, Constants.EMAIL_VALIDATION, 1,
-          fieldName: "lbl_email_address2".tr);
+          fieldName: "email".tr);
     }
   }
 

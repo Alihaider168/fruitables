@@ -81,7 +81,7 @@ final Map<String, String> enUs = {
   "confirm_order": "Confirm Order",
   "select_payment_method": "Please select payment method",
   "select_delivery_address": "Please select delivery address",
-  "enter_email": "Please enter your email to continue",
+  "enter_email": "Enter Email",
   "send_email": "Send Email",
   "enter_otp": "Please enter OTP sent to your email",
   "verify": "Verify",
@@ -99,8 +99,6 @@ final Map<String, String> enUs = {
   "cancelled": "Cancelled",
   "status": "Status",
   "estimated_delivery_time": "Estimated Delivery Time",
-
-
   "save_address": "Save Address",
   "new_address": "New Address",
   "address": "Address",
@@ -108,4 +106,15 @@ final Map<String, String> enUs = {
   "confirm_pin_location": "Confirm Pin Location",
   "looks_like": "Looks like your selected location is outside the selected region",
   "to_change_area": "To Change your area please do it from main menu",
+
+  "email_cannot_be_empty": "Email cannot be empty",
+  "invalid_email": "Invalid email",
+  "exceeding_character_limit":
+  "Exceeding character limit, please try another one",
+  "field": "Field",
+  "cannot_be_empty": "cannot be empty",
+  "is_required": "is required",
+  "you_will_receive_6_digit_otp": "You will receive a 6 digit OTP for email verification",
+  "otp_verification": "OTP Verification",
+  "we_sent_otp_to_email": "We have sent an OTP to your email",
 };

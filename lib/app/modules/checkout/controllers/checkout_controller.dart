@@ -43,6 +43,7 @@ class CheckoutController extends GetxController {
   void showDeliveryTimePicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
           height: 300,
@@ -78,9 +79,9 @@ class CheckoutController extends GetxController {
                       child: ListWheelScrollView.useDelegate(
                         itemExtent: 50,
                         onSelectedItemChanged: (index) {
-                            selectedDayIndex.value = index;
-                            selectedHourIndex.value = 0;
-                            selectedMinuteIndex.value = 0;
+                          selectedDayIndex.value = index;
+                          selectedHourIndex.value = 0;
+                          selectedMinuteIndex.value = 0;
                         },
                         childDelegate: ListWheelChildBuilderDelegate(
                           childCount: days.length,
@@ -89,9 +90,9 @@ class CheckoutController extends GetxController {
                               color: index == selectedDayIndex.value ? Colors.grey[300] : Colors.transparent,
                               alignment: Alignment.center,
                               child: MyText(title:
-                                days[index],
-                                  fontSize: 18,
-                                  color: index == selectedDayIndex.value ? Colors.black : Colors.grey,
+                              days[index],
+                                fontSize: 18,
+                                color: index == selectedDayIndex.value ? Colors.black : Colors.grey,
                               ),
                             ));
                           },
@@ -100,11 +101,11 @@ class CheckoutController extends GetxController {
                     ),
                     // Hour picker
                     Expanded(
-                      child: ListWheelScrollView.useDelegate(
+                      child: Obx(()=> ListWheelScrollView.useDelegate(
                         itemExtent: 50,
                         onSelectedItemChanged: (index) {
-                            selectedHourIndex.value = index;
-                            selectedMinuteIndex.value = 0;
+                          selectedHourIndex.value = index;
+                          selectedMinuteIndex.value = 0;
                         },
                         childDelegate: ListWheelChildBuilderDelegate(
                           childCount: getHours().length,
@@ -113,21 +114,21 @@ class CheckoutController extends GetxController {
                               color: index == selectedHourIndex.value ? Colors.grey[300] : Colors.transparent,
                               alignment: Alignment.center,
                               child: MyText(title:
-                                getHours()[index].toString().padLeft(2, '0'),
-                                  fontSize: 18,
-                                  color: index == selectedHourIndex.value ? Colors.black : Colors.grey,
+                              getHours()[index].toString().padLeft(2, '0'),
+                                fontSize: 18,
+                                color: index == selectedHourIndex.value ? Colors.black : Colors.grey,
                               ),
                             ));
                           },
                         ),
-                      ),
+                      )),
                     ),
                     // Minute picker
                     Expanded(
-                      child: ListWheelScrollView.useDelegate(
+                      child: Obx(()=> ListWheelScrollView.useDelegate(
                         itemExtent: 50,
                         onSelectedItemChanged: (index) {
-                            selectedMinuteIndex.value = index;
+                          selectedMinuteIndex.value = index;
                         },
                         childDelegate: ListWheelChildBuilderDelegate(
                           childCount: getMinutes().length,
@@ -136,14 +137,14 @@ class CheckoutController extends GetxController {
                               color: index == selectedMinuteIndex.value? Colors.grey[300] : Colors.transparent,
                               alignment: Alignment.center,
                               child: MyText(title:
-                                getMinutes()[index].toString().padLeft(2, '0'),
-                                  fontSize: 18,
-                                  color: index == selectedMinuteIndex.value ? Colors.black : Colors.grey,
+                              getMinutes()[index].toString().padLeft(2, '0'),
+                                fontSize: 18,
+                                color: index == selectedMinuteIndex.value ? Colors.black : Colors.grey,
                               ),
                             ));
                           },
                         ),
-                      ),
+                      )),
                     ),
                   ],
                 ),

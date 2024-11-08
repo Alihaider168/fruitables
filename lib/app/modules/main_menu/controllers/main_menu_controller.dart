@@ -108,18 +108,19 @@ class MainMenuController extends GetxController {
 
     showModalBottomSheet(
       context: ctx,
+      isScrollControlled: true, // Allows the sheet to expand beyond half screen
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(getSize(15)),
-            topRight: Radius.circular(getSize(15)),
-          )),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(getSize(15)),
+          topRight: Radius.circular(getSize(15)),
+        ),
+      ),
       backgroundColor: Colors.transparent,
       builder: (context) {
         return DraggableScrollableSheet(
-            initialChildSize: 0.9,
-            minChildSize: 0.9,
-            maxChildSize: 1,
-            expand: false,
+            initialChildSize: 0.7, // Start expanded to full screen
+            minChildSize: 0.5,     // Minimum size is full screen
+            maxChildSize: 0.9,
             builder: (context, scrollController) {
               return Container(
                 decoration: const BoxDecoration(

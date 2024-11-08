@@ -37,7 +37,7 @@ class CategoryDetailController extends GetxController {
       if (!isInit) {
         isInit = true;
         if (data != null && data['category'] != null) {
-          await Future.delayed(300.milliseconds);
+          await Future.delayed(100.milliseconds);
           scrollToCategory(data['category']);
           centerSelectedHorizontalItem(data['category']);
         }
@@ -51,12 +51,13 @@ class CategoryDetailController extends GetxController {
   }
 
   void scrollToCategory(int index) {
-    selectedCategoryIndex.value = index;
+
     itemScrollController.scrollTo(
       index: index,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(microseconds: 1),
       curve: Curves.easeInOut,
     );
+    selectedCategoryIndex.value = index;
   }
 
   void onVerticalScroll(int firstVisibleIndex) {
@@ -67,7 +68,7 @@ class CategoryDetailController extends GetxController {
     horizontalItemScrollController.scrollTo(
       index: index,
       alignment: 0.3, // Center alignment for the selected item
-      duration: Duration(milliseconds: 1), // Smooth transition duration
+      duration: Duration(microseconds: 1), // Smooth transition duration
       curve: Curves.easeInOut,
     );
   }

@@ -5,7 +5,7 @@ import 'package:fruitables/app/data/models/city_model.dart';
 
 class Constants {
 
-  static const int otpLength = 4;
+  static const int otpLength = 6;
   static const int EMAIL_VALIDATION = 35;
   static const int NAME_VALIDATION = 20;
   static const int NAME_MIN_VALIDATION = 2;

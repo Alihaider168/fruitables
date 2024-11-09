@@ -169,64 +169,79 @@ class _CartViewState extends State<CartView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyText(
-                    title: Utils.checkIfUrduLocale() ? item.item.name ?? "" : item.item.englishName ?? "",
-                    color: ColorConstant.black,
-                    fontWeight: FontWeight.w700,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MyText(
+                          title: (Utils.checkIfUrduLocale() ? item.item.name ?? "" : item.item.englishName ?? ""),
+                          color: ColorConstant.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(width: getSize(10),),
+                      MyText(
+                        title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
+                        color: ColorConstant.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ],
                   ),
-                  controller.menuController.checkForMultipleValues(item.item) ? MyText(
-                    title: "${"lbl_size".tr}: ${item.size}",
-                    color: ColorConstant.black,
-                    fontSize: 14,
-                  ) : Offstage(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: controller.menuController.checkForMultipleValues(item.item) ? MyText(
+                          title: "${"lbl_size".tr}: ${item.size}",
+                          color: ColorConstant.black,
+                          fontSize: 12,
+                        ) : Offstage(),
+                      ),
+                      SizedBox(width: getSize(10),),
+                      Container(
+                        padding: getPadding(left: 5,right: 5),
+                        margin: getMargin(top: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(getSize(5)),
+                            border: Border.all(color: ColorConstant.grayBorder.withOpacity(.7))
+                        ),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                controller.menuController.cart.removeItem(index);
+                                controller.menuController.loadCart();
+                                setState(() {
+
+                                });
+                              },
+                              child: Icon(Icons.remove,color: ColorConstant.primaryPink,size: getSize(20),),
+                            ),
+                            Container(
+                              padding: getPadding(left: 5,right: 5),
+                              child: MyText(
+                                title: item.quantity.toString(),
+                              ),
+                            ), // Quantity
+                            GestureDetector(
+                              onTap: () {
+                                controller.menuController.cart.addItem(item.item, item.size, 1);
+                                controller.menuController.loadCart();
+                                setState((){});
+                              },
+                              child: Icon(Icons.add,color: ColorConstant.primaryPink,size: getSize(20),),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
 
                 ],
               ),
             ),
-            Column(
-              children: [
-                MyText(
-                  title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
-                  color: ColorConstant.black,
-                  fontWeight: FontWeight.w500,
-                ),
 
-                Container(
-                  padding: getPadding(left: 5,right: 5),
-                  margin: getMargin(top: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(getSize(5)),
-                    border: Border.all(color: ColorConstant.grayBorder.withOpacity(.7))
-                  ),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          controller.menuController.cart.removeItem(index);
-                          setState(() {
-
-                          });
-                        },
-                        child: Icon(Icons.remove,color: ColorConstant.primaryPink,size: getSize(20),),
-                      ),
-                      Container(
-                        padding: getPadding(left: 5,right: 5),
-                        child: MyText(
-                          title: item.quantity.toString(),
-                        ),
-                      ), // Quantity
-                      GestureDetector(
-                        onTap: () {
-                          controller.menuController.cart.addItem(item.item, item.size, 1);
-                          setState((){});
-                        },
-                        child: Icon(Icons.add,color: ColorConstant.primaryPink,size: getSize(20),),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

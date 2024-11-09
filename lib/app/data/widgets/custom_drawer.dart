@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/utils/helper_functions.dart';
@@ -17,7 +19,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final TextEditingController otpController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
   final languagePreference = LanguageUtils();
+
+  RxInt min = 00.obs;
+  RxInt sec = 60.obs;
+  RxBool resendOtpBool = true.obs;
+
+  void countDown() {
+    resendOtpBool.value = false;
+    debugPrint("${sec.value}");
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (sec.value != 0) {
+        sec.value = sec.value - 1;
+      } else {
+        timer.cancel();
+        resendOtpBool.value = true;
+      }
+    });
+    // sec.value = 60;
+  }
+
+  onResend(context) async {
+    if (sec.value == 00) {
+      CustomSnackBar.showCustomToast(message:
+          "${"we_sent_otp_to_email".tr} ${emailController.text}".tr,);
+      min.value = 00;
+      sec.value = 60;
+      countDown();
+    }
+  }
 
   @override
   void initState() {
@@ -36,14 +67,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
           // Header
           Constants.isLoggedIn.value
               ? Offstage()
-              : Padding(
+              : Container(
+            margin: getMargin(top: 25),
                 padding: getPadding(all: 16),
                 child: MyText(
                             title: "lbl_hi_guest".tr,fontWeight: FontWeight.bold,
                   fontSize: 18,
                           ),
               ),
-          !Constants.isLoggedIn.value ? SizedBox(height: getSize(30),) : SizedBox(
+          !Constants.isLoggedIn.value ? SizedBox(height: getSize(15),) : SizedBox(
             height: getSize(150),
             child: UserAccountsDrawerHeader(
               decoration: BoxDecoration(
@@ -146,7 +178,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               title: "lbl_login".tr,
               onTap: (){
                 Get.back();
-                showLoginSheet(context);
+                showLoginSheet();
               }
           ) : customTile(
             icon: Icons.exit_to_app,
@@ -324,6 +356,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(20))),
       ),
       isScrollControlled: true,
+      backgroundColor: ColorConstant.white,
       builder: (BuildContext context) {
         return Padding(
           padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(context).viewInsets.bottom + 50),
@@ -380,43 +413,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
 
-  void showLoginSheet(BuildContext context) {
+  void showLoginSheet() {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(20))),
       ),
       isScrollControlled: true,
+      backgroundColor: ColorConstant.white,
       builder: (BuildContext context) {
         return Padding(
           padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(context).viewInsets.bottom + 50),
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomImageView(
-                  imagePath: ImageConstant.splash,
-                  height: getSize(150),
-                ),
-                SizedBox(height: getSize(15)),
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: MyText(
-                    title: "enter_email".tr,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                  alignment: Alignment.center,
+                  child: CustomImageView(
+                    imagePath: ImageConstant.splash,
+                    height: getSize(200),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: MyText(
-                    title: "you_will_receive_6_digit_otp".tr,
-                    fontSize: 14,
-                    color: ColorConstant.textGrey,
-                  ),
+                SizedBox(height: getSize(20)),
+                MyText(
+                  title: "enter_email".tr,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-                SizedBox(height: getSize(10)),
+                MyText(
+                  title: "you_will_receive_6_digit_otp".tr,
+                  fontSize: 14,
+                  color: ColorConstant.textGrey,
+                ),
+                SizedBox(height: getSize(20)),
                 CustomTextFormField(
                   labelText: "email".tr,
                   controller: emailController,
@@ -426,10 +458,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(20)),
                 CustomButton(
-                  text: "send_email".tr,
-                  prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
+                  text: "lbl_login".tr,
+                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
                   onTap: (){
                     if(_formKey.currentState!.validate()){
+                      countDown();
                       Get.back();
                       showOtpSheet(context);
                     }
@@ -451,34 +484,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(20))),
       ),
       isScrollControlled: true,
-      builder: (BuildContext context) {
+      backgroundColor: ColorConstant.white,
+      builder: (BuildContext ctx) {
         return Padding(
-          padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(context).viewInsets.bottom + 50),
+          padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(ctx).viewInsets.bottom + 50),
           child: Form(
-            key: _formKey,
+            key: _formKey1,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomImageView(
-                  imagePath: ImageConstant.splash,
-                  height: getSize(150),
-                ),
-                SizedBox(height: getSize(15)),
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: MyText(
-                    title: "otp_verification".tr,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                  alignment: Alignment.center,
+                  child: CustomImageView(
+                    imagePath: ImageConstant.splash,
+                    height: getSize(200),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: MyText(
-                    title: "${"we_sent_otp_to_email".tr}\n${emailController.text}",
-                    fontSize: 14,
-                    color: ColorConstant.textGrey,
-                  ),
+                SizedBox(height: getSize(20)),
+                MyText(
+                  title: "otp_verification".tr,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                MyText(
+                  title: "${"we_sent_otp_to_email".tr}\n${emailController.text}",
+                  fontSize: 14,
+                  color: ColorConstant.textGrey,
                 ),
                 SizedBox(height: getSize(20)),
                 Container(
@@ -502,12 +534,44 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     },
                   ),
                 ),
+                SizedBox(height: getSize(10)),
+                Padding(
+                    padding: getPadding(top: 10, bottom: 10),
+                    child: Obx(() =>
+                    sec.value != 0 ?
+                        Obx(()=> RichText(
+                            text: TextSpan(children: [
+                              TextSpan(text: "msg_didn_t_get_code".tr,style: TextStyle(
+                                color: ColorConstant.black
+                              )),
+                              TextSpan(
+                                  text: "${sec.value} ${"seconds".tr}",
+                                  style: TextStyle(
+                                    color: ColorConstant.primaryPink,
+                                  ))
+                            ]),
+                            textAlign: TextAlign.left)):
+                        GestureDetector(
+                          onTap: () {
+                            onResend(context);
+                          },
+                          child: MyText(title: "resend".tr,
+                                color: ColorConstant.primaryPink,
+                            fontWeight: FontWeight.w600,
+                              ),
+                        )
+                    )),
                 SizedBox(height: getSize(20)),
                 CustomButton(
                   text: "verify".tr,
                   onTap: (){
-                    Get.back();
-                    Constants.isLoggedIn.value = true;
+                    if(_formKey1.currentState!.validate()){
+                      Get.back();
+                      if (Get.isBottomSheetOpen == true) {
+                        Get.back();
+                      }
+                      Constants.isLoggedIn.value = true;
+                    }
                   },
                 ),
               ],

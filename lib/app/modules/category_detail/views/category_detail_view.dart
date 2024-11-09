@@ -17,7 +17,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: getPadding(left: 15),
+          padding:  Utils.checkIfUrduLocale() ? getPadding(right: 15): getPadding(left: 15),
           child: GestureDetector(
             onTap: ()=>  Get.back(),
             child: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),

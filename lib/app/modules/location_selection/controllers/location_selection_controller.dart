@@ -210,78 +210,81 @@ class LocationSelectionController extends GetxController {
           )),
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.4,
-          maxChildSize: 0.5,
-          minChildSize: 0.3,
-          builder: (context, scrollController) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
+        return Padding(
+          padding: getPadding(bottom: MediaQuery.of(ctx).viewInsets.bottom ),
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.4,
+            maxChildSize: 0.5,
+            minChildSize: 0.3,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
                 ),
-              ),
-              padding: getPadding(all: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Search bar and close button
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.search, color: Colors.pink),
-                            hintText: 'lbl_search'.tr,
-                            contentPadding: const EdgeInsets.all(10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide.none,
+                padding: getPadding(all: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Search bar and close button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.search, color: Colors.pink),
+                              hintText: 'lbl_search'.tr,
+                              contentPadding: const EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                              fillColor: Colors.grey[200],
+                              filled: true,
                             ),
-                            fillColor: Colors.grey[200],
-                            filled: true,
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: MyText(
-                          title: 'lbl_close'.tr,
-                          color: ColorConstant.primaryPink,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: MyText(
+                            title: 'lbl_close'.tr,
+                            color: ColorConstant.primaryPink,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  // List of locations
-                  Expanded(
-                      child: Obx(()=> filteredLocations.isEmpty
-                          ? Center(child: MyText(title: 'lbl_no_results'.tr))
-                          : Obx(()=> ListView.builder(
-                        itemCount: filteredLocations.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: (){
-                              selectedRegionModel = cityModel?.data?.branches?[index];
-                              regionController.text = Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
-                              Get.back();
-                            },
-                            title: Text(Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
-                          );
-                        },
-                      ))),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // List of locations
+                    Expanded(
+                        child: Obx(()=> filteredLocations.isEmpty
+                            ? Center(child: MyText(title: 'lbl_no_results'.tr))
+                            : Obx(()=> ListView.builder(
+                          itemCount: filteredLocations.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              onTap: (){
+                                selectedRegionModel = cityModel?.data?.branches?[index];
+                                regionController.text = Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
+                                Get.back();
+                              },
+                              title: Text(Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
+                            );
+                          },
+                        ))),
 
-                  )
-                ],
-              ),
-            );
-          },
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );

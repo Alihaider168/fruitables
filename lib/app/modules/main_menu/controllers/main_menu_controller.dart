@@ -59,50 +59,53 @@ class MainMenuController extends GetxController {
     RxBool isLiked =(fromFav).obs;
 
     Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
-      return Column(
-        mainAxisSize: MainAxisSize.min,
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: getSize(35),
-                  child: Obx(()=> RadioListTile<String>(
-                    title: MyText(title: title,fontSize: 15,fontWeight: FontWeight.w600,),
-                    value: value,
-                    activeColor: ColorConstant.primaryPink,
-                    groupValue: selectedSize.value,
-                    onChanged: (value) {
-                      selectedSize.value = value!;
-                    },
-                    contentPadding: getPadding(right: 4.0), // Smaller padding
-                  ),),
+          Expanded(
+            child: SizedBox(
+              height: getSize(30),
+              child: GestureDetector(
+                onTap: (){
+                  selectedSize.value = value;
+                },
+                child: Row(
+                  children: [
+                    Obx(()=> Radio<String>(
+                      value: value,
+                      activeColor: ColorConstant.primaryPink,
+                      groupValue: selectedSize.value,
+                      onChanged: (value) {
+                        selectedSize.value = value!;
+                      },
+                    ),),
+                    MyText(title: title,fontSize: 15,fontWeight: FontWeight.w600,),
+                  ],
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  MyText(
-                    title: "${'lbl_rs'.tr} ${discountedPrice != 0 ? discountedPrice : price}",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black, // Change this to the desired color
-                  ),
-
-                  // Conditionally show the original price if a discount is present
-                  if (discountedPrice != 0)
-                    MyText(
-                      title: "${'lbl_rs'.tr} ${price}",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                      cut: true, // Strikethrough for original price
-                    ),
-                ],
               )
-            ],
+            ),
           ),
-          SizedBox(height: getSize(2),)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              MyText(
+                title: "${'lbl_rs'.tr} ${discountedPrice != 0 ? discountedPrice : price}",
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Colors.black, // Change this to the desired color
+              ),
+
+              // Conditionally show the original price if a discount is present
+              if (discountedPrice != 0)
+                MyText(
+                  title: "${'lbl_rs'.tr} ${price}",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                  cut: true, // Strikethrough for original price
+                ),
+            ],
+          )
         ],
       );
     }

@@ -120,4 +120,7 @@ final Map<String, String> enUs = {
   "variation": "Variation",
   "select_option": "Please select any one option to continue",
   "items": "Items",
+  "msg_didn_t_get_code": "Resend OTP in ",
+  "resend": "Resend",
+  "seconds": "Sec(s)",
 };

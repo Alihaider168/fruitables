@@ -34,7 +34,7 @@ class _MainMenuViewState extends State<MainMenuView> {
       key: controller.scaffoldKey,
       appBar: AppBar(
         leading: Padding(
-          padding: getPadding(left: 15),
+          padding: Utils.checkIfUrduLocale() ? getPadding(right: 15):getPadding(left: 15),
           child: GestureDetector(
             onTap: ()=>  controller.scaffoldKey.currentState!.openDrawer(),
             child: Icon(Icons.menu,color: ColorConstant.white,),

@@ -16,6 +16,8 @@ import '../modules/favourites/bindings/favourites_binding.dart';
 import '../modules/favourites/views/favourites_view.dart';
 import '../modules/get_started/bindings/get_started_binding.dart';
 import '../modules/get_started/views/get_started_view.dart';
+import '../modules/language_selection/bindings/language_selection_binding.dart';
+import '../modules/language_selection/views/language_selection_view.dart';
 import '../modules/location_selection/bindings/location_selection_binding.dart';
 import '../modules/location_selection/views/location_selection_view.dart';
 import '../modules/main_menu/bindings/main_menu_binding.dart';
@@ -113,6 +115,11 @@ class AppPages {
       name: _Paths.ORDER_DETAIL,
       page: () => const OrderDetailView(),
       binding: OrderDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.LANGUAGE_SELECTION,
+      page: () => const LanguageSelectionView(),
+      binding: LanguageSelectionBinding(),
     ),
   ];
 }

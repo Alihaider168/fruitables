@@ -6,5 +6,6 @@ class ImageConstant {
   static String pickup = '$_imagePath/pickup.svg';
   static String likeInactive = '$_imagePath/like_inactive.svg';
   static String likeActive = '$_imagePath/like_active.svg';
+  static String saudia = '$_imagePath/saudia.png';
 
 }

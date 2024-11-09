@@ -299,7 +299,8 @@ class ItemWidget extends StatelessWidget {
                     height: getSize(120),
                   ),
                   Positioned(
-                    right: 0,
+                    left: Utils.checkIfUrduLocale() ? 0 : null,
+                    right: Utils.checkIfUrduLocale() ? null : 0,
                     bottom: 0,
                     child: GestureDetector(
                       onTap: (){

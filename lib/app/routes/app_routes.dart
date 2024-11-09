@@ -18,6 +18,7 @@ abstract class Routes {
   static const ADD_PAYMENT = _Paths.ADD_PAYMENT;
   static const ORDER_PLACED = _Paths.ORDER_PLACED;
   static const ORDER_DETAIL = _Paths.ORDER_DETAIL;
+  static const LANGUAGE_SELECTION = _Paths.LANGUAGE_SELECTION;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const ADD_PAYMENT = '/add-payment';
   static const ORDER_PLACED = '/order-placed';
   static const ORDER_DETAIL = '/order-detail';
+  static const LANGUAGE_SELECTION = '/language-selection';
 }

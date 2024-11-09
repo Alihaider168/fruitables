@@ -6,7 +6,7 @@ class LanguageUtils {
   // Save language selection
   Future<void> saveLanguage(String language) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_languageKey, language);
+    // await prefs.setString(_languageKey, language);
   }
 
   // Get saved language selection

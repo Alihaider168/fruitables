@@ -22,14 +22,12 @@ class _MainMenuViewState extends State<MainMenuView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Utils.setUIOverlay();
   }
 
   @override
   Widget build(BuildContext context) {
-    Utils.setUIOverlay();
     return Scaffold(
       key: controller.scaffoldKey,
       appBar: AppBar(
@@ -325,7 +323,8 @@ class CustomItemCard extends StatelessWidget {
                   ) : Offstage(),
                   // Add Button
                   Positioned(
-                    right: getSize(5),
+                    left: Utils.checkIfUrduLocale() ? getSize(5) : null,
+                    right: Utils.checkIfUrduLocale() ? null : getSize(5),
                     bottom: getSize(5),
                     child: GestureDetector(
                       onTap: (){

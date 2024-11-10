@@ -38,8 +38,8 @@ class LocationSelectionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getCurrentLocation();
     getRegions();
+    _getCurrentLocation();
     // Add a listener to the search controller
     _searchController.addListener(_filterLocations);
   }

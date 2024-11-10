@@ -90,7 +90,7 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
     // }).catchError((err) async {
     await Future.delayed(splashDuration.seconds);
     Get.offAndToNamed(Routes.LANGUAGE_SELECTION);
-    // Get.offAndToNamed(Routes.USER_DASHBOARD);
+    // Get.offAndToNamed(Routes.MAIN_MENU);
     // });
   }
 }

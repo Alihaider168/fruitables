@@ -7,11 +7,12 @@ import 'dart:async';
 class CategoryDetailController extends GetxController {
   Rx<MenuModel> menuModel = MenuModel().obs;
   var selectedCategoryIndex = 0.obs;
+  bool isRTL = Utils.checkIfUrduLocale(); // Determine RTL once for efficiency
+
 
   MainMenuController mainMenuController = Get.put(MainMenuController());
 
   final ScrollController scrollController = ScrollController();
-  final double itemWidth = 150; // Adjust this based on your item width
 
   bool isInit = false;
 
@@ -31,15 +32,17 @@ class CategoryDetailController extends GetxController {
       if (positions.isNotEmpty) {
         final firstVisible = positions.first.index;
         onVerticalScroll(firstVisible);
+        // centerSelectedHorizontalItem(data['category']);
+        // scrollToCategory
       }
 
       // Initialize if not done yet
       if (!isInit) {
         isInit = true;
         if (data != null && data['category'] != null) {
-          await Future.delayed(100.milliseconds);
+          await Future.delayed(Duration(microseconds: 10));
           scrollToCategory(data['category']);
-          centerSelectedHorizontalItem(data['category']);
+          // centerSelectedHorizontalItem(data['category']);
         }
       }
     });
@@ -51,31 +54,53 @@ class CategoryDetailController extends GetxController {
   }
 
   void scrollToCategory(int index) {
+    double alignment = isRTL? 0.4: 0.33;
 
-    itemScrollController.scrollTo(
-      index: index,
-      duration: const Duration(microseconds: 1),
-      curve: Curves.easeInOut,
-    );
-    selectedCategoryIndex.value = index;
+    print("Scrolling to index: $index with alignment: $alignment (RTL: $isRTL)");
+      itemScrollController.jumpTo(index: index,alignment: alignment);
+    // itemScrollController.scrollTo(
+    //   index: index,
+    //   alignment: alignment,
+    //   duration: const Duration(milliseconds: 50),
+    //   curve: Curves.easeInOut,
+    // );
   }
 
-
   void centerSelectedHorizontalItem(int index) {
-    horizontalItemScrollController.scrollTo(
-      index: index,
-      alignment: Utils.checkIfUrduLocale()? 0.7 : 0.3, // Center alignment for the selected item
-      duration: Duration(microseconds: 1), // Smooth transition duration
-      curve: Curves.easeInOut,
-    );
+    double alignment = isRTL? 0.4:0.33;
+
+    print("Centering to index: $index with alignment: $alignment (RTL: $isRTL)");
+    horizontalItemScrollController.jumpTo(index: index,alignment: alignment);
+    // horizontalItemScrollController.scrollTo(
+    //   index: index,
+    //   alignment: alignment,
+    //   duration: Duration(milliseconds: 50),
+    //   curve: Curves.easeInOut,
+    // );
+    selectedCategoryIndex.value = index;
   }
 
   void onVerticalScroll(int firstVisibleIndex) {
     if (selectedCategoryIndex.value != firstVisibleIndex) {
-      debounce(selectedCategoryIndex, (_) {
-        selectedCategoryIndex.value = firstVisibleIndex;
-      }, time: Duration(microseconds: 1));
+      selectedCategoryIndex.value = firstVisibleIndex;
     }
+  }
+
+  onTapItemChange(int index){
+    double alignment = isRTL? 0.4:0.33;
+    horizontalItemScrollController.scrollTo(
+      index: index,
+      alignment: alignment,
+      duration: Duration(milliseconds: 50),
+      curve: Curves.easeInOut,
+    );
+    itemScrollController.scrollTo(
+      index: index,
+      alignment: alignment,
+      duration: const Duration(milliseconds: 50),
+      curve: Curves.easeInOut,
+    );
+    selectedCategoryIndex.value = index;
   }
 }
 

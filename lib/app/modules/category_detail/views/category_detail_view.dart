@@ -81,13 +81,9 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                     final item = controller.menuModel.value.data!.categories![index];
                     return Obx(() => GestureDetector(
                       onTap: () {
-                        controller.horizontalItemScrollController.scrollTo(
-                          index: index,
-                          alignment: Utils.checkIfUrduLocale()? 0.7 : 0.3, // Center the selected item
-                          duration: Duration(milliseconds: 1),
-                          curve: Curves.easeInOut,
-                        );
-                        controller.scrollToCategory(index);
+                        controller.onTapItemChange(index);
+                        // controller.centerSelectedHorizontalItem(index);
+                        // controller.scrollToCategory(index);
                       },
                       child: Container(
                         padding: getPadding(left: 15, right: 15, top: 10, bottom: 10),
@@ -118,6 +114,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                 itemCount: controller.menuModel.value.data?.categories?.length??0,
                 itemScrollController: controller.itemScrollController,
                 itemPositionsListener: controller.itemPositionsListener,
+                // reverse: controller.isRTL,
                 itemBuilder: (context, index) {
                   final category = controller.menuModel.value.data?.categories![index];
                   final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId);

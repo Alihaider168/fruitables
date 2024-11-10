@@ -76,7 +76,8 @@ class _MainMenuViewState extends State<MainMenuView> {
         ],
       ),
       drawer: CustomDrawer(),
-      body: Obx(()=> controller.isLoading.value ? Center(
+      body:
+      Obx(()=> controller.isLoading.value ? Center(
         child: CircularProgressIndicator(),
       ):
       Padding(
@@ -265,7 +266,8 @@ class _MainMenuViewState extends State<MainMenuView> {
             ],
           ),
         )),
-      )),
+      ),
+      ),
       bottomNavigationBar: CartBottom(),
     );
   }

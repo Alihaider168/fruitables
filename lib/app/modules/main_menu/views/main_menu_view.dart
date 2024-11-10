@@ -76,7 +76,10 @@ class _MainMenuViewState extends State<MainMenuView> {
         ],
       ),
       drawer: CustomDrawer(),
-      body:Padding(
+      body: Obx(()=> controller.isLoading.value ? Center(
+        child: CircularProgressIndicator(),
+      ):
+      Padding(
         padding: getPadding(bottom: 16),
         child: Obx(()=> CustomCollapsableWidget(
           banners: controller.menuModel.value.data?.banners??[],
@@ -94,7 +97,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                 shrinkWrap:true,
                 itemCount: !controller.showAllCategories.value ?
 
-              (  (controller.menuModel.value.data?.categories?.length??0) >8
+                (  (controller.menuModel.value.data?.categories?.length??0) >8
                     ? 8 : (controller.menuModel.value.data?.categories?.length??0)) : (controller.menuModel.value.data?.categories??[]).length,
                 // itemCount: (controller.menuModel.value.data?.categories??[]).length,
                 itemBuilder: (context, index) {
@@ -133,17 +136,18 @@ class _MainMenuViewState extends State<MainMenuView> {
                   controller.showAllCategories.value = !controller.showAllCategories.value;
                 },
                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
-                    SizedBox(
-                      width: getSize(5),
-                    ),
                     MyText(
                       title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
+                    SizedBox(
+                      width: getSize(5),
+                    ),
+                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+
                   ],
                 ),
               )
@@ -158,7 +162,7 @@ class _MainMenuViewState extends State<MainMenuView> {
 
               ListView.separated(
                 itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
-                  ? 5 : (controller.menuModel.value.data?.categories?.length??0),
+                    ? 5 : (controller.menuModel.value.data?.categories?.length??0),
                 separatorBuilder: (_,__){
                   return SizedBox(height: getSize(20),);
                 },
@@ -166,63 +170,63 @@ class _MainMenuViewState extends State<MainMenuView> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   final category = controller.menuModel.value.data?.categories![index];
-                      final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId).toList();
+                  final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId).toList();
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Category Header
-                          Container(
-                            padding: getPadding(all: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MyText(
-                                  title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
-                                  fontSize: 18,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category Header
+                      Container(
+                        padding: getPadding(all: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MyText(
+                              title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+
+                            Visibility(
+                              visible: items.length>4,
+                              child: GestureDetector(
+                                onTap:(){
+                                  Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                                },
+                                child: MyText(
+                                  title: 'lbl_view_all'.tr,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
+                                  color: ColorConstant.black.withOpacity(.6),
                                 ),
-
-                                Visibility(
-                                  visible: items.length>4,
-                                  child: GestureDetector(
-                                    onTap:(){
-                                      Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
-                                    },
-                                    child: MyText(
-                                      title: 'lbl_view_all'.tr,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      under: true,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            height: getSize(180),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: items.length>4 ? 4 : items.length,
-                              itemBuilder: (context, i) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: CustomItemCard(item: items[i]),
-                                );
-                              },
-                            ),
-                          ),
-                          // Items of the category
-                          // SingleChildScrollView(
-                          //   a,
-                          //   child: Row(
-                          //     children: [...items.map((item) => CustomItemCard(item: item))],
-                          //   ),
-                          // ),
-                          // ...items.map((item) => CustomItemCard(item: item)),
-                        ],
-                      );
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: getSize(180),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: items.length>4 ? 4 : items.length,
+                          itemBuilder: (context, i) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: CustomItemCard(item: items[i]),
+                            );
+                          },
+                        ),
+                      ),
+                      // Items of the category
+                      // SingleChildScrollView(
+                      //   a,
+                      //   child: Row(
+                      //     children: [...items.map((item) => CustomItemCard(item: item))],
+                      //   ),
+                      // ),
+                      // ...items.map((item) => CustomItemCard(item: item)),
+                    ],
+                  );
                 },
               ),
 
@@ -261,7 +265,7 @@ class _MainMenuViewState extends State<MainMenuView> {
             ],
           ),
         )),
-      ),
+      )),
       bottomNavigationBar: CartBottom(),
     );
   }
@@ -284,24 +288,19 @@ class CustomItemCard extends StatelessWidget {
         controller.showAddToCartItemSheet(context,item);
       },
       child: SizedBox(
-        width: getSize(180),
+        width: getSize(140),
         child: Padding(
-          padding: getPadding(top: 10,right: 10,left: 10),
+          padding: getPadding(top: 5,right: 3,left: 3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Discount Badge
-
-              SizedBox(height: 4),
-
-              // Product Image
               Stack(
                 children: [
 
                   CustomImageView(
                     url: item.image,
-                    height: getSize(155),
-                    width: getSize(180),
+                    height: getSize(100),
+                    width: getSize(130),
                     fit: BoxFit.cover,
                   ),
                   controller.checkForDiscountedPercentage(item)!= 0 ?Align(
@@ -355,54 +354,56 @@ class CustomItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              // SizedBox(height: getSize(10)),
+              SizedBox(height: getSize(5)),
 
-              // // Pricing
-              // RichText(
-              //   text: TextSpan(
-              //     children: [
-              //       // Check if the prefix 'From' should be added
-              //       if (controller.checkForMultipleValues(item))
-              //         TextSpan(
-              //           text: '${'lbl_from'.tr} ', // Prefix text
-              //           style: TextStyle(
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.w700,
-              //             color: Colors.black, // Change this to the desired color
-              //           ),
-              //         ),
-              //
-              //       // Display the price
-              //       TextSpan(
-              //         text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
-              //         style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.w700,
-              //           color: Colors.black, // Change this to the desired color
-              //         ),
-              //       ),
-              //
-              //       // Conditionally show the original price if a discount is present
-              //       if (controller.checkForDiscountedPrice(item) != 0)
-              //         TextSpan(
-              //           text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
-              //           style: TextStyle(
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.w700,
-              //             color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-              //             decoration: TextDecoration.lineThrough, // Strikethrough for original price
-              //           ),
-              //         ),
-              //     ],
-              //   ),
-              // ),
-              // MyText(
-              //   title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-              //   fontSize: 18,
-              //   fontWeight: FontWeight.w700,
-              //   line: 2,
-              //   overflow: TextOverflow.ellipsis,
-              // ),
+              // Pricing
+              RichText(
+                text: TextSpan(
+                  children: [
+                    // Check if the prefix 'From' should be added
+                    if (controller.checkForMultipleValues(item))
+                      TextSpan(
+                        text: '${'lbl_from'.tr} ', // Prefix text
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: controller.checkForMultipleValues(item) ? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
+                        ),
+                      ),
+
+                    // Display the price
+                    TextSpan(
+                      text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: controller.checkForDiscountedPrice(item) != 0? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
+                      ),
+                    ),
+
+                    // Conditionally show the original price if a discount is present
+                    if (controller.checkForDiscountedPrice(item) != 0)
+                      TextSpan(
+                        text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                          decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              SizedBox(height: getSize(3),),
+              MyText(
+                title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: ColorConstant.textGrey,
+                line: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
 
 
             ],

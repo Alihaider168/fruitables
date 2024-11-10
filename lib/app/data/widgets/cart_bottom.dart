@@ -58,7 +58,7 @@ class CartBottom extends StatelessWidget{
               children: [
                 Container(
                   padding: getPadding(all: 8),
-                  margin: getMargin(right: 10),
+                  margin: Utils.checkIfUrduLocale() ? getMargin(left: 15) : getMargin(right: 10),
                   decoration: BoxDecoration(
                       color: ColorConstant.white,
                       shape: BoxShape.circle

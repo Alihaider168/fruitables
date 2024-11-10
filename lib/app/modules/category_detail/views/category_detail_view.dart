@@ -83,7 +83,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                       onTap: () {
                         controller.horizontalItemScrollController.scrollTo(
                           index: index,
-                          alignment: 0.3, // Center the selected item
+                          alignment: Utils.checkIfUrduLocale()? 0.7 : 0.3, // Center the selected item
                           duration: Duration(milliseconds: 1),
                           curve: Curves.easeInOut,
                         );
@@ -196,8 +196,10 @@ class ItemWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: ColorConstant.primaryPink,
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(getSize(50)),
-                              bottomRight: Radius.circular(getSize(50)),
+                              topRight: Radius.circular(getSize(Utils.checkIfUrduLocale() ? 0 :50)),
+                              bottomRight: Radius.circular(getSize(Utils.checkIfUrduLocale() ? 0 :50)),
+                              topLeft: Radius.circular(getSize(!Utils.checkIfUrduLocale() ? 0 :50)),
+                              bottomLeft: Radius.circular(getSize(!Utils.checkIfUrduLocale() ? 0 :50))
                             )
                         ),
                         alignment: Alignment.center,

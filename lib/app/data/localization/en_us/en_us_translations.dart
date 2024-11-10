@@ -123,4 +123,5 @@ final Map<String, String> enUs = {
   "msg_didn_t_get_code": "Resend OTP in ",
   "resend": "Resend",
   "seconds": "Sec(s)",
+  "msg_server_not_responding": "Server is not responding",
 };

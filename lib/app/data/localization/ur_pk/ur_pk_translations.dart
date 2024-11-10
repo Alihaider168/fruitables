@@ -105,5 +105,21 @@ final Map<String, String> urPk = {
   "ok": "ٹھیک ہے",
   "confirm_pin_location": "پن کی جگہ کی تصدیق کریں",
   "looks_like": "ایسا لگتا ہے کہ آپ کا منتخب کردہ مقام منتخب شدہ علاقے سے باہر ہے",
-  "to_change_area": "اپنا علاقہ تبدیل کرنے کے لئے براہ کرم مین مینو سے کریں"
+  "to_change_area": "اپنا علاقہ تبدیل کرنے کے لئے براہ کرم مین مینو سے کریں",
+  "email_cannot_be_empty": "ای میل خالی نہیں ہو سکتی",
+  "invalid_email": "غلط ای میل",
+  "exceeding_character_limit": "حد سے تجاوز کر گیا، براہ کرم دوسرا آزمائیں",
+  "field": "فیلڈ",
+  "cannot_be_empty": "خالی نہیں ہو سکتی",
+  "is_required": "ضروری ہے",
+  "you_will_receive_6_digit_otp": "آپ کو ای میل کی توثیق کے لیے 6 ہندسوں کا OTP ملے گا",
+  "otp_verification": "OTP کی توثیق",
+  "we_sent_otp_to_email": "ہم نے آپ کی ای میل پر OTP بھیج دیا ہے",
+  "variation": "تغیر",
+  "select_option": "جاری رکھنے کے لیے براہ کرم کوئی ایک آپشن منتخب کریں",
+  "items": "اشیاء",
+  "msg_didn_t_get_code": "OTP دوبارہ بھیجیں ",
+  "resend": "دوبارہ بھیجیں",
+  "seconds": "سیکنڈ(s)",
+  "msg_server_not_responding": "سرور جواب نہیں دے رہا"
 };

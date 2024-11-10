@@ -14,6 +14,8 @@ class MainMenuController extends GetxController {
 
   Cart cart = Cart();
 
+  RxBool isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -32,13 +34,16 @@ class MainMenuController extends GetxController {
 
   Future<dynamic> getMenu() async {
     Utils.check().then((value) async {
+      // isLoading.value = true;
       if (value) {
         await BaseClient.get(ApiUtils.getMenu,
           onSuccess: (response) async {
             menuModel.value = MenuModel.fromJson(response.data);
+            isLoading.value = false;
             return true;
           },
           onError: (error) {
+            isLoading.value = false;
             BaseClient.handleApiError(error);
             update();
             return false;

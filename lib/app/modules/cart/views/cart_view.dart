@@ -115,7 +115,6 @@ class _CartViewState extends State<CartView> {
             child: MyText(title: "lbl_change".tr,
               color: ColorConstant.primaryPink,
               fontSize: 14,
-              under: true,
             ),
           ),
         ],

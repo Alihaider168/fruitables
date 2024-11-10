@@ -64,7 +64,7 @@ class CategoryDetailController extends GetxController {
   void centerSelectedHorizontalItem(int index) {
     horizontalItemScrollController.scrollTo(
       index: index,
-      alignment: 0.3, // Center alignment for the selected item
+      alignment: Utils.checkIfUrduLocale()? 0.7 : 0.3, // Center alignment for the selected item
       duration: Duration(microseconds: 1), // Smooth transition duration
       curve: Curves.easeInOut,
     );
@@ -72,7 +72,9 @@ class CategoryDetailController extends GetxController {
 
   void onVerticalScroll(int firstVisibleIndex) {
     if (selectedCategoryIndex.value != firstVisibleIndex) {
-      selectedCategoryIndex.value = firstVisibleIndex;
+      debounce(selectedCategoryIndex, (_) {
+        selectedCategoryIndex.value = firstVisibleIndex;
+      }, time: Duration(microseconds: 1));
     }
   }
 }

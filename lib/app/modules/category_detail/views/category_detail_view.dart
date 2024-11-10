@@ -72,7 +72,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
               color: ColorConstant.white,
               child: Container(
                 height: getSize(47),
-                padding: getPadding(bottom: 6,left: 5,right: 5),
+                padding: getPadding(bottom: 5,left: 5,right: 5),
                 child:ScrollablePositionedList.builder(
                   itemScrollController: controller.horizontalItemScrollController,
                   scrollDirection: Axis.horizontal,
@@ -108,7 +108,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                 ),
               ),
             ) : Offstage()),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
             Expanded(
               child: Obx(()=> ScrollablePositionedList.builder(
                 itemCount: controller.menuModel.value.data?.categories?.length??0,
@@ -124,7 +124,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                     children: [
                       // Category Header
                       Container(
-                        padding: getPadding(all: 16),
+                        padding: getPadding(right: 16,left: 16,bottom: 16),
                         child: MyText(
                           title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
                           // style: const TextStyle(

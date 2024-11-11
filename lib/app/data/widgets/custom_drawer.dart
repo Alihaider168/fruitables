@@ -106,37 +106,47 @@ class _CustomDrawerState extends State<CustomDrawer> {
           !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.loyalty,title: "lbl_loyalty_points".tr,showPrice: true,price: 0.00),
 
           // customTile(icon: Icons.language,title: "lbl_change_language".tr,showArrow: true),
-          !Constants.isLoggedIn.value ? Offstage() : Container(
-            padding: getPadding(bottom: 10,left: 15,right: 15,top: 10),
-            child: Row(
-              children: [
-                Icon(Icons.language),
-                SizedBox(width: getSize(15),),
-                MyText(
-                  title: "lbl_change_language".tr,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
-                Spacer(),
-                Obx(() => DropdownButton<String>(
-                  value: selectedLanguage.value,
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      selectedLanguage.value = newValue;
-                      _changeLanguage(newValue);
-                    }
-                  },
-                  items: <String>['English', 'اردو']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: MyText(title: value),
-                    );
-                  }).toList(),
-                )),
-              ],
-            ),
+          !Constants.isLoggedIn.value ? Offstage() :
+          customTile(
+              icon: Icons.language,
+              title: "lbl_change_language".tr,
+              showArrow: true,
+              onTap: (){
+                Get.back();
+                Get.toNamed(Routes.LANGUAGE_SELECTION,arguments: {"from_menu" : true});
+              }
           ),
+          // Container(
+          //   padding: getPadding(bottom: 10,left: 15,right: 15,top: 10),
+          //   child: Row(
+          //     children: [
+          //       Icon(Icons.language),
+          //       SizedBox(width: getSize(15),),
+          //       MyText(
+          //         title: "lbl_change_language".tr,
+          //         fontSize: 15,
+          //         fontWeight: FontWeight.w700,
+          //       ),
+          //       Spacer(),
+          //       // Obx(() => DropdownButton<String>(
+          //       //   value: selectedLanguage.value,
+          //       //   onChanged: (String? newValue) {
+          //       //     if (newValue != null) {
+          //       //       selectedLanguage.value = newValue;
+          //       //       _changeLanguage(newValue);
+          //       //     }
+          //       //   },
+          //       //   items: <String>['English', 'اردو']
+          //       //       .map<DropdownMenuItem<String>>((String value) {
+          //       //     return DropdownMenuItem<String>(
+          //       //       value: value,
+          //       //       child: MyText(title: value),
+          //       //     );
+          //       //   }).toList(),
+          //       // )),
+          //     ],
+          //   ),
+          // ),
 
           // Menu Items
           !Constants.isLoggedIn.value ? Offstage() :  customTile(

@@ -405,7 +405,7 @@ class CustomItemCard extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ColorConstant.textGrey,
-                line: 2,
+                line: 1,
                 overflow: TextOverflow.ellipsis,
               ),
 

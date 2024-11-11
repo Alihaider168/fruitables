@@ -115,8 +115,12 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                 SizedBox(height: getSize(20),),
                 CustomButton(
                   onTap: (){
-                    Get.offAllNamed(Routes.LOCATION_SELECTION,);
                     Constants.isDelivery.value = (controller.selectedPreference.value == 0);
+                    if(controller.fromMenu){
+                      Get.back();
+                    }else{
+                      Get.offAllNamed(Routes.LOCATION_SELECTION,);
+                    }
                     if (controller.selectedLanguage.value == 1) {
                       Get.updateLocale(const Locale('en', 'US'));
                     } else if (controller.selectedLanguage.value == 0) {
@@ -170,8 +174,8 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
               image == null
                   ? const Offstage()
                   : Container(
-                decoration: const BoxDecoration(
-                    color: Color(0xFFf0f8ff),
+                decoration: BoxDecoration(
+                    color: ColorConstant.grayBackground,
                     shape: BoxShape.circle
                 ),
                 margin: getMargin(right: 15),

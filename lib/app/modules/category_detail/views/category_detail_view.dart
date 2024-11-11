@@ -211,6 +211,8 @@ class ItemWidget extends StatelessWidget {
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
                     fontSize: 15,
+                    line: 1,
+                    overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w700,
                   ),
                   SizedBox(height: getSize(3),),
@@ -320,10 +322,12 @@ class ItemWidget extends StatelessWidget {
                             shape: BoxShape.circle
                         ),
                         alignment: Alignment.center,
-                        child: Obx(()=> quantity.value == 0
-                            ? Icon(Icons.add,color: ColorConstant.white,)
-                            : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
-                        ),
+                        child:
+                        // Obx(()=> quantity.value == 0
+                        //     ?
+                        Icon(Icons.add,color: ColorConstant.white,)
+                            // : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
+                        // ),
                       ),
                     ),
                   )

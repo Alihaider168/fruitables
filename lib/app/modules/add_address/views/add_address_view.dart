@@ -38,7 +38,7 @@ class AddAddressView extends GetView<AddAddressController> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(getSize(5))
                     ),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: Icon(Icons.arrow_back_ios,size: getSize(18),),
                   ),
                 )),
 
@@ -66,11 +66,11 @@ class AddAddressView extends GetView<AddAddressController> {
                           children: [
                             MyText(
                               title: "locate_me".tr,
-                              fontSize: 16,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                             ),
                             SizedBox(width: getSize(5),),
-                            Icon(Icons.my_location)
+                            Icon(Icons.my_location,size: getSize(18),)
                           ],
                         ),
                       ),

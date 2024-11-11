@@ -301,31 +301,33 @@ class CustomItemCard extends StatelessWidget {
                 height: getSize(130),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(getSize(10)),
-                  color: ColorConstant.grayBackground.withOpacity(.5),
+                  // color: ColorConstant.grayBackground.withOpacity(.5),
                   border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                 ),
                 padding: getPadding(all: 5),
                 child: Stack(
                   children: [
 
-                    CustomImageView(
-                      url: item.image,
-                      height: getSize(130),
-                      width: getSize(130),
-                      fit: BoxFit.contain,
+                    Center(
+                      child: CustomImageView(
+                        url: item.image,
+                        height: getSize(110),
+                        width: getSize(110),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     controller.checkForDiscountedPercentage(item)!= 0 ?Align(
                       alignment: Alignment.topLeft,
                       child: Container(
                         // margin: getMargin(left: 5,top: 5),
-                        padding: getPadding(left: 10,right: 10,top: 4,bottom: 4),
+                        padding: getPadding(left: 5,right: 5,top: 3,bottom: 3),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: MyText(
                           title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                          fontSize: 12,
+                          fontSize: 8,
                           fontWeight: FontWeight.w700,
                           color: ColorConstant.white,
                         ),
@@ -348,8 +350,8 @@ class CustomItemCard extends StatelessWidget {
 
                         },
                         child: Container(
-                          width: getSize(35),
-                          height: getSize(35),
+                          width: getSize(28),
+                          height: getSize(28),
                           decoration: BoxDecoration(
                               color: ColorConstant.white,
                               shape: BoxShape.circle,

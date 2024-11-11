@@ -84,6 +84,7 @@ class LocationSelectionController extends GetxController {
 
   // Move the camera to the current location
   moveToCurrentLocation(){
+
     mapController.animateCamera(CameraUpdate.newLatLng(currentPosition));
   }
 

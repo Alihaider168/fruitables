@@ -123,10 +123,11 @@ final Map<String, String> enUs = {
   "resend": "Resend",
   "seconds": "Sec(s)",
   "msg_server_not_responding": "Server is not responding",
-
   "which_outlet_would_you_pickup_from":"Which outlet would you like to pick-up from?",
   "pickup_from":"Pick-up From",
   "show_on_map":"Show On Map",
   "estimated_pickup_time": "Estimated Pickup Time",
+
   "locate_me": "Locate Me",
+  "branch": "Branch",
 };

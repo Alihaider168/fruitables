@@ -29,17 +29,17 @@ class AddAddressView extends GetView<AddAddressController> {
               myLocationEnabled: false,
             ),),
             Positioned(
-              top: 50,left: 16,
+                top: 50,left: Utils.checkIfUrduLocale() ? null : 16,right: Utils.checkIfUrduLocale() ? 16 : null,
                 child: GestureDetector(
                   onTap: ()=> Get.back(),
                   child: Container(
-                    padding: getPadding(left: 12,right: 6,top: 12,bottom: 12),
-                                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(getSize(5))
-                                ),
+                    padding: getPadding(left: Utils.checkIfUrduLocale() ?4: 12,right: Utils.checkIfUrduLocale() ? 12: 4,top: 12,bottom: 12),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(getSize(5))
+                    ),
                     child: Icon(Icons.arrow_back_ios),
-                              ),
+                  ),
                 )),
 
             Positioned(

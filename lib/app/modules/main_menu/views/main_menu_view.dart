@@ -206,7 +206,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                         ),
                       ),
                       Container(
-                        height: getSize(180),
+                        height: getSize(182),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: items.length>4 ? 4 : items.length,
@@ -296,69 +296,79 @@ class CustomItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
+              Container(
+                width: getSize(140),
+                height: getSize(130),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(getSize(10)),
+                  color: ColorConstant.grayBackground.withOpacity(.5),
+                  border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
+                ),
+                padding: getPadding(all: 5),
+                child: Stack(
+                  children: [
 
-                  CustomImageView(
-                    url: item.image,
-                    height: getSize(100),
-                    width: getSize(130),
-                    fit: BoxFit.cover,
-                  ),
-                  controller.checkForDiscountedPercentage(item)!= 0 ?Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      margin: getMargin(left: 5,top: 5),
-                      padding: getPadding(left: 10,right: 10,top: 4,bottom: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: MyText(
-                        title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: ColorConstant.white,
-                      ),
+                    CustomImageView(
+                      url: item.image,
+                      height: getSize(130),
+                      width: getSize(130),
+                      fit: BoxFit.contain,
                     ),
-                  ) : Offstage(),
-                  // Add Button
-                  Positioned(
-                    left: Utils.checkIfUrduLocale() ? getSize(5) : null,
-                    right: Utils.checkIfUrduLocale() ? null : getSize(5),
-                    bottom: getSize(5),
-                    child: GestureDetector(
-                      onTap: (){
-                        if(!controller.checkForMultipleValues(item)){
-                          controller.addItemsToCart(item,size: "small");
-                          quantity.value += 1;
-                          controller.bottomBar.value = true;
-                        }else{
-                          controller.showAddToCartItemSheet(context, item);
-                        }
-
-                      },
+                    controller.checkForDiscountedPercentage(item)!= 0 ?Align(
+                      alignment: Alignment.topLeft,
                       child: Container(
-                        width: getSize(35),
-                        height: getSize(35),
+                        // margin: getMargin(left: 5,top: 5),
+                        padding: getPadding(left: 10,right: 10,top: 4,bottom: 4),
                         decoration: BoxDecoration(
-                            color: ColorConstant.white,
-                            shape: BoxShape.circle,
-                          border: Border.all(color: ColorConstant.grayBorder)
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        alignment: Alignment.center,
-                        child:
-                        // Obx(()=> quantity.value == 0
-                        //     ?
-                        Icon(Icons.add,color: ColorConstant.grayBorder,)
-                            // : MyText(title: "${quantity.value}",color: ColorConstant.grayBorder,fontWeight: FontWeight.w600,)
-                        // ),
+                        child: MyText(
+                          title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: ColorConstant.white,
+                        ),
                       ),
-                    )
-                  ),
-                ],
+                    ) : Offstage(),
+                    // Add Button
+                    Positioned(
+                      left: Utils.checkIfUrduLocale() ? getSize(5) : null,
+                      right: Utils.checkIfUrduLocale() ? null : getSize(5),
+                      bottom: getSize(5),
+                      child: GestureDetector(
+                        onTap: (){
+                          if(!controller.checkForMultipleValues(item)){
+                            controller.addItemsToCart(item,size: "small");
+                            quantity.value += 1;
+                            controller.bottomBar.value = true;
+                          }else{
+                            controller.showAddToCartItemSheet(context, item);
+                          }
+
+                        },
+                        child: Container(
+                          width: getSize(35),
+                          height: getSize(35),
+                          decoration: BoxDecoration(
+                              color: ColorConstant.white,
+                              shape: BoxShape.circle,
+                            border: Border.all(color: ColorConstant.grayBorder)
+                          ),
+                          alignment: Alignment.center,
+                          child:
+                          // Obx(()=> quantity.value == 0
+                          //     ?
+                          Icon(Icons.add,color: ColorConstant.grayBorder,)
+                              // : MyText(title: "${quantity.value}",color: ColorConstant.grayBorder,fontWeight: FontWeight.w600,)
+                          // ),
+                        ),
+                      )
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: getSize(5)),
+              SizedBox(height: getSize(3)),
 
               // Pricing
               RichText(
@@ -399,7 +409,7 @@ class CustomItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: getSize(3),),
+              SizedBox(height: getSize(2),),
               MyText(
                 title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
                 fontSize: 14,

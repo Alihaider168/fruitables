@@ -126,4 +126,6 @@ final Map<String, String> urPk = {
   "pickup_from": "حاصل کریں",
   "show_on_map": "نقشے پر دکھائیں",
   "estimated_pickup_time": "اندازاً حاصل کرنے کا وقت",
+  "locate_me": "مجھے تلاش کریں",
+  "branch": "برانچ"
 };

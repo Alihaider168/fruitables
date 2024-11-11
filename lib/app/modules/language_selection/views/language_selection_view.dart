@@ -120,7 +120,6 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                     if(controller.fromMenu){
                       Get.back();
                     }else{
-                      Get.delete<LocationSelectionController>();
                       Get.toNamed(Routes.LOCATION_SELECTION,);
                     }
                     if (controller.selectedLanguage.value == 1) {

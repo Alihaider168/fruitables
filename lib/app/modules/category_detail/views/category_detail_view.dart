@@ -219,7 +219,9 @@ class ItemWidget extends StatelessWidget {
                   MyText(
                     title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    line: 2,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w600,
                     color: ColorConstant.textGrey,
                   ),
                   SizedBox(height: getSize(10),),

@@ -87,7 +87,7 @@ class BaseClient {
         if (error.response?.statusCode == 401) {
           // await _appPreferences.getAppPreferences().clearPreference();
           _handleSessionExpiry();
-          gttt.Get.offAllNamed(Routes.GET_STARTED);
+          // gttt.Get.offAllNamed(Routes.GET_STARTED);
           return;
         }
 
@@ -193,7 +193,7 @@ class BaseClient {
       if (error.response?.statusCode == 401) {
         // await _appPreferences.getAppPreferences().clearPreference();
         _handleSessionExpiry();
-        gttt.Get.offAllNamed(Routes.GET_STARTED);
+        // gttt.Get.offAllNamed(Routes.GET_STARTED);
 
         return;
       }
@@ -279,7 +279,7 @@ class BaseClient {
       if (error.response?.statusCode == 401) {
         // await _appPreferences.getAppPreferences().clearPreference();
         _handleSessionExpiry();
-        gttt.Get.offAllNamed(Routes.GET_STARTED);
+        // gttt.Get.offAllNamed(Routes.GET_STARTED);
         return;
       }
       if (error.response!.data['message'].toLowerCase().contains('socket')) {
@@ -302,7 +302,7 @@ class BaseClient {
       if (error.response?.statusCode == 401) {
         // await _appPreferences.getAppPreferences().clearPreference();
         _handleSessionExpiry();
-        gttt.Get.offAllNamed(Routes.GET_STARTED);
+        // gttt.Get.offAllNamed(Routes.GET_STARTED);
         return;
       }
 
@@ -400,7 +400,7 @@ class BaseClient {
       if (error.response?.statusCode == 401) {
         // await _appPreferences.getAppPreferences().clearPreference();
         _handleSessionExpiry();
-        gttt.Get.offAllNamed(Routes.GET_STARTED);
+        // gttt.Get.offAllNamed(Routes.GET_STARTED);
         return;
       }
       // check if the error is 500 (server problem)
@@ -493,7 +493,7 @@ class BaseClient {
       if (error.response?.statusCode == 401) {
         // await _appPreferences.getAppPreferences().clearPreference();
         _handleSessionExpiry();
-        gttt.Get.offAllNamed(Routes.GET_STARTED);
+        // gttt.Get.offAllNamed(Routes.GET_STARTED);
 
         return;
       }

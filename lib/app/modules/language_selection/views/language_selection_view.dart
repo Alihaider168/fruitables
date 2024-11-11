@@ -33,24 +33,25 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                 const MyText(title: "Welcome to Nahdi",fontWeight: FontWeight.bold,fontSize: 20,),
                 const MyText(title: "مرحبًا بكم في النهدي",fontWeight: FontWeight.bold,fontSize: 20,),
                 SizedBox(height: getSize(15),),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyText(title: "Country",fontWeight: FontWeight.bold,fontSize: 15,),
-                    MyText(title: "دولة",fontWeight: FontWeight.bold,fontSize: 15,),
-                  ],
-                ),
-                SizedBox(height: getSize(8),),
-                Obx(()=> mainWidget(
-                  isSelected: controller.selectedCountry.value == 0,
-                  title: "Saudi Arabia - السعودية",
-                  image: ImageConstant.saudia,
-                  index: 0,
-                  groupValue: controller.selectedCountry.value,
-                  onTap: (){
-                    controller.selectedCountry.value = 0;
-                  }
-                )),
+                // Spacer(),
+                // const Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     MyText(title: "Country",fontWeight: FontWeight.bold,fontSize: 15,),
+                //     MyText(title: "دولة",fontWeight: FontWeight.bold,fontSize: 15,),
+                //   ],
+                // ),
+                // SizedBox(height: getSize(8),),
+                // Obx(()=> mainWidget(
+                //   isSelected: controller.selectedCountry.value == 0,
+                //   title: "Saudi Arabia - السعودية",
+                //   image: ImageConstant.saudia,
+                //   index: 0,
+                //   groupValue: controller.selectedCountry.value,
+                //   onTap: (){
+                //     controller.selectedCountry.value = 0;
+                //   }
+                // )),
                 SizedBox(height: getSize(20),),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,10 +80,43 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                       controller.selectedLanguage.value = 1;
                     }
                 )),
-                const Spacer(),
+                SizedBox(height: getSize(20),),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyText(title: "Preference",fontWeight: FontWeight.bold,fontSize: 15,),
+                    MyText(title: "ترجیح",fontWeight: FontWeight.bold,fontSize: 15,),
+                  ],
+                ),
+                SizedBox(height: getSize(8),),
+                Obx(()=> mainWidget(
+                  image: ImageConstant.delivery,
+                    isSelected: controller.selectedPreference.value == 0,
+                    title: "Delivery - ترسیل",
+                    index: 0,
+                    groupValue: controller.selectedPreference.value,
+                    onTap: (){
+                      controller.selectedPreference.value = 0;
+                    }
+                )),
+                SizedBox(height: getSize(10),),
+                Obx(()=> mainWidget(
+                  image: ImageConstant.pickup,
+                    isSelected: controller.selectedPreference.value == 1,
+                    title: "Pickup - پک اپ",
+                    index: 1,
+                    groupValue: controller.selectedPreference.value,
+                    onTap: (){
+                      controller.selectedPreference.value = 1;
+                    }
+                )),
+                Spacer(),
+
+                SizedBox(height: getSize(20),),
                 CustomButton(
                   onTap: (){
-                    Get.offAllNamed(Routes.LOCATION_SELECTION);
+                    Get.offAllNamed(Routes.LOCATION_SELECTION,);
+                    Constants.isDelivery.value = (controller.selectedPreference.value == 0);
                     if (controller.selectedLanguage.value == 1) {
                       Get.updateLocale(const Locale('en', 'US'));
                     } else if (controller.selectedLanguage.value == 0) {
@@ -135,12 +169,26 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
               ),
               image == null
                   ? const Offstage()
-                  : CustomImageView(
-                imagePath: ImageConstant.saudia,
-                height: getSize(30),
-                fit: BoxFit.fitHeight,
-                margin: getMargin(right: 10),
+                  : Container(
+                decoration: const BoxDecoration(
+                    color: Color(0xFFf0f8ff),
+                    shape: BoxShape.circle
+                ),
+                margin: getMargin(right: 15),
+                padding: getPadding(all: 5),
+                child: CustomImageView(
+                  svgPath: image,
+                  color: ColorConstant.primaryPink,
+                  height: getSize(24),
+                  width: getSize(24),
+                ),
               ),
+              // CustomImageView(
+              //   imagePath: ImageConstant.saudia,
+              //   height: getSize(30),
+              //   fit: BoxFit.fitHeight,
+              //   margin: getMargin(right: 10),
+              // ),
               MyText(title: title,fontSize: 15,fontWeight: FontWeight.w600,),
             ],
           ),

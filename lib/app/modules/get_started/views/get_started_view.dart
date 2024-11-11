@@ -87,7 +87,7 @@ class GetStartedView extends GetView<GetStartedController> {
                       image: ImageConstant.pickup,
                       title: "lbl_pickup".tr,
                       onTap: (){
-                        Get.toNamed(Routes.LOCATION_SELECTION);
+                        Get.toNamed(Routes.LOCATION_SELECTION,arguments: {"from_pickup" : true});
                       },
                     ),
                   ],

@@ -96,7 +96,7 @@ class _CartViewState extends State<CartView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MyText(
-                title: "lbl_deliver_to".tr,
+                title: !Constants.isDelivery.value ? "pickup_from".tr :"lbl_deliver_to".tr,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: ColorConstant.textGrey,
@@ -128,7 +128,7 @@ class _CartViewState extends State<CartView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: getMargin(left: 16,bottom: 5),
+          margin: getMargin(left: Utils.checkIfUrduLocale() ? null :16,bottom: 5,right: Utils.checkIfUrduLocale()? 16 : null),
           child: MyText(title: "items".tr,
             fontSize: 16,
             fontWeight: FontWeight.w800,
@@ -171,11 +171,14 @@ class _CartViewState extends State<CartView> {
                   Row(
                     children: [
                       Expanded(
-                        child: MyText(
-                          title: (Utils.checkIfUrduLocale() ? item.item.name ?? "" : item.item.englishName ?? ""),
-                          color: ColorConstant.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
+                        child: Align(
+                          alignment: Utils.checkIfUrduLocale() ? Alignment.centerRight: Alignment.centerLeft,
+                          child: MyText(
+                            title: (Utils.checkIfUrduLocale() ? item.item.name ?? "" : item.item.englishName ?? ""),
+                            color: ColorConstant.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                       SizedBox(width: getSize(10),),
@@ -191,10 +194,13 @@ class _CartViewState extends State<CartView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: controller.menuController.checkForMultipleValues(item.item) ? MyText(
-                          title: "${"lbl_size".tr}: ${item.size}",
-                          color: ColorConstant.black,
-                          fontSize: 12,
+                        child: controller.menuController.checkForMultipleValues(item.item) ? Align(
+                          alignment: Utils.checkIfUrduLocale() ? Alignment.centerRight: Alignment.centerLeft,
+                          child: MyText(
+                            title: "${"lbl_size".tr}: ${item.size}",
+                            color: ColorConstant.black,
+                            fontSize: 12,
+                          ),
                         ) : Offstage(),
                       ),
                       SizedBox(width: getSize(10),),

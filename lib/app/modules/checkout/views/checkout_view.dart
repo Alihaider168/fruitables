@@ -88,6 +88,7 @@ class CheckoutView extends GetView<CheckoutController> {
                           fontWeight: FontWeight.normal,
                         ),
                         SizedBox(height: getSize(10),),
+                        Constants.isDelivery.value ?
                         CustomTextFormField(
                           controller: controller.addressController,
                           labelText: "delivery_address".tr,
@@ -100,6 +101,48 @@ class CheckoutView extends GetView<CheckoutController> {
                             });
 
                           },
+                        ) :
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MyText(
+                              title: "pickup_from".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: getSize(3),),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Align(
+                                    alignment: Utils.checkIfUrduLocale() ? Alignment.centerRight : Alignment.centerLeft,
+                                    child: MyText(
+                                      title: Constants.selectedBranch?.address??"",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: ColorConstant.primaryPink,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: getSize(10),),
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () async {
+                                   CustomSnackBar.showCustomToast(message: "Will be implemented soon");
+
+                                  },
+                                  child: Container(
+                                    padding: getPadding(left: 15,right: 15,top: 5,bottom: 5),
+                                    decoration: BoxDecoration(
+                                        color: ColorConstant.primaryPink,
+                                        borderRadius: BorderRadius.circular(getSize(5))
+                                    ),
+                                    child: MyText(title: "show_on_map".tr,color: ColorConstant.white,fontSize: 12,),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                         SizedBox(height: getSize(10),),
                         Divider(),
@@ -215,7 +258,7 @@ class CheckoutView extends GetView<CheckoutController> {
                             Icon(Icons.timelapse_sharp,color: ColorConstant.primaryPink,),
                             SizedBox(width: getSize(5),),
                             MyText(
-                              title: "estimated_delivery_time".tr,
+                              title: !Constants.isDelivery.value ? "estimated_pickup_time".tr : "estimated_delivery_time".tr,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),

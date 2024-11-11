@@ -529,9 +529,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
                       }
                     },
-                    validator: (value) {
-                      return HelperFunction.otpValidate(value!);
-                    },
+                    // validator: (value) {
+                    //   return HelperFunction.otpValidate(value!);
+                    // },
                   ),
                 ),
                 SizedBox(height: getSize(10)),
@@ -565,12 +565,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 CustomButton(
                   text: "verify".tr,
                   onTap: (){
-                    if(_formKey1.currentState!.validate()){
+                    if(otpController.text.length == 6){
                       Get.back();
                       if (Get.isBottomSheetOpen == true) {
                         Get.back();
                       }
                       Constants.isLoggedIn.value = true;
+                    }else {
+                      CustomSnackBar.showCustomErrorToast(message: "enter_valid_otp".tr);
                     }
                   },
                 ),

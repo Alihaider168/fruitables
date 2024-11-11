@@ -20,6 +20,7 @@ class Constants {
   static const String paramCheckout = 'checkout'; // in Mbs
 
   static RxBool isLoggedIn = false.obs;
+  static RxBool isDelivery = true.obs;
 
   static bool showToast = true;
   static bool showNoInternetToast = false;

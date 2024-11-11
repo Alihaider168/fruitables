@@ -35,6 +35,7 @@ class LocationSelectionController extends GetxController {
   int selectedCity = 0;
 
 
+
   @override
   void onInit() {
     super.onInit();

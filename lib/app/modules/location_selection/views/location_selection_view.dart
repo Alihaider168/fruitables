@@ -44,11 +44,11 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MyText(
-                          title: "lbl_please_select_location".tr,
+                        Obx(()=> MyText(
+                          title: !Constants.isDelivery.value ? "which_outlet_would_you_pickup_from".tr : "lbl_please_select_location".tr,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                        ),
+                        )),
                         SizedBox(height: getSize(15),),
                         CustomTextFormField(
                           onTap:(){

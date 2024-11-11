@@ -60,7 +60,7 @@ class MainMenuController extends GetxController {
 
   showAddToCartItemSheet(BuildContext ctx, Items item,{bool fromFav = false,void Function()? onFavTap}) {
     RxInt quantity = 1.obs;
-    RxnString selectedSize = RxnString(null);
+    RxString selectedSize = "small".obs;
     RxBool isLiked =(fromFav).obs;
 
     Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
@@ -163,10 +163,13 @@ class MainMenuController extends GetxController {
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: MyText(
-                                        title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
+                                      child: Align(
+                                        alignment: Utils.checkIfUrduLocale() ? Alignment.centerRight: Alignment.centerLeft,
+                                        child: MyText(
+                                          title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: getSize(15),),

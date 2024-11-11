@@ -49,7 +49,7 @@ class _MainMenuViewState extends State<MainMenuView> {
               Row(
                 children: [
                   MyText(
-                    title: "lbl_deliver_to".tr,
+                    title: !Constants.isDelivery.value ? "pickup_from".tr : "lbl_deliver_to".tr,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: ColorConstant.white,

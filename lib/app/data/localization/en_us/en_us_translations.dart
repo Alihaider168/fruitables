@@ -106,7 +106,6 @@ final Map<String, String> enUs = {
   "confirm_pin_location": "Confirm Pin Location",
   "looks_like": "Looks like your selected location is outside the selected region",
   "to_change_area": "To Change your area please do it from main menu",
-
   "email_cannot_be_empty": "Email cannot be empty",
   "invalid_email": "Invalid email",
   "exceeding_character_limit":
@@ -124,4 +123,9 @@ final Map<String, String> enUs = {
   "resend": "Resend",
   "seconds": "Sec(s)",
   "msg_server_not_responding": "Server is not responding",
+
+  "which_outlet_would_you_pickup_from":"Which outlet would you like to pick-up from?",
+  "pickup_from":"Pick-up From",
+  "show_on_map":"Show On Map",
+  "estimated_pickup_time": "Estimated Pickup Time",
 };

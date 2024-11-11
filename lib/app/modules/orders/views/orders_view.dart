@@ -85,7 +85,7 @@ class OrderCard extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   MyText(title:
-                    "${"lbl_rs".tr} ${order.total.toStringAsFixed(2)}",
+                    "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${order.total.toStringAsFixed(2)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                     fontSize: 16, fontWeight: FontWeight.bold,
                   ),
                 ],

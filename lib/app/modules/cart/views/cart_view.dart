@@ -71,7 +71,7 @@ class _CartViewState extends State<CartView> {
           ),
           child: Column(
             children: [
-              _buildSummaryRow("lbl_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
+              _buildSummaryRow("lbl_total".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}", isBold: true),
               CustomButton(
                 text: "lbl_proceed_to_checkout".tr,
                 onTap: (){
@@ -183,7 +183,7 @@ class _CartViewState extends State<CartView> {
                       ),
                       SizedBox(width: getSize(10),),
                       MyText(
-                        title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
+                        title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                         color: ColorConstant.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
@@ -287,11 +287,11 @@ class _CartViewState extends State<CartView> {
             ),
           ),
           SizedBox(height: getSize(16)),
-          _buildSummaryRow("lbl_subtotal".tr, "${"lbl_rs".tr} ${controller.menuController.cart.getTotalDiscountedPrice()}"),
-          _buildSummaryRow("lbl_delivery_fee".tr, "${"lbl_rs".tr} ${Constants.DELIVERY_FEES}"),
-          _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${"lbl_rs".tr} ${controller.menuController.cart.getTax()}"),
+          _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+          _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+          _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTax()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
           Divider(),
-          _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
+          _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}", isBold: true),
         ],
       ),
     );

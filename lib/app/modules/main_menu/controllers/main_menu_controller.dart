@@ -94,7 +94,7 @@ class MainMenuController extends GetxController {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               MyText(
-                title: "${'lbl_rs'.tr} ${discountedPrice != 0 ? discountedPrice : price}",
+                title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.black, // Change this to the desired color
@@ -103,7 +103,7 @@ class MainMenuController extends GetxController {
               // Conditionally show the original price if a discount is present
               if (discountedPrice != 0)
                 MyText(
-                  title: "${'lbl_rs'.tr} ${price}",
+                  title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${price}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
@@ -204,7 +204,7 @@ class MainMenuController extends GetxController {
 
                                           // Display the price
                                           TextSpan(
-                                            text: "${'lbl_rs'.tr} ${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}  ",
+                                            text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700,
@@ -215,7 +215,7 @@ class MainMenuController extends GetxController {
                                           // Conditionally show the original price if a discount is present
                                           if (checkForDiscountedPrice(item) != 0)
                                             TextSpan(
-                                              text: "${'lbl_rs'.tr} ${calculatePrice(item)}",
+                                              text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
@@ -314,7 +314,6 @@ class MainMenuController extends GetxController {
                             child: Obx(()=> Container(
                               height: getSize(35),
                               width: getSize(35),
-                              margin: getMargin(right: 10),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: quantity.value > 1 ? ColorConstant.blue : ColorConstant.blue.withOpacity(.5)
@@ -326,9 +325,12 @@ class MainMenuController extends GetxController {
                               ),
                             ),)
                           ),
-                         Obx(()=>  MyText(title: quantity.value.toString(),fontSize: 20,
-                           fontWeight: FontWeight.bold,
-                         ),),
+                         Container(
+                           margin: getMargin(right: 8,left: 8),
+                           child: Obx(()=>  MyText(title: quantity.value.toString(),fontSize: 20,
+                             fontWeight: FontWeight.bold,
+                           ),),
+                         ),
                           GestureDetector(
                             onTap: (){
                               quantity.value+=1;
@@ -336,7 +338,7 @@ class MainMenuController extends GetxController {
                             child: Container(
                               height: getSize(35),
                               width: getSize(35),
-                              margin: getMargin(left: 10,right: 10),
+                              margin: getMargin(left: Utils.checkIfUrduLocale() ? 10: null,right: !Utils.checkIfUrduLocale() ? 10: null),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: ColorConstant.blue

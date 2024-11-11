@@ -240,7 +240,7 @@ class ItemWidget extends StatelessWidget {
 
                               // Display the price
                               TextSpan(
-                                text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
+                                text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
@@ -251,7 +251,7 @@ class ItemWidget extends StatelessWidget {
                               // Conditionally show the original price if a discount is present
                               if (controller.checkForDiscountedPrice(item) != 0)
                                 TextSpan(
-                                  text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
+                                  text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,

@@ -347,10 +347,12 @@ class CustomItemCard extends StatelessWidget {
                           border: Border.all(color: ColorConstant.grayBorder)
                         ),
                         alignment: Alignment.center,
-                        child: Obx(()=> quantity.value == 0
-                            ? Icon(Icons.add,color: ColorConstant.grayBorder,)
-                            : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
-                        ),
+                        child:
+                        // Obx(()=> quantity.value == 0
+                        //     ?
+                        Icon(Icons.add,color: ColorConstant.grayBorder,)
+                            // : MyText(title: "${quantity.value}",color: ColorConstant.grayBorder,fontWeight: FontWeight.w600,)
+                        // ),
                       ),
                     )
                   ),
@@ -375,7 +377,7 @@ class CustomItemCard extends StatelessWidget {
 
                     // Display the price
                     TextSpan(
-                      text: "${'lbl_rs'.tr} ${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
+                      text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -386,7 +388,7 @@ class CustomItemCard extends StatelessWidget {
                     // Conditionally show the original price if a discount is present
                     if (controller.checkForDiscountedPrice(item) != 0)
                       TextSpan(
-                        text: "${'lbl_rs'.tr} ${controller.calculatePrice(item)}",
+                        text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,

@@ -121,5 +121,9 @@ final Map<String, String> urPk = {
   "msg_didn_t_get_code": "OTP دوبارہ بھیجیں ",
   "resend": "دوبارہ بھیجیں",
   "seconds": "سیکنڈ(s)",
-  "msg_server_not_responding": "سرور جواب نہیں دے رہا"
+  "msg_server_not_responding": "سرور جواب نہیں دے رہا",
+  "which_outlet_would_you_pickup_from": "آپ کس آؤٹ لیٹ سے حاصل کرنا چاہیں گے؟",
+  "pickup_from": "حاصل کریں",
+  "show_on_map": "نقشے پر دکھائیں",
+  "estimated_pickup_time": "اندازاً حاصل کرنے کا وقت",
 };

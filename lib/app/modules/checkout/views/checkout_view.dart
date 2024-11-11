@@ -308,10 +308,10 @@ class CheckoutView extends GetView<CheckoutController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildSummaryRow("lbl_subtotal".tr, "${"lbl_rs".tr} ${controller.menuController.cart.getTotalDiscountedPrice()}"),
-                        _buildSummaryRow("lbl_delivery_fee".tr, "${"lbl_rs".tr} ${Constants.DELIVERY_FEES}"),
-                        _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${"lbl_rs".tr} ${controller.menuController.cart.getTax()}"),
-                        _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
+                        _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+                        _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+                        _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTax()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+                        _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
                       ],
                     ),

@@ -80,7 +80,9 @@ class CartBottom extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     MyText(
-                      title: '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
+                      title:
+                          Utils.checkIfUrduLocale() ? '${controller.cart.getTotalDiscountedPrice().toDouble()} ${'lbl_rs'.tr}' :
+                      '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
                       fontSize: 14,
                       color: ColorConstant.white,
                       fontWeight: FontWeight.bold,

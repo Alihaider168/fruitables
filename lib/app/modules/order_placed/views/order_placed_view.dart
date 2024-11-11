@@ -115,13 +115,13 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
                     _buildCartItemsList(),
 
                     // Subtotal and Delivery Fee
-                    _buildSummaryRow("lbl_subtotal".tr, "${"lbl_rs".tr} ${controller.menuController.cart.getTotalDiscountedPrice()}"),
-                    _buildSummaryRow("lbl_delivery_fee".tr, "${"lbl_rs".tr} ${Constants.DELIVERY_FEES}"),
-                    _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${"lbl_rs".tr} ${controller.menuController.cart.getTax()}"),
+                    _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+                    _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
+                    _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTax()}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}"),
 
                     Divider(thickness: 1, color: ColorConstant.textGrey.withOpacity(.3)),
                     // Grand Total
-                    _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
+                    _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}", isBold: true),
                   ],
                 ),
               ),
@@ -149,7 +149,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
               fontSize: 16,
             ),
             MyText(title:
-              "${"lbl_rs".tr} ${price.toStringAsFixed(2)}",
+              "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${price.toStringAsFixed(2)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
               fontSize: 16,
             ),
           ],
@@ -227,7 +227,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
             ),
             Spacer(),
             MyText(
-              title: "${"lbl_rs".tr} ${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}",
+              title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
               color: ColorConstant.black,
               fontWeight: FontWeight.bold,
             ),

@@ -222,7 +222,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 borderRadius: BorderRadius.circular(getSize(5)),
               ),
               child: MyText(
-                title: '${"lbl_rs".tr} $price',
+                title:  Utils.checkIfUrduLocale() ? '$price ${'lbl_rs'.tr}' :
+                '${"lbl_rs".tr} $price',
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),

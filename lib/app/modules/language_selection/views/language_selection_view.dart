@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/modules/location_selection/controllers/location_selection_controller.dart';
 
 import 'package:get/get.dart';
 
@@ -119,7 +120,8 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                     if(controller.fromMenu){
                       Get.back();
                     }else{
-                      Get.offAllNamed(Routes.LOCATION_SELECTION,);
+                      Get.delete<LocationSelectionController>();
+                      Get.toNamed(Routes.LOCATION_SELECTION,);
                     }
                     if (controller.selectedLanguage.value == 1) {
                       Get.updateLocale(const Locale('en', 'US'));

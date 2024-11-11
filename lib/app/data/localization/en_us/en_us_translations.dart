@@ -128,4 +128,5 @@ final Map<String, String> enUs = {
   "pickup_from":"Pick-up From",
   "show_on_map":"Show On Map",
   "estimated_pickup_time": "Estimated Pickup Time",
+  "locate_me": "Locate Me",
 };

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/widgets/custom_button.dart';
 import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
+import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,8 +27,22 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                 zoom: 14,
               ),
               zoomControlsEnabled: false,
-              myLocationEnabled: true,
+              myLocationEnabled: false,
+
             ),),
+            Positioned(
+                top: 50,left: 16,
+                child: GestureDetector(
+                  onTap: ()=> Get.back(),
+                  child: Container(
+                    padding: getPadding(left: 12,right: 6,top: 12,bottom: 12),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(getSize(5))
+                    ),
+                    child: Icon(Icons.arrow_back_ios),
+                  ),
+                )),
 
             Positioned(
               bottom: getSize(20),
@@ -35,6 +50,34 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
               right: getSize(15),
               child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: (){
+                        controller.moveToCurrentLocation();
+                      },
+                      child: Container(
+                        margin: getMargin(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: ColorConstant.white,
+                          borderRadius: BorderRadius.circular(getSize(50))
+                        ),
+                        padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MyText(
+                              title: "locate_me".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            SizedBox(width: getSize(5),),
+                            Icon(Icons.my_location)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       color: ColorConstant.white,
@@ -84,6 +127,7 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                       if(controller.cityController.text.isNotEmpty && controller.regionController.text.isNotEmpty){
                         Constants.selectedCity = controller.selectedCityModel;
                         Constants.selectedBranch = controller.selectedRegionModel;
+                        Get.delete<MainMenuController>();
                         Get.offAllNamed(Routes.MAIN_MENU);
                       }
                     },

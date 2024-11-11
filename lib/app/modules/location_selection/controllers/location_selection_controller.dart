@@ -40,7 +40,7 @@ class LocationSelectionController extends GetxController {
   void onInit() {
     super.onInit();
     getRegions();
-    _getCurrentLocation();
+    getCurrentLocation();
     // Add a listener to the search controller
     _searchController.addListener(_filterLocations);
   }
@@ -52,7 +52,7 @@ class LocationSelectionController extends GetxController {
           .toList();
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<void> getCurrentLocation() async {
     // Request location permission
     LocationPermission permission = await Geolocator.requestPermission();
 

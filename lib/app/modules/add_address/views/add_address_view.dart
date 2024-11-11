@@ -26,7 +26,7 @@ class AddAddressView extends GetView<AddAddressController> {
                 zoom: 14,
               ),
               zoomControlsEnabled: false,
-              myLocationEnabled: true,
+              myLocationEnabled: false,
             ),),
             Positioned(
               top: 50,left: 16,
@@ -48,6 +48,34 @@ class AddAddressView extends GetView<AddAddressController> {
               right: getSize(15),
               child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: (){
+                        controller.moveToCurrentLocation();
+                      },
+                      child: Container(
+                        margin: getMargin(bottom: 10),
+                        decoration: BoxDecoration(
+                            color: ColorConstant.white,
+                            borderRadius: BorderRadius.circular(getSize(50))
+                        ),
+                        padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MyText(
+                              title: "locate_me".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            SizedBox(width: getSize(5),),
+                            Icon(Icons.my_location)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         color: ColorConstant.white,

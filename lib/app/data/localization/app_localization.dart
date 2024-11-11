@@ -1,9 +1,9 @@
-import 'package:fruitables/app/data/localization/ur_pk/ur_pk_translations.dart';
+import 'package:fruitables/app/data/localization/ar_sa/ar_sa_translations.dart';
 import 'package:get/get.dart';
 
 import 'en_us/en_us_translations.dart';
 
 class AppLocalization extends Translations {
   @override
-  Map<String, Map<String, String>> get keys => {'en_US': enUs,'ur_PK':urPk};
+  Map<String, Map<String, String>> get keys => {'en_US': enUs,'ar_SA':arSa};
 }

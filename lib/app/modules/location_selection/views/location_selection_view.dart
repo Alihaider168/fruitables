@@ -31,11 +31,11 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
 
             ),),
             Positioned(
-                top: 50,left: Utils.checkIfUrduLocale() ? null : 16,right: Utils.checkIfUrduLocale() ? 16 : null,
+                top: 50,left: Utils.checkIfArabicLocale() ? null : 16,right: Utils.checkIfArabicLocale() ? 16 : null,
                 child: GestureDetector(
                   onTap: ()=> Get.back(),
                   child: Container(
-                    padding: getPadding(left: Utils.checkIfUrduLocale() ?4: 12,right: Utils.checkIfUrduLocale() ? 12: 4,top: 12,bottom: 12),
+                    padding: getPadding(left: Utils.checkIfArabicLocale() ?4: 12,right: Utils.checkIfArabicLocale() ? 12: 4,top: 12,bottom: 12),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(getSize(5))
@@ -113,8 +113,8 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                               controller.showCustomBottomSheet(context);
                           },
                           controller: controller.regionController,
-                          labelText: Utils.checkIfUrduLocale() ? "branch".tr:"lbl_area_sub_region".tr,
-                          hintText: Utils.checkIfUrduLocale() ? "branch".tr:"lbl_select_your_area".tr,
+                          labelText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_area_sub_region".tr,
+                          hintText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_select_your_area".tr,
                           readOnly: true,
                           suffix: Icon(Icons.keyboard_arrow_down),
                         ),

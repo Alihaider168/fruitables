@@ -15,7 +15,7 @@ CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final RxString selectedLanguage = 'English'.obs;
+  // final RxString selectedLanguage = 'English'.obs;
   final TextEditingController otpController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -53,7 +53,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     super.initState();
-    getLanguage();
+    // getLanguage();
 
   }
 
@@ -232,7 +232,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 borderRadius: BorderRadius.circular(getSize(5)),
               ),
               child: MyText(
-                title:  Utils.checkIfUrduLocale() ? '$price ${'lbl_rs'.tr}' :
+                title:  Utils.checkIfArabicLocale() ? '$price ${'lbl_rs'.tr}' :
                 '${"lbl_rs".tr} $price',
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
@@ -245,20 +245,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  void _changeLanguage(String languageCode) async{
-    selectedLanguage.value = languageCode;
-    if (languageCode == 'English') {
-      Get.updateLocale(Locale('en', 'US'));
-    } else if (languageCode == 'اردو') {
-      Get.updateLocale(Locale('ur', 'PK'));
-    }
-    Get.back();
-    await languagePreference.saveLanguage(languageCode);
-  }
+  // void _changeLanguage(String languageCode) async{
+  //   selectedLanguage.value = languageCode;
+  //   if (languageCode == 'English') {
+  //     Get.updateLocale(Locale('en', 'US'));
+  //   } else if (languageCode == 'اردو') {
+  //     Get.updateLocale(Locale('ur', 'PK'));
+  //   }
+  //   Get.back();
+  //   await languagePreference.saveLanguage(languageCode);
+  // }
 
-  void getLanguage() async {
-    selectedLanguage.value = (await languagePreference.getLanguage())??"English";
-  }
+  // void getLanguage() async {
+  //   selectedLanguage.value = (await languagePreference.getLanguage())??"English";
+  // }
 
   void showLogoutDialog(BuildContext context) {
     showDialog(

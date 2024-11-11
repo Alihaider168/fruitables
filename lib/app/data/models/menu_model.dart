@@ -49,20 +49,20 @@ class Data {
 class Categories {
   String? englishName;
   String? arabicName;
-  Image? image;
+  AppImage? appImage;
   String? id;
 
   Categories({
     this.englishName,
     this.arabicName,
-    this.image,
+    this.appImage,
     this.id,
   });
 
   Categories.fromJson(Map<String, dynamic> json) {
     englishName = json['englishName'] as String?;
     arabicName = json['arabicName'] as String?;
-    image = (json['image'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
+    appImage = (json['appImage'] as Map<String,dynamic>?) != null ? AppImage.fromJson(json['appImage'] as Map<String,dynamic>) : null;
     id = json['id'] as String?;
   }
 
@@ -70,11 +70,86 @@ class Categories {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['englishName'] = englishName;
     json['arabicName'] = arabicName;
-    json['image'] = image?.toJson();
+    json['appImage'] = appImage?.toJson();
     json['id'] = id;
     return json;
   }
 }
+
+class AppImage {
+  String? name;
+  String? key;
+  String? type;
+  int? size;
+  bool? private;
+  String? createdAt;
+  String? updatedAt;
+  String? id;
+
+  AppImage({
+    this.name,
+    this.key,
+    this.type,
+    this.size,
+    this.private,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
+  });
+
+  AppImage.fromJson(Map<String, dynamic> json) {
+    name = json['name'] as String?;
+    key = json['key'] as String?;
+    type = json['type'] as String?;
+    size = json['size'] as int?;
+    private = json['private'] as bool?;
+    createdAt = json['createdAt'] as String?;
+    updatedAt = json['updatedAt'] as String?;
+    id = json['id'] as String?;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['name'] = name;
+    json['key'] = key;
+    json['type'] = type;
+    json['size'] = size;
+    json['private'] = private;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
+    json['id'] = id;
+    return json;
+  }
+}
+// class Categories {
+//   String? englishName;
+//   String? arabicName;
+//   Image? image;
+//   String? id;
+//
+//   Categories({
+//     this.englishName,
+//     this.arabicName,
+//     this.image,
+//     this.id,
+//   });
+//
+//   Categories.fromJson(Map<String, dynamic> json) {
+//     englishName = json['englishName'] as String?;
+//     arabicName = json['arabicName'] as String?;
+//     image = (json['appImage'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
+//     id = json['id'] as String?;
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> json = <String, dynamic>{};
+//     json['englishName'] = englishName;
+//     json['arabicName'] = arabicName;
+//     json['image'] = image?.toJson();
+//     json['id'] = id;
+//     return json;
+//   }
+// }
 
 class Image {
   String? name;

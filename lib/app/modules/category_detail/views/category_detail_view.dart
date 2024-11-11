@@ -17,7 +17,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding:  Utils.checkIfUrduLocale() ? getPadding(right: 15): getPadding(left: 15),
+          padding:  Utils.checkIfArabicLocale() ? getPadding(right: 15): getPadding(left: 15),
           child: GestureDetector(
             onTap: ()=>  Get.back(),
             child: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
@@ -95,7 +95,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         ),
                         child: Center(
                           child: MyText(
-                            title: Utils.checkIfUrduLocale() ? item.arabicName ?? "" : item.englishName ?? "",
+                            title: Utils.checkIfArabicLocale() ? item.arabicName ?? "" : item.englishName ?? "",
                             color: controller.selectedCategoryIndex.value == index
                                 ? Colors.white
                                 : ColorConstant.textGrey,
@@ -126,7 +126,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                       Container(
                         padding: getPadding(right: 16,left: 16,bottom: 16),
                         child: MyText(
-                          title: Utils.checkIfUrduLocale() ? category?.arabicName??"" : category?.englishName??"",
+                          title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
                           // style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -193,10 +193,10 @@ class ItemWidget extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: ColorConstant.primaryPink,
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(getSize(Utils.checkIfUrduLocale() ? 0 :50)),
-                              bottomRight: Radius.circular(getSize(Utils.checkIfUrduLocale() ? 0 :50)),
-                              topLeft: Radius.circular(getSize(!Utils.checkIfUrduLocale() ? 0 :50)),
-                              bottomLeft: Radius.circular(getSize(!Utils.checkIfUrduLocale() ? 0 :50))
+                              topRight: Radius.circular(getSize(Utils.checkIfArabicLocale() ? 0 :50)),
+                              bottomRight: Radius.circular(getSize(Utils.checkIfArabicLocale() ? 0 :50)),
+                              topLeft: Radius.circular(getSize(!Utils.checkIfArabicLocale() ? 0 :50)),
+                              bottomLeft: Radius.circular(getSize(!Utils.checkIfArabicLocale() ? 0 :50))
                             )
                         ),
                         alignment: Alignment.center,
@@ -209,7 +209,7 @@ class ItemWidget extends StatelessWidget {
                   ): Offstage(),
 
                   MyText(
-                    title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                    title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
                     fontSize: 15,
                     line: 1,
                     overflow: TextOverflow.ellipsis,
@@ -244,7 +244,7 @@ class ItemWidget extends StatelessWidget {
 
                               // Display the price
                               TextSpan(
-                                text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
+                                text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
@@ -255,7 +255,7 @@ class ItemWidget extends StatelessWidget {
                               // Conditionally show the original price if a discount is present
                               if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                                 TextSpan(
-                                  text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
+                                  text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -302,13 +302,21 @@ class ItemWidget extends StatelessWidget {
                     height: getSize(120),
                   ),
                   Positioned(
-                    left: Utils.checkIfUrduLocale() ? 0 : null,
-                    right: Utils.checkIfUrduLocale() ? null : 0,
+                    left: Utils.checkIfArabicLocale() ? 0 : null,
+                    right: Utils.checkIfArabicLocale() ? null : 0,
                     bottom: 0,
                     child: GestureDetector(
                       onTap: (){
                         if(!controller.checkForMultipleValues(item)){
-                          controller.addItemsToCart(item,size: "small");
+                          String selectedSize = "small";
+                          if((item.largePrice??0) != 0 ){
+                            selectedSize = "large";
+                          }else if((item.mediumPrice??0) != 0 ) {
+                            selectedSize = "medium";
+                          }else if((item.smallPrice??0) != 0 ) {
+                            selectedSize = "small";
+                          }
+                          controller.addItemsToCart(item,size: selectedSize);
                           quantity.value += 1;
                           controller.bottomBar.value = true;
                         }else{
@@ -320,7 +328,7 @@ class ItemWidget extends StatelessWidget {
                         width: getSize(35),
                         height: getSize(35),
                         decoration: BoxDecoration(
-                            color: ColorConstant.blue.withOpacity(.7),
+                            color: ColorConstant.primaryPink1,
                             shape: BoxShape.circle
                         ),
                         alignment: Alignment.center,

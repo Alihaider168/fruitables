@@ -317,12 +317,12 @@ class Utils {
     // }
   }
 
-  static bool checkIfUrduLocale() {
+  static bool checkIfArabicLocale() {
     // Get the current locale
     Locale? currentLocale = Get.locale;
 
     // Check if the current locale is Urdu
-    if (currentLocale != null && currentLocale.languageCode == 'ur') {
+    if (currentLocale != null && currentLocale.languageCode == 'ar') {
       return true;
     } else {
      return false;

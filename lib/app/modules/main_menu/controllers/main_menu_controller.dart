@@ -62,8 +62,15 @@ class MainMenuController extends GetxController {
     RxInt quantity = 1.obs;
     RxString selectedSize = "small".obs;
     RxBool isLiked =(fromFav).obs;
+    if((item.largePrice??0) != 0 ){
+      selectedSize.value = "large";
+    }else if((item.mediumPrice??0) != 0 ) {
+      selectedSize.value = "medium";
+    }else if((item.smallPrice??0) != 0 ) {
+      selectedSize.value = "small";
+    }
 
-    Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
+      Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -94,7 +101,7 @@ class MainMenuController extends GetxController {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               MyText(
-                title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
+                title: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.black, // Change this to the desired color
@@ -103,7 +110,7 @@ class MainMenuController extends GetxController {
               // Conditionally show the original price if a discount is present
               if (discountedPrice != 0)
                 MyText(
-                  title: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${price}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
+                  title: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${price}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
@@ -164,9 +171,9 @@ class MainMenuController extends GetxController {
                                   children: [
                                     Expanded(
                                       child: Align(
-                                        alignment: Utils.checkIfUrduLocale() ? Alignment.centerRight: Alignment.centerLeft,
+                                        alignment: Utils.checkIfArabicLocale() ? Alignment.centerRight: Alignment.centerLeft,
                                         child: MyText(
-                                          title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                                          title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
                                           fontSize: 16,
                                           fontWeight: FontWeight.w800,
                                         ),
@@ -204,7 +211,7 @@ class MainMenuController extends GetxController {
 
                                           // Display the price
                                           TextSpan(
-                                            text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
+                                            text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700,
@@ -215,7 +222,7 @@ class MainMenuController extends GetxController {
                                           // Conditionally show the original price if a discount is present
                                           if (checkForDiscountedPrice(item) != 0)
                                             TextSpan(
-                                              text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
+                                              text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
@@ -338,7 +345,7 @@ class MainMenuController extends GetxController {
                             child: Container(
                               height: getSize(35),
                               width: getSize(35),
-                              margin: getMargin(left: Utils.checkIfUrduLocale() ? 10: null,right: !Utils.checkIfUrduLocale() ? 10: null),
+                              margin: getMargin(left: Utils.checkIfArabicLocale() ? 10: null,right: !Utils.checkIfArabicLocale() ? 10: null),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: ColorConstant.blue
@@ -428,6 +435,7 @@ class MainMenuController extends GetxController {
     }
     return 0;
   }
+
   num? checkForDiscountedPercentage(Items item){
     if(item.mobileSmall != null && item.mobileSmall != 0){
       return 100 -((item.mobileSmall??0)/(item.smallPrice??0)*100);
@@ -444,21 +452,23 @@ class MainMenuController extends GetxController {
 
   checkPricesForCheckout(Items item,String size){
     if(size == 'small'){
-      if(item.mobileSmall != null && item.mobileSmall != 0){
+      if((item.mobileSmall??0) != 0 && item.smallPrice != item.mobileSmall ){
         return item.mobileSmall??0;
       }else{
         return item.smallPrice??0;
       }
     }
     if(size == 'medium'){
-      if(item.mobileMedium != null && item.mobileMedium != 0){
+      if((item.mobileMedium??0) != 0 && item.mediumPrice != item.mobileMedium ){
+      // if(item.mobileMedium != null && item.mobileMedium != 0){
         return item.mobileMedium??0;
       }else{
         return item.mediumPrice??0;
       }
     }
     if(size == 'large'){
-      if(item.mobileLarge != null && item.mobileLarge != 0){
+      if((item.mobileLarge??0) != 0 && item.largePrice != item.mobileLarge ){
+      // if(item.mobileLarge != null && item.mobileLarge != 0){
         return item.mobileLarge??0;
       }else{
         return item.largePrice??0;

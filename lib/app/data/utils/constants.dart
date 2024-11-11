@@ -16,7 +16,7 @@ class Constants {
   static const int MAX_INPUT_LIMIT = 30;
   static const int refreshDelay = 800;
   static const int MAX_IMAGE_SIZE = 3; // in Mbs
-  static const int DELIVERY_FEES = 200; // in Mbs
+  static const int DELIVERY_FEES = 20; // in Mbs
   static const String paramCheckout = 'checkout'; // in Mbs
 
   static RxBool isLoggedIn = false.obs;

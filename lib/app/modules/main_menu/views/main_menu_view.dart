@@ -32,7 +32,7 @@ class _MainMenuViewState extends State<MainMenuView> {
       key: controller.scaffoldKey,
       appBar: AppBar(
         leading: Padding(
-          padding: Utils.checkIfUrduLocale() ? getPadding(right: 15):getPadding(left: 15),
+          padding: Utils.checkIfArabicLocale() ? getPadding(right: 15):getPadding(left: 15),
           child: GestureDetector(
             onTap: ()=>  controller.scaffoldKey.currentState!.openDrawer(),
             child: Icon(Icons.menu,color: ColorConstant.white,),
@@ -112,7 +112,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                       child: Column(
                         children: [
                           CustomImageView(
-                            url:Utils.getCompleteUrl( cat.image?.key),
+                            url:Utils.getCompleteUrl( cat.appImage?.key),
                             // url: cat.image,
                             height: getSize(80),
                             padding: getPadding(all: getSize(5)),
@@ -121,7 +121,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                             border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
                           MyText(
-                            title: Utils.checkIfUrduLocale() ? cat.arabicName??"" : cat.englishName??"",
+                            title: Utils.checkIfArabicLocale() ? cat.arabicName??"" : cat.englishName??"",
                             center: true,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -184,7 +184,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             MyText(
-                              title: Utils.checkIfUrduLocale() ? category?.arabicName??"" : category?.englishName??"",
+                              title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -328,7 +328,7 @@ class CustomItemCard extends StatelessWidget {
                         ),
                         child: MyText(
                           title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
-                          fontSize: 15,
+                          fontSize: 8,
                           fontWeight: FontWeight.w700,
                           color: ColorConstant.white,
                         ),
@@ -336,13 +336,21 @@ class CustomItemCard extends StatelessWidget {
                     ) : Offstage(),
                     // Add Button
                     Positioned(
-                      left: Utils.checkIfUrduLocale() ? getSize(5) : null,
-                      right: Utils.checkIfUrduLocale() ? null : getSize(5),
+                      left: Utils.checkIfArabicLocale() ? getSize(5) : null,
+                      right: Utils.checkIfArabicLocale() ? null : getSize(5),
                       bottom: getSize(5),
                       child: GestureDetector(
                         onTap: (){
                           if(!controller.checkForMultipleValues(item)){
-                            controller.addItemsToCart(item,size: "small");
+                            String selectedSize = "small";
+                            if((item.largePrice??0) != 0 ){
+                              selectedSize = "large";
+                            }else if((item.mediumPrice??0) != 0 ) {
+                              selectedSize = "medium";
+                            }else if((item.smallPrice??0) != 0 ) {
+                              selectedSize = "small";
+                            }
+                            controller.addItemsToCart(item,size: selectedSize);
                             quantity.value += 1;
                             controller.bottomBar.value = true;
                           }else{
@@ -390,7 +398,7 @@ class CustomItemCard extends StatelessWidget {
 
                     // Display the price
                     TextSpan(
-                      text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
+                      text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -401,7 +409,7 @@ class CustomItemCard extends StatelessWidget {
                     // Conditionally show the original price if a discount is present
                     if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                       TextSpan(
-                        text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
+                        text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -414,7 +422,7 @@ class CustomItemCard extends StatelessWidget {
               ),
               SizedBox(height: getSize(2),),
               MyText(
-                title: Utils.checkIfUrduLocale() ? item.name??"" : item.englishName??"",
+                title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: ColorConstant.textGrey,

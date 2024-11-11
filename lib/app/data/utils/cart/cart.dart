@@ -87,11 +87,25 @@ class Cart {
     num totalPrice = 0;
     for (var cartItem in _cartItems) {
       if (cartItem.size == 'small') {
-        totalPrice += ((cartItem.item.smallPrice ?? 0) * cartItem.quantity);
+        if((cartItem.item.mobileSmall??0)!=0 && cartItem.item.mobileSmall != cartItem.item.smallPrice){
+          totalPrice += ((cartItem.item.mobileSmall ?? 0) * cartItem.quantity);
+        }else{
+          totalPrice += ((cartItem.item.smallPrice ?? 0) * cartItem.quantity);
+        }
+
       } else if (cartItem.size == 'medium') {
-        totalPrice += ((cartItem.item.mobileMedium ?? 0)* cartItem.quantity);
+        if((cartItem.item.mobileMedium??0)!=0 && cartItem.item.mobileMedium != cartItem.item.mediumPrice){
+          totalPrice += ((cartItem.item.mobileMedium ?? 0) * cartItem.quantity);
+        }else{
+          totalPrice += ((cartItem.item.mediumPrice ?? 0) * cartItem.quantity);
+        }
       } else if (cartItem.size == 'large') {
-        totalPrice += ((cartItem.item.mobileLarge ?? 0)* cartItem.quantity);
+        if((cartItem.item.mobileLarge??0)!=0 && cartItem.item.mobileLarge != cartItem.item.largePrice){
+          totalPrice += ((cartItem.item.mobileLarge ?? 0) * cartItem.quantity);
+        }else{
+          totalPrice += ((cartItem.item.largePrice ?? 0) * cartItem.quantity);
+        }
+        // totalPrice += ((cartItem.item.mobileLarge ?? 0)* cartItem.quantity);
       }
     }
     return totalPrice;

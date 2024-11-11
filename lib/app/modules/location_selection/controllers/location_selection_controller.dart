@@ -47,7 +47,7 @@ class LocationSelectionController extends GetxController {
 
   void _filterLocations() {
     final query = _searchController.text.toLowerCase();
-      filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfUrduLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList()
+      filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfArabicLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList()
           .where((location) => location.englishName!.toLowerCase().contains(query) || location.name!.toLowerCase().contains(query))
           .toList();
   }
@@ -97,8 +97,8 @@ class LocationSelectionController extends GetxController {
             cityModel = CityModel.fromJson(response.data);
             selectedCity = 0;
             selectedCityModel = cityModel?.cities?[selectedCity];
-            cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.cities?[selectedCity].name??"") : (cityModel?.cities?[selectedCity].englishName??"");
-            filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfUrduLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
+            cityController.text = Utils.checkIfArabicLocale() ? (cityModel?.cities?[selectedCity].name??"") : (cityModel?.cities?[selectedCity].englishName??"");
+            filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfArabicLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
             filteredLocations.refresh();
             return true;
           },
@@ -170,7 +170,7 @@ class LocationSelectionController extends GetxController {
                       children: (cityModel?.cities??[])
                           .map((city) => Center(
                         child: MyText(
-                          title: Utils.checkIfUrduLocale() ? (city.name??"") : city.englishName??"",
+                          title: Utils.checkIfArabicLocale() ? (city.name??"") : city.englishName??"",
                           fontSize: 16,
                         ),
                       ))
@@ -183,8 +183,8 @@ class LocationSelectionController extends GetxController {
                       onTap: (){
                         selectedCity = _selectedCityIndex;
                         selectedCityModel = cityModel?.cities?[selectedCity];
-                            cityController.text = Utils.checkIfUrduLocale() ? (cityModel?.cities?[selectedCity].name??"") : (cityModel?.cities?[selectedCity].englishName??"");
-                        filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfUrduLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
+                            cityController.text = Utils.checkIfArabicLocale() ? (cityModel?.cities?[selectedCity].name??"") : (cityModel?.cities?[selectedCity].englishName??"");
+                        filteredLocations.value = (cityModel?.branches??[]).where((element)=> (Utils.checkIfArabicLocale() ? element.city?.name : element.city?.englishName) == cityController.text).toList();
                         filteredLocations.refresh();
                         Get.back();
                       },
@@ -273,10 +273,10 @@ class LocationSelectionController extends GetxController {
                             return ListTile(
                               onTap: (){
                                 selectedRegionModel = cityModel?.branches?[index];
-                                regionController.text = Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
+                                regionController.text = Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
                                 Get.back();
                               },
-                              title: Text(Utils.checkIfUrduLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
+                              title: Text(Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
                             );
                           },
                         ))),

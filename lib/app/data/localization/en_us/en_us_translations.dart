@@ -21,7 +21,7 @@ final Map<String, String> enUs = {
   'lbl_hot':'Hot',
   'lbl_trending':'Trending',
   'lbl_from':'From',
-  'lbl_rs':'Rs.',
+  'lbl_rs':'SAR',
   'lbl_off':'Off',
   'lbl_view_all':'View all',
   'lbl_deliver_to':'Deliver to',
@@ -127,7 +127,6 @@ final Map<String, String> enUs = {
   "pickup_from":"Pick-up From",
   "show_on_map":"Show On Map",
   "estimated_pickup_time": "Estimated Pickup Time",
-
   "locate_me": "Locate Me",
   "branch": "Branch",
 };

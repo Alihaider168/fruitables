@@ -29,11 +29,11 @@ class AddAddressView extends GetView<AddAddressController> {
               myLocationEnabled: false,
             ),),
             Positioned(
-                top: 50,left: Utils.checkIfUrduLocale() ? null : 16,right: Utils.checkIfUrduLocale() ? 16 : null,
+                top: 50,left: Utils.checkIfArabicLocale() ? null : 16,right: Utils.checkIfArabicLocale() ? 16 : null,
                 child: GestureDetector(
                   onTap: ()=> Get.back(),
                   child: Container(
-                    padding: getPadding(left: Utils.checkIfUrduLocale() ?4: 12,right: Utils.checkIfUrduLocale() ? 12: 4,top: 12,bottom: 12),
+                    padding: getPadding(left: Utils.checkIfArabicLocale() ?4: 12,right: Utils.checkIfArabicLocale() ? 12: 4,top: 12,bottom: 12),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(getSize(5))

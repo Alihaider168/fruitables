@@ -7,7 +7,7 @@ import 'dart:async';
 class CategoryDetailController extends GetxController {
   Rx<MenuModel> menuModel = MenuModel().obs;
   var selectedCategoryIndex = 0.obs;
-  bool isRTL = Utils.checkIfUrduLocale(); // Determine RTL once for efficiency
+  bool isRTL = Utils.checkIfArabicLocale(); // Determine RTL once for efficiency
 
 
   MainMenuController mainMenuController = Get.put(MainMenuController());

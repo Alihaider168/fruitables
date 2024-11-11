@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/utils/language_utils.dart';
 import 'package:fruitables/app/modules/location_selection/controllers/location_selection_controller.dart';
 
 import 'package:get/get.dart';
@@ -31,8 +32,8 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                   height: getSize(180),
                 ),
                 SizedBox(height: getSize(10),),
-                const MyText(title: "Welcome to Nahdi",fontWeight: FontWeight.bold,fontSize: 20,),
-                const MyText(title: "مرحبًا بكم في النهدي",fontWeight: FontWeight.bold,fontSize: 20,),
+                const MyText(title: "Welcome to Rexsa Cafe",fontWeight: FontWeight.bold,fontSize: 20,),
+                const MyText(title: "مرحبًا بكم في مقهى ريكسـا",fontWeight: FontWeight.bold,fontSize: 20,),
                 SizedBox(height: getSize(15),),
                 // Spacer(),
                 // const Row(
@@ -115,7 +116,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
 
                 SizedBox(height: getSize(20),),
                 CustomButton(
-                  onTap: (){
+                  onTap: () async {
                     Constants.isDelivery.value = (controller.selectedPreference.value == 0);
                     if(controller.fromMenu){
                       Get.back();
@@ -125,12 +126,14 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                     if (controller.selectedLanguage.value == 1) {
                       Get.updateLocale(const Locale('en', 'US'));
                     } else if (controller.selectedLanguage.value == 0) {
-                      Get.updateLocale(const Locale('ur', 'PK'));
+                      Get.updateLocale(const Locale('ar', 'SA'));
                     }
+
                     Future.delayed(1.seconds,(){
                       Utils.setUIOverlay();
                     });
-
+                    LanguageUtils languagePreference = LanguageUtils();
+                    await languagePreference.saveLanguage("arabic");
                   },
                   text: "Confirm تأكيد",
                 )
@@ -183,7 +186,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                 padding: getPadding(all: 5),
                 child: CustomImageView(
                   svgPath: image,
-                  color: ColorConstant.primaryPink,
+                  color: ColorConstant.primaryPink1,
                   height: getSize(24),
                   width: getSize(24),
                 ),

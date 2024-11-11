@@ -58,7 +58,7 @@ class CartBottom extends StatelessWidget{
               children: [
                 Container(
                   padding: getPadding(all: 8),
-                  margin: Utils.checkIfUrduLocale() ? getMargin(left: 15) : getMargin(right: 10),
+                  margin: Utils.checkIfArabicLocale() ? getMargin(left: 15) : getMargin(right: 10),
                   decoration: BoxDecoration(
                       color: ColorConstant.white,
                       shape: BoxShape.circle
@@ -81,7 +81,7 @@ class CartBottom extends StatelessWidget{
                   children: [
                     MyText(
                       title:
-                          Utils.checkIfUrduLocale() ? '${controller.cart.getTotalDiscountedPrice().toDouble()} ${'lbl_rs'.tr}' :
+                          Utils.checkIfArabicLocale() ? '${controller.cart.getTotalDiscountedPrice().toDouble()} ${'lbl_rs'.tr}' :
                       '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
                       fontSize: 14,
                       color: ColorConstant.white,

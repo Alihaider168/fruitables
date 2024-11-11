@@ -48,29 +48,75 @@ class Data {
 
 class Categories {
   String? englishName;
-  String? urduName;
-  String? image;
+  String? arabicName;
+  Image? image;
   String? id;
 
   Categories({
     this.englishName,
-    this.urduName,
+    this.arabicName,
     this.image,
     this.id,
   });
 
   Categories.fromJson(Map<String, dynamic> json) {
     englishName = json['englishName'] as String?;
-    urduName = json['urduName'] as String?;
-    image = json['image'] as String?;
+    arabicName = json['arabicName'] as String?;
+    image = (json['image'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
     id = json['id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['englishName'] = englishName;
-    json['urduName'] = urduName;
-    json['image'] = image;
+    json['arabicName'] = arabicName;
+    json['image'] = image?.toJson();
+    json['id'] = id;
+    return json;
+  }
+}
+
+class Image {
+  String? name;
+  String? key;
+  String? type;
+  int? size;
+  bool? private;
+  String? createdAt;
+  String? updatedAt;
+  String? id;
+
+  Image({
+    this.name,
+    this.key,
+    this.type,
+    this.size,
+    this.private,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
+  });
+
+  Image.fromJson(Map<String, dynamic> json) {
+    name = json['name'] as String?;
+    key = json['key'] as String?;
+    type = json['type'] as String?;
+    size = json['size'] as int?;
+    private = json['private'] as bool?;
+    createdAt = json['createdAt'] as String?;
+    updatedAt = json['updatedAt'] as String?;
+    id = json['id'] as String?;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['name'] = name;
+    json['key'] = key;
+    json['type'] = type;
+    json['size'] = size;
+    json['private'] = private;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
     json['id'] = id;
     return json;
   }
@@ -79,91 +125,87 @@ class Categories {
 class Items {
   String? id;
   String? name;
+  Image? image;
   String? englishName;
-  String? image;
   String? description;
-  int? smallPrice;
-  int? mediumPrice;
-  int? largePrice;
-  int? smallDiscountedPrice;
-  int? mediumDiscountedPrice;
-  int? largeDiscountedPrice;
-  String? categoryId;
-  int? smallDiscountedPercentage;
-  int? mediumDiscountedPercentage;
-  int? largeDiscountedPercentage;
   bool? isNew;
-  bool? isTrending;
   bool? isHot;
+  bool? isTrending;
+  num? smallPrice;
+  num? mediumPrice;
+  num? largePrice;
+  num? bottlePrice;
+  num? mobileSmall;
+  num? mobileMedium;
+  num? mobileLarge;
+  num? mobileBottle;
+  String? categoryId;
 
   Items({
     this.id,
     this.name,
-    this.englishName,
     this.image,
+    this.englishName,
     this.description,
+    this.isNew,
+    this.isHot,
+    this.isTrending,
     this.smallPrice,
     this.mediumPrice,
     this.largePrice,
-    this.smallDiscountedPrice,
-    this.mediumDiscountedPrice,
-    this.largeDiscountedPrice,
+    this.bottlePrice,
+    this.mobileSmall,
+    this.mobileMedium,
+    this.mobileLarge,
+    this.mobileBottle,
     this.categoryId,
-    this.smallDiscountedPercentage,
-    this.mediumDiscountedPercentage,
-    this.largeDiscountedPercentage,
-    this.isNew,
-    this.isTrending,
-    this.isHot,
   });
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['_id'] as String?;
     name = json['name'] as String?;
+    image = (json['image'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
     englishName = json['englishName'] as String?;
-    image = json['image'] as String?;
     description = json['description'] as String?;
-    smallPrice = json['smallPrice'] as int?;
-    mediumPrice = json['mediumPrice'] as int?;
-    largePrice = json['largePrice'] as int?;
-    smallDiscountedPrice = json['smallDiscountedPrice'] as int?;
-    mediumDiscountedPrice = json['mediumDiscountedPrice'] as int?;
-    largeDiscountedPrice = json['largeDiscountedPrice'] as int?;
+    isNew = json['is_new'] as bool?;
+    isHot = json['is_hot'] as bool?;
+    isTrending = json['is_trending'] as bool?;
+    smallPrice = json['smallPrice'];
+    mediumPrice = json['mediumPrice'];
+    largePrice = json['largePrice'];
+    bottlePrice = json['bottlePrice'];
+    mobileSmall = json['mobileSmall'];
+    mobileMedium = json['mobileMedium'];
+    mobileLarge = json['mobileLarge'];
+    mobileBottle = json['mobileBottle'];
     categoryId = json['categoryId'] as String?;
-    smallDiscountedPercentage = json['smallDiscountedPercentage'] as int?;
-    mediumDiscountedPercentage = json['mediumDiscountedPercentage'] as int?;
-    largeDiscountedPercentage = json['largeDiscountedPercentage'] as int?;
-    isNew = json['isNew'] as bool?;
-    isTrending = json['isTrending'] as bool?;
-    isHot = json['isHot'] as bool?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['_id'] = id;
     json['name'] = name;
+    json['image'] = image?.toJson();
     json['englishName'] = englishName;
-    json['image'] = image;
     json['description'] = description;
+    json['is_new'] = isNew;
+    json['is_hot'] = isHot;
+    json['is_trending'] = isTrending;
     json['smallPrice'] = smallPrice;
     json['mediumPrice'] = mediumPrice;
     json['largePrice'] = largePrice;
-    json['smallDiscountedPrice'] = smallDiscountedPrice;
-    json['mediumDiscountedPrice'] = mediumDiscountedPrice;
-    json['largeDiscountedPrice'] = largeDiscountedPrice;
+    json['bottlePrice'] = bottlePrice;
+    json['mobileSmall'] = mobileSmall;
+    json['mobileMedium'] = mobileMedium;
+    json['mobileLarge'] = mobileLarge;
+    json['mobileBottle'] = mobileBottle;
     json['categoryId'] = categoryId;
-    json['smallDiscountedPercentage'] = smallDiscountedPercentage;
-    json['mediumDiscountedPercentage'] = mediumDiscountedPercentage;
-    json['largeDiscountedPercentage'] = largeDiscountedPercentage;
-    json['isNew'] = isNew;
-    json['isTrending'] = isTrending;
-    json['isHot'] = isHot;
     return json;
   }
 }
 
 class Banners {
-  String? image;
+  Image? image;
   String? id;
 
   Banners({
@@ -172,13 +214,13 @@ class Banners {
   });
 
   Banners.fromJson(Map<String, dynamic> json) {
-    image = json['image'] as String?;
+    image = (json['image'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
     id = json['id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
-    json['image'] = image;
+    json['image'] = image?.toJson();
     json['id'] = id;
     return json;
   }

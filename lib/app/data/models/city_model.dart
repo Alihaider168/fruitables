@@ -1,114 +1,70 @@
 class CityModel {
   int? status;
   int? totalBranches;
-  Data? data;
+  List<Branches>? branches;
+  List<Cities>? cities;
 
   CityModel({
     this.status,
     this.totalBranches,
-    this.data,
+    this.branches,
+    this.cities,
   });
 
   CityModel.fromJson(Map<String, dynamic> json) {
     status = json['status'] as int?;
     totalBranches = json['totalBranches'] as int?;
-    data = (json['data'] as Map<String,dynamic>?) != null ? Data.fromJson(json['data'] as Map<String,dynamic>) : null;
+    branches = (json['branches'] as List?)?.map((dynamic e) => Branches.fromJson(e as Map<String,dynamic>)).toList();
+    cities = (json['cities'] as List?)?.map((dynamic e) => Cities.fromJson(e as Map<String,dynamic>)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['status'] = status;
     json['totalBranches'] = totalBranches;
-    json['data'] = data?.toJson();
-    return json;
-  }
-}
-
-class Data {
-  List<Cities>? cities;
-  List<Branches>? branches;
-
-  Data({
-    this.cities,
-    this.branches,
-  });
-
-  Data.fromJson(Map<String, dynamic> json) {
-    cities = (json['cities'] as List?)?.map((dynamic e) => Cities.fromJson(e as Map<String,dynamic>)).toList();
-    branches = (json['branches'] as List?)?.map((dynamic e) => Branches.fromJson(e as Map<String,dynamic>)).toList();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['cities'] = cities?.map((e) => e.toJson()).toList();
     json['branches'] = branches?.map((e) => e.toJson()).toList();
-    return json;
-  }
-}
-
-class Cities {
-  String? name;
-  String? englishName;
-
-  Cities({
-    this.name,
-    this.englishName,
-  });
-
-  Cities.fromJson(Map<String, dynamic> json) {
-    name = json['name'] as String?;
-    englishName = json['englishName'] as String?;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{};
-    json['name'] = name;
-    json['englishName'] = englishName;
+    json['cities'] = cities?.map((e) => e.toJson()).toList();
     return json;
   }
 }
 
 class Branches {
   String? address;
-  City? city;
   String? phone;
+  City? city;
   String? image;
-  String? name;
   String? englishName;
-  Region? region;
+  String? name;
   String? id;
 
   Branches({
     this.address,
-    this.city,
     this.phone,
+    this.city,
     this.image,
-    this.name,
     this.englishName,
-    this.region,
+    this.name,
     this.id,
   });
 
   Branches.fromJson(Map<String, dynamic> json) {
     address = json['address'] as String?;
-    city = (json['city'] as Map<String,dynamic>?) != null ? City.fromJson(json['city'] as Map<String,dynamic>) : null;
     phone = json['phone'] as String?;
+    city = (json['city'] as Map<String,dynamic>?) != null ? City.fromJson(json['city'] as Map<String,dynamic>) : null;
     image = json['image'] as String?;
-    name = json['name'] as String?;
     englishName = json['englishName'] as String?;
-    region = (json['region'] as Map<String,dynamic>?) != null ? Region.fromJson(json['region'] as Map<String,dynamic>) : null;
+    name = json['name'] as String?;
     id = json['id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['address'] = address;
-    json['city'] = city?.toJson();
     json['phone'] = phone;
+    json['city'] = city?.toJson();
     json['image'] = image;
-    json['name'] = name;
     json['englishName'] = englishName;
-    json['region'] = region?.toJson();
+    json['name'] = name;
     json['id'] = id;
     return json;
   }
@@ -136,16 +92,16 @@ class City {
   }
 }
 
-class Region {
+class Cities {
   String? name;
   String? englishName;
 
-  Region({
+  Cities({
     this.name,
     this.englishName,
   });
 
-  Region.fromJson(Map<String, dynamic> json) {
+  Cities.fromJson(Map<String, dynamic> json) {
     name = json['name'] as String?;
     englishName = json['englishName'] as String?;
   }

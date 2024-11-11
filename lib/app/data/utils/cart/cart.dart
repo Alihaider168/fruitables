@@ -68,8 +68,8 @@ class Cart {
   }
 
   // Get the total price of items in the cart
-  int getTotalPrice() {
-    int totalPrice = 0;
+  num getTotalPrice() {
+    num totalPrice = 0;
     for (var cartItem in _cartItems) {
       if (cartItem.size == 'small') {
         totalPrice += (cartItem.item.smallPrice ?? 0);
@@ -83,22 +83,22 @@ class Cart {
   }
 
   // Get the total price of items in the cart
-  int getTotalDiscountedPrice() {
-    int totalPrice = 0;
+  num getTotalDiscountedPrice() {
+    num totalPrice = 0;
     for (var cartItem in _cartItems) {
       if (cartItem.size == 'small') {
-        totalPrice += ((cartItem.item.smallDiscountedPrice ?? 0) * cartItem.quantity);
+        totalPrice += ((cartItem.item.smallPrice ?? 0) * cartItem.quantity);
       } else if (cartItem.size == 'medium') {
-        totalPrice += ((cartItem.item.mediumDiscountedPrice ?? 0)* cartItem.quantity);
+        totalPrice += ((cartItem.item.mobileMedium ?? 0)* cartItem.quantity);
       } else if (cartItem.size == 'large') {
-        totalPrice += ((cartItem.item.largeDiscountedPrice ?? 0)* cartItem.quantity);
+        totalPrice += ((cartItem.item.mobileLarge ?? 0)* cartItem.quantity);
       }
     }
     return totalPrice;
   }
 
   num getTax(){
-    int total = getTotalDiscountedPrice();
+    num total = getTotalDiscountedPrice();
     return total * 15 / 100;
   }
 
@@ -137,7 +137,7 @@ class Cart {
   }
 
   // Get price based on size
-  int getPrice(CartItem cartItem) {
+  num getPrice(CartItem cartItem) {
     switch (cartItem.size) {
       case 'small':
         return cartItem.item.smallPrice ?? 0;

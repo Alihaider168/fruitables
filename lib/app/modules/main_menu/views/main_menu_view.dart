@@ -112,7 +112,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                       child: Column(
                         children: [
                           CustomImageView(
-                            url: cat.image,
+                            url:Utils.getCompleteUrl( cat.image?.key),
+                            // url: cat.image,
                             height: getSize(80),
                             padding: getPadding(all: getSize(5)),
                             margin: getMargin(bottom: getSize(5)),
@@ -120,7 +121,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                             border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
                           MyText(
-                            title: Utils.checkIfUrduLocale() ? cat.urduName??"" : cat.englishName??"",
+                            title: Utils.checkIfUrduLocale() ? cat.arabicName??"" : cat.englishName??"",
                             center: true,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -183,7 +184,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             MyText(
-                              title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
+                              title: Utils.checkIfUrduLocale() ? category?.arabicName??"" : category?.englishName??"",
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -310,7 +311,7 @@ class CustomItemCard extends StatelessWidget {
 
                     Center(
                       child: CustomImageView(
-                        url: item.image,
+                        url: Utils.getCompleteUrl(item.image?.key),
                         height: getSize(110),
                         width: getSize(110),
                         fit: BoxFit.contain,
@@ -326,8 +327,8 @@ class CustomItemCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: MyText(
-                          title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
-                          fontSize: 8,
+                          title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: ColorConstant.white,
                         ),
@@ -389,7 +390,7 @@ class CustomItemCard extends StatelessWidget {
 
                     // Display the price
                     TextSpan(
-                      text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
+                      text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr} ",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -398,7 +399,7 @@ class CustomItemCard extends StatelessWidget {
                     ),
 
                     // Conditionally show the original price if a discount is present
-                    if (controller.checkForDiscountedPrice(item) != 0)
+                    if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                       TextSpan(
                         text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                         style: TextStyle(

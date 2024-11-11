@@ -1,5 +1,8 @@
 class ApiUtils {
-  static const getRegions = 'https://api.invoder.com/api/data/branches';
-  static const getMenu = 'https://invoder-data.devsherd.workers.dev/api/data/menu';
+  static const baseUrl = 'https://coffee-shop-be-production.up.railway.app/v1/mobile-app';
+
+
+  static const getRegions = '$baseUrl/getAllBranches?companyId=rexsacafe';
+  static const getMenu = '$baseUrl/getBranchMenu/64209654e91634fed32dbd1e';
 
 }

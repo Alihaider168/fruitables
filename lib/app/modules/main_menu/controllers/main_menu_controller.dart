@@ -153,7 +153,7 @@ class MainMenuController extends GetxController {
                               children: [
                                 Center(
                                   child: CustomImageView(
-                                    url: item.image,
+                                    url: Utils.getCompleteUrl(item.image?.key),
                                     width: getSize(180),
                                     height: getSize(180),
                                     fit: BoxFit.contain,
@@ -237,7 +237,7 @@ class MainMenuController extends GetxController {
                                         ),
                                         child: MyText(
                                           title:
-                                          "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
+                                          "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -245,9 +245,9 @@ class MainMenuController extends GetxController {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: getSize(10),),
-                                MyText(
-                                  title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
+                                item.description == null ? Offstage() : SizedBox(height: getSize(10),),
+                                item.description == null ? Offstage() : MyText(
+                                  title: item.description??"",
                                   fontSize: 14,
                                   color: ColorConstant.black,
                                 ),
@@ -270,9 +270,9 @@ class MainMenuController extends GetxController {
                                         MyText(title: "required *  ",fontSize: 14,color: ColorConstant.red,),
                                       ],
                                     ),
-                                    getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.smallDiscountedPrice??0),
-                                    getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mediumDiscountedPrice??0),
-                                    getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.largeDiscountedPrice??0),
+                                    getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
+                                    getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
+                                    getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
                                   ],
                                 ): Offstage()
                               ],
@@ -417,26 +417,26 @@ class MainMenuController extends GetxController {
   }
 
   num? checkForDiscountedPrice(Items item){
-    if(item.smallDiscountedPrice != null && item.smallDiscountedPrice != 0){
-      return item.smallDiscountedPrice??0;
+    if(item.mobileSmall != null && item.mobileSmall != 0){
+      return item.mobileSmall??0;
     }
-    if(item.mediumDiscountedPrice != null && item.mediumDiscountedPrice != 0){
-      return item.mediumDiscountedPrice??0;
+    if(item.mobileMedium != null && item.mobileMedium != 0){
+      return item.mobileMedium??0;
     }
-    if(item.largeDiscountedPrice != null && item.largeDiscountedPrice != 0){
-      return item.largeDiscountedPrice??0;
+    if(item.mobileLarge != null && item.mobileLarge != 0){
+      return item.mobileLarge??0;
     }
     return 0;
   }
   num? checkForDiscountedPercentage(Items item){
-    if(item.smallDiscountedPercentage != null && item.smallDiscountedPercentage != 0){
-      return item.smallDiscountedPercentage??0;
+    if(item.mobileSmall != null && item.mobileSmall != 0){
+      return 100 -((item.mobileSmall??0)/(item.smallPrice??0)*100);
     }
-    if(item.mediumDiscountedPercentage != null && item.mediumDiscountedPercentage != 0){
-      return item.mediumDiscountedPercentage??0;
+    if(item.mobileMedium != null && item.mobileBottle != 0){
+      return 100 - ((item.mobileMedium??0)/(item.mediumPrice??0)*100);
     }
-    if(item.largeDiscountedPercentage != null && item.largeDiscountedPercentage != 0){
-      return item.largeDiscountedPercentage??0;
+    if(item.mobileLarge != null && item.mobileLarge != 0){
+      return 100 - ((item.mobileLarge??0)/(item.largePrice??0)*100);
     }
     return 0;
   }
@@ -444,22 +444,22 @@ class MainMenuController extends GetxController {
 
   checkPricesForCheckout(Items item,String size){
     if(size == 'small'){
-      if(item.smallDiscountedPrice != null && item.smallDiscountedPrice != 0){
-        return item.smallDiscountedPrice??0;
+      if(item.mobileSmall != null && item.mobileSmall != 0){
+        return item.mobileSmall??0;
       }else{
         return item.smallPrice??0;
       }
     }
     if(size == 'medium'){
-      if(item.mediumDiscountedPrice != null && item.mediumDiscountedPrice != 0){
-        return item.mediumDiscountedPrice??0;
+      if(item.mobileMedium != null && item.mobileMedium != 0){
+        return item.mobileMedium??0;
       }else{
         return item.mediumPrice??0;
       }
     }
     if(size == 'large'){
-      if(item.largeDiscountedPrice != null && item.largeDiscountedPrice != 0){
-        return item.largeDiscountedPrice??0;
+      if(item.mobileLarge != null && item.mobileLarge != 0){
+        return item.mobileLarge??0;
       }else{
         return item.largePrice??0;
       }

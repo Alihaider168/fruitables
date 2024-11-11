@@ -158,7 +158,7 @@ class _CartViewState extends State<CartView> {
         child: Row(
           children: [
             CustomImageView(
-              url: item.item.image,
+              url: Utils.getCompleteUrl(item.item.image?.key),
               width: getSize(70),
               height: getSize(70),
               fit: BoxFit.cover,

@@ -31,7 +31,7 @@ class CustomCollapsableWidget extends StatelessWidget {
             CarouselSlider(
               items: banners!.map((banner) {
                 return CustomImageView(
-                  url: banner.image,
+                  url: Utils.getCompleteUrl(banner.image?.key),
                   fit: BoxFit.cover,
                   width: double.infinity,
                 );

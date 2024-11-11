@@ -95,7 +95,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         ),
                         child: Center(
                           child: MyText(
-                            title: Utils.checkIfUrduLocale() ? item.urduName ?? "" : item.englishName ?? "",
+                            title: Utils.checkIfUrduLocale() ? item.arabicName ?? "" : item.englishName ?? "",
                             color: controller.selectedCategoryIndex.value == index
                                 ? Colors.white
                                 : ColorConstant.textGrey,
@@ -126,7 +126,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                       Container(
                         padding: getPadding(right: 16,left: 16,bottom: 16),
                         child: MyText(
-                          title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
+                          title: Utils.checkIfUrduLocale() ? category?.arabicName??"" : category?.englishName??"",
                           // style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -215,9 +215,9 @@ class ItemWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w700,
                   ),
-                  SizedBox(height: getSize(3),),
-                  MyText(
-                    title: Utils.checkIfUrduLocale() ? item.description??"" : item.englishName??"",
+                  item.description == null ? Offstage() : SizedBox(height: getSize(3),),
+                  item.description == null ? Offstage() : MyText(
+                    title: item.description??"",
                     fontSize: 14,
                     line: 2,
                     overflow: TextOverflow.ellipsis,
@@ -253,7 +253,7 @@ class ItemWidget extends StatelessWidget {
                               ),
 
                               // Conditionally show the original price if a discount is present
-                              if (controller.checkForDiscountedPrice(item) != 0)
+                              if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                                 TextSpan(
                                   text: "${Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfUrduLocale() ? "": "lbl_rs".tr}",
                                   style: TextStyle(
@@ -269,7 +269,7 @@ class ItemWidget extends StatelessWidget {
                       ),
 
                       Visibility(
-                        visible: controller.checkForDiscountedPrice(item)!= 0,
+                        visible: controller.checkForDiscountedPrice(item)!= 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item),
                         child: Container(
                           margin: getMargin(left: 5),
                           padding: getPadding(left: 10,right: 10,top: 5,bottom: 5),
@@ -278,7 +278,7 @@ class ItemWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(getSize(15))
                           ),
                           child: MyText(
-                            title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item) :""}% ${'lbl_off'.tr}",
+                            title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                           ),
@@ -296,7 +296,7 @@ class ItemWidget extends StatelessWidget {
               child: Stack(
                 children: [
                   CustomImageView(
-                    url: item.image,
+                    url: Utils.getCompleteUrl(item.image?.key),
                     fit: BoxFit.contain,
                     width: getSize(120),
                     height: getSize(120),

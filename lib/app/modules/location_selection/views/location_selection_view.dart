@@ -95,7 +95,7 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                         SizedBox(height: getSize(15),),
                         CustomTextFormField(
                           onTap:(){
-                            if(controller.cityModel?.data?.cities != null){
+                            if(controller.cityModel?.cities != null){
                               controller.showCitySheet(context);
                             }else{
                               CustomSnackBar.showCustomToast(message: "lbl_no_cities_available".tr);

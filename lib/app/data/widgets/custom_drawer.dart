@@ -523,25 +523,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   color: ColorConstant.textGrey,
                 ),
                 SizedBox(height: getSize(20)),
-                Container(
-                  margin: getPadding(left: getSize(20), right: getSize(20)),
-                  child: OtpTextField(
-                    //semanticsLabel: SemanticsLabel.LAB_OTP_FIELD,
-                    controller: otpController,
-                    onChanged: (a) {
-                      if (a.length == Constants.otpLength) {
-                        Get.back();
-                        Constants.isLoggedIn.value = true;
-                      }
-                    },
-                    onComplete: (a) {
-                      if (a.length == Constants.otpLength) {
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Container(
+                    margin: getPadding(left: getSize(20), right: getSize(20)),
+                    child: OtpTextField(
+                      //semanticsLabel: SemanticsLabel.LAB_OTP_FIELD,
+                      controller: otpController,
+                      onChanged: (a) {
+                        if (a.length == Constants.otpLength) {
+                          Get.back();
+                          Constants.isLoggedIn.value = true;
+                        }
+                      },
+                      onComplete: (a) {
+                        if (a.length == Constants.otpLength) {
 
-                      }
-                    },
-                    // validator: (value) {
-                    //   return HelperFunction.otpValidate(value!);
-                    // },
+                        }
+                      },
+                      // validator: (value) {
+                      //   return HelperFunction.otpValidate(value!);
+                      // },
+                    ),
                   ),
                 ),
                 SizedBox(height: getSize(10)),

@@ -81,7 +81,7 @@ class CartBottom extends StatelessWidget{
                   children: [
                     Obx(()=> MyText(
                       title:
-                       '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.cart.getTotalDiscountedPrice().toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}',
+                       '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.cart.getTotalDiscountedPrice().toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}',
                       fontSize: 14,
                       color: ColorConstant.white,
                       fontWeight: FontWeight.bold,

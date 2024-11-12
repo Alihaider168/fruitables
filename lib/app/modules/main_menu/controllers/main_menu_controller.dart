@@ -105,7 +105,7 @@ class MainMenuController extends GetxController {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 MyText(
-                  title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                  title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Colors.black, // Change this to the desired color
@@ -114,7 +114,7 @@ class MainMenuController extends GetxController {
                 // Conditionally show the original price if a discount is present
                 if (discountedPrice != 0)
                   MyText(
-                    title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                    title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
@@ -200,44 +200,56 @@ class MainMenuController extends GetxController {
                                 SizedBox(height: getSize(10),),
                                 Row(
                                   children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          // Check if the prefix 'From' should be added
-                                          // if (checkForMultipleValues(item))
-                                            // TextSpan(
-                                            //   text: '${'lbl_from'.tr}  ', // Prefix text
-                                            //   style: TextStyle(
-                                            //     fontSize: 16,
-                                            //     fontWeight: FontWeight.w700,
-                                            //     color: Colors.black, // Change this to the desired color
-                                            //   ),
-                                            // ),
-
-                                          // Display the price
-                                          TextSpan(
-                                            text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black, // Change this to the desired color
-                                            ),
-                                          ),
-
-                                          // Conditionally show the original price if a discount is present
-                                          if (checkForDiscountedPrice(item) != 0   && checkForDiscountedPrice(item) != calculatePrice(item))
-                                            TextSpan(
-                                              text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700,
-                                                color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                                                decoration: TextDecoration.lineThrough, // Strikethrough for original price
-                                              ),
-                                            ),
-                                        ],
-                                      ),
+                                    MyText(title:  "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "} ",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
                                     ),
+                                    MyText(title:  "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)} ${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                                      cut: true,
+                                    ),
+                                    // RichText(
+                                    //   text: TextSpan(
+                                    //     children: [
+                                    //       // Check if the prefix 'From' should be added
+                                    //       // if (checkForMultipleValues(item))
+                                    //         // TextSpan(
+                                    //         //   text: '${'lbl_from'.tr}  ', // Prefix text
+                                    //         //   style: TextStyle(
+                                    //         //     fontSize: 16,
+                                    //         //     fontWeight: FontWeight.w700,
+                                    //         //     color: Colors.black, // Change this to the desired color
+                                    //         //   ),
+                                    //         // ),
+                                    //
+                                    //       // Display the price
+                                    //       TextSpan(
+                                    //         text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "} ",
+                                    //         style: TextStyle(
+                                    //           fontSize: 15,
+                                    //           fontWeight: FontWeight.w700,
+                                    //           color: Colors.black, // Change this to the desired color
+                                    //         ),
+                                    //       ),
+                                    //
+                                    //       // Conditionally show the original price if a discount is present
+                                    //       if (checkForDiscountedPrice(item) != 0   && checkForDiscountedPrice(item) != calculatePrice(item))
+                                    //         TextSpan(
+                                    //           text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)} ${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                                    //           style: TextStyle(
+                                    //             fontSize: 14,
+                                    //             fontWeight: FontWeight.w700,
+                                    //             color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                                    //             decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                                    //           ),
+                                    //         ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    SizedBox(width: getSize(10),),
                                     Visibility(
                                       visible: checkForDiscountedPrice(item)!= 0 && checkForDiscountedPrice(item) != calculatePrice(item),
                                       child: Container(
@@ -250,7 +262,7 @@ class MainMenuController extends GetxController {
                                         child: MyText(
                                           title:
                                           "${checkForDiscountedPercentage(item)!= 0? checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
@@ -262,6 +274,7 @@ class MainMenuController extends GetxController {
                                   title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
                                   fontSize: 14,
                                   color: ColorConstant.black,
+                                  alignRight: Utils.checkIfArabicLocale(),
                                 ),
                                 SizedBox(height: getSize(15),),
                                 Divider(),

@@ -41,7 +41,7 @@ class Cart {
 
     for (var cartItem in _cartItems) {
       // Check if the item and size already exist in the cart
-      if (cartItem.item == item && cartItem.size == size) {
+      if (cartItem.item.id == item.id && cartItem.size == size) {
         // If exists, increase the quantity
         cartItem.quantity += quantity;
         itemExists = true;

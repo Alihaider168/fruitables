@@ -216,17 +216,57 @@ class _MainMenuViewState extends State<MainMenuView> {
                         ),
                       ),
                       Container(
-                        padding: getPadding(right: 12, left: 12),
+                        // padding: getPadding(right: 12, left: 12),
                         height: getSize(195),
-                        child: ListView.builder(
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          itemCount: items.length>4 ? 4 : items.length,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 2.0),
-                              child: CustomItemCard(item: items[i]),
-                            );
-                          },
+                          physics: BouncingScrollPhysics(),
+                          child: Row(
+                            children: [
+                              ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: (items.length>4 ? 4 : items.length),
+                                itemBuilder: (context, i) {
+                                    return Padding(
+                                      padding: getPadding(
+                                        // right:  2,
+                                        right: i == 0 && Utils.checkIfArabicLocale() ? 14 : 2,
+                                        left: i == 0 && !Utils.checkIfArabicLocale() ? 14 : 2,
+                                      ),
+                                      child: CustomItemCard(item: items[i]),
+                                    );
+
+                                },
+                              ),
+                              SizedBox(width: getSize(10),),
+                              Visibility(
+                                visible:  items.length>4,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                                  },
+                                  child: Padding(
+                                    padding:getPadding(all: 16),
+                                    child: Column(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Icon(Icons.arrow_forward, color: ColorConstant.black.withOpacity(.6)),
+                                        SizedBox(height: getSize(10),),
+                                        MyText(
+                                          title: 'lbl_view_all'.tr,
+                                          fontSize:Utils.checkIfArabicLocale()?12: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorConstant.black.withOpacity(.6),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       // Items of the category
@@ -323,7 +363,7 @@ class CustomItemCard extends StatelessWidget {
                       child: CustomImageView(
                         bgColor: Colors.grey.shade300.withOpacity(.3),
                         url: Utils.getCompleteUrl(item.image?.key),
-                        height: getSize(150),
+                        height: getSize(120),
                         radius: 10,
                         padding: getPadding(all:12),
                         width: getSize(140),
@@ -363,9 +403,10 @@ class CustomItemCard extends StatelessWidget {
                             }else if((item.smallPrice??0) != 0 ) {
                               selectedSize = "small";
                             }
-                            controller.addItemsToCart(item,size: selectedSize);
+
                             quantity.value += 1;
                             controller.bottomBar.value = true;
+                            controller.addItemsToCart(item,size: selectedSize);
                           }else{
                             controller.showAddToCartItemSheet(context, item);
                           }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
@@ -100,26 +99,29 @@ class MainMenuController extends GetxController {
               )
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              MyText(
-                title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: Colors.black, // Change this to the desired color
-              ),
-
-              // Conditionally show the original price if a discount is present
-              if (discountedPrice != 0)
+          Container(
+            // color: Colors.red,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
                 MyText(
-                  title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
-                  fontSize: 12,
+                  title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                  cut: true, // Strikethrough for original price
+                  color: Colors.black, // Change this to the desired color
                 ),
-            ],
+            
+                // Conditionally show the original price if a discount is present
+                if (discountedPrice != 0)
+                  MyText(
+                    title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                    cut: true, // Strikethrough for original price
+                  ),
+              ],
+            ),
           )
         ],
       );

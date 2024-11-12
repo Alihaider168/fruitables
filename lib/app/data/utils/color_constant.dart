@@ -25,8 +25,6 @@ class ColorConstant {
   static const Color textFieldUnderlineColor = Color(0xffEAE9E9);
   static Color yellow = fromHex('#FEA846');
   static Color opacBlackColor = fromHex('#1E2329');
-
-  //todo change
   static Color black9004c = fromHex('#4c000000');
 
   static Color fromHex(String hexString) {

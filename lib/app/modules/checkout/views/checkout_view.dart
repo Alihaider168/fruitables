@@ -80,7 +80,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "syedalihaidershah0@gmail.com",
+                          title: "haideralihaider168@gmail.com",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),

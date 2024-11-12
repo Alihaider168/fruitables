@@ -122,7 +122,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                       // Category Header
                       Container(
                         width: Get.width,
-                       
+                       alignment:Utils.checkIfArabicLocale()?Alignment.centerRight:Alignment.centerLeft ,
                         padding: getPadding(right: 16,left: 16,bottom: 6,top: 24),
                         child: MyText(
                           alignRight: Utils.checkIfArabicLocale(),
@@ -209,6 +209,7 @@ class ItemWidget extends StatelessWidget {
                   ): Offstage(),
 
                   MyText(
+                    
                     title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
                     fontSize:Utils.checkIfArabicLocale() ?13: 14,
                     line: 1,
@@ -217,9 +218,11 @@ class ItemWidget extends StatelessWidget {
                   ),
                   item.description == null &&  item.englishDescription == null? Offstage() : SizedBox(height: getSize(3),),
                   item.description == null &&  item.englishDescription == null? Offstage() : MyText(
+                    
                     title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
                     fontSize: Utils.checkIfArabicLocale() ?10.5:12,
                     line: 2,
+                    
                     alignRight: Utils.checkIfArabicLocale(),
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w400,
@@ -269,7 +272,6 @@ class ItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       Visibility(
                         visible: controller.checkForDiscountedPrice(item)!= 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item),
                         child: Container(
@@ -324,7 +326,6 @@ class ItemWidget extends StatelessWidget {
                         }else{
                           controller.showAddToCartItemSheet(context,item,fromFav: fromFav,onFavTap: onFavTap);
                         }
-
                       },
                       child: Container(
                         width: getSize(35),
@@ -335,11 +336,9 @@ class ItemWidget extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child:
-                        // Obx(()=> quantity.value == 0
-                        //     ?
+                        
                         Icon(Icons.add,color: ColorConstant.white,)
-                            // : MyText(title: "${quantity.value}",color: ColorConstant.white,fontWeight: FontWeight.w600,)
-                        // ),
+                       
                       ),
                     ),
                   )

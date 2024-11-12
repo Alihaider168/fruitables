@@ -79,14 +79,13 @@ class CartBottom extends StatelessWidget{
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    MyText(
+                    Obx(()=> MyText(
                       title:
-                          Utils.checkIfArabicLocale() ? '${controller.cart.getTotalDiscountedPrice().toDouble()} ${'lbl_rs'.tr}' :
-                      '${'lbl_rs'.tr} ${controller.cart.getTotalDiscountedPrice().toDouble()}',
+                       '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.cart.getTotalDiscountedPrice().toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}',
                       fontSize: 14,
                       color: ColorConstant.white,
                       fontWeight: FontWeight.bold,
-                    ),
+                    ),),
                     MyText(
                       title: 'price_exclusive_tax'.tr,
                       fontSize: 12,

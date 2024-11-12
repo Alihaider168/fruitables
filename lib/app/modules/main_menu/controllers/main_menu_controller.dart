@@ -55,6 +55,7 @@ class MainMenuController extends GetxController {
 
   void addItemsToCart(Items item, {String size = 'small',int quantity = 1}){
     cart.addItem(item, size, quantity);
+    loadCart();
   }
 
 
@@ -62,7 +63,9 @@ class MainMenuController extends GetxController {
     RxInt quantity = 1.obs;
     RxString selectedSize = "small".obs;
     RxBool isLiked =(fromFav).obs;
-    if((item.largePrice??0) != 0 ){
+    if((item.bottlePrice??0) != 0 ){
+      selectedSize.value = "bottle";
+    }else if((item.largePrice??0) != 0 ){
       selectedSize.value = "large";
     }else if((item.mediumPrice??0) != 0 ) {
       selectedSize.value = "medium";
@@ -101,7 +104,7 @@ class MainMenuController extends GetxController {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               MyText(
-                title: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${discountedPrice != 0 ? discountedPrice : price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.black, // Change this to the desired color
@@ -110,7 +113,7 @@ class MainMenuController extends GetxController {
               // Conditionally show the original price if a discount is present
               if (discountedPrice != 0)
                 MyText(
-                  title: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${price}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                  title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
@@ -211,7 +214,7 @@ class MainMenuController extends GetxController {
 
                                           // Display the price
                                           TextSpan(
-                                            text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
+                                            text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${checkForDiscountedPrice(item) != 0 ? checkForDiscountedPrice(item) : calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700,
@@ -220,9 +223,9 @@ class MainMenuController extends GetxController {
                                           ),
 
                                           // Conditionally show the original price if a discount is present
-                                          if (checkForDiscountedPrice(item) != 0)
+                                          if (checkForDiscountedPrice(item) != 0   && checkForDiscountedPrice(item) != calculatePrice(item))
                                             TextSpan(
-                                              text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                                              text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
@@ -234,7 +237,7 @@ class MainMenuController extends GetxController {
                                       ),
                                     ),
                                     Visibility(
-                                      visible: checkForDiscountedPrice(item)!= 0,
+                                      visible: checkForDiscountedPrice(item)!= 0 && checkForDiscountedPrice(item) != calculatePrice(item),
                                       child: Container(
                                         margin: getMargin(left: 15),
                                         padding: getPadding(left: 10,right: 10,top: 5,bottom: 5),
@@ -252,9 +255,9 @@ class MainMenuController extends GetxController {
                                     ),
                                   ],
                                 ),
-                                item.description == null ? Offstage() : SizedBox(height: getSize(10),),
-                                item.description == null ? Offstage() : MyText(
-                                  title: item.description??"",
+                                item.description == null &&  item.englishDescription == null? Offstage() : SizedBox(height: getSize(10),),
+                                item.description == null &&  item.englishDescription == null? Offstage() : MyText(
+                                  title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
                                   fontSize: 14,
                                   color: ColorConstant.black,
                                 ),
@@ -277,9 +280,10 @@ class MainMenuController extends GetxController {
                                         MyText(title: "required *  ",fontSize: 14,color: ColorConstant.red,),
                                       ],
                                     ),
-                                    getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
-                                    getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
-                                    getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                    ((item.smallPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
+                                    ((item.mediumPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
+                                    ((item.largePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                    ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_bottle'.tr,value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
                                   ],
                                 ): Offstage()
                               ],

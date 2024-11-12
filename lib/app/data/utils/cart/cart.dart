@@ -45,6 +45,7 @@ class Cart {
         // If exists, increase the quantity
         cartItem.quantity += quantity;
         itemExists = true;
+
         break;
       }
     }
@@ -53,6 +54,8 @@ class Cart {
     if (!itemExists) {
       _cartItems.add(CartItem(item: item, size: size,quantity: quantity));
     }
+
+    getTotalDiscountedPrice();
     saveCartToPreferences();
   }
 
@@ -105,7 +108,6 @@ class Cart {
         }else{
           totalPrice += ((cartItem.item.largePrice ?? 0) * cartItem.quantity);
         }
-        // totalPrice += ((cartItem.item.mobileLarge ?? 0)* cartItem.quantity);
       }
     }
     return totalPrice;

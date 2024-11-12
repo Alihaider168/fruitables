@@ -203,6 +203,7 @@ class Items {
   Image? image;
   String? englishName;
   String? description;
+  String? englishDescription;
   bool? isNew;
   bool? isHot;
   bool? isTrending;
@@ -222,6 +223,7 @@ class Items {
     this.image,
     this.englishName,
     this.description,
+    this.englishDescription,
     this.isNew,
     this.isHot,
     this.isTrending,
@@ -242,9 +244,10 @@ class Items {
     image = (json['image'] as Map<String,dynamic>?) != null ? Image.fromJson(json['image'] as Map<String,dynamic>) : null;
     englishName = json['englishName'] as String?;
     description = json['description'] as String?;
-    isNew = json['is_new'] as bool?;
-    isHot = json['is_hot'] as bool?;
-    isTrending = json['is_trending'] as bool?;
+    englishDescription = json['englishDescription'] as String?;
+    isNew = json['isNew'] as bool?;
+    isHot = json['isHot'] as bool?;
+    isTrending = json['isTrending'] as bool?;
     smallPrice = json['smallPrice'];
     mediumPrice = json['mediumPrice'];
     largePrice = json['largePrice'];
@@ -263,9 +266,10 @@ class Items {
     json['image'] = image?.toJson();
     json['englishName'] = englishName;
     json['description'] = description;
-    json['is_new'] = isNew;
-    json['is_hot'] = isHot;
-    json['is_trending'] = isTrending;
+    json['englishDescription'] = englishDescription;
+    json['isNew'] = isNew;
+    json['isHot'] = isHot;
+    json['isTrending'] = isTrending;
     json['smallPrice'] = smallPrice;
     json['mediumPrice'] = mediumPrice;
     json['largePrice'] = largePrice;

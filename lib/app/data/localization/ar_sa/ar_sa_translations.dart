@@ -21,7 +21,7 @@ final Map<String, String> arSa = {
   'lbl_hot': 'حار',
   'lbl_trending': 'شائع',
   'lbl_from': 'من',
-  'lbl_rs': 'ريال',
+  'lbl_rs': 'SAR',
   'lbl_off': 'خصم',
   'lbl_view_all': 'عرض الكل',
   'lbl_deliver_to': 'التوصيل إلى',

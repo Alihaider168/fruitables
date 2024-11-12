@@ -308,10 +308,10 @@ class CheckoutView extends GetView<CheckoutController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}"),
-                        Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}"): Offstage(),
-                        _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}"),
-                        _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}", isBold: true),
+                        _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}"),
+                        Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}"): Offstage(),
+                        _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}"),
+                        _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
                       ],
                     ),

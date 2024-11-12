@@ -215,9 +215,9 @@ class ItemWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w700,
                   ),
-                  item.description == null ? Offstage() : SizedBox(height: getSize(3),),
-                  item.description == null ? Offstage() : MyText(
-                    title: item.description??"",
+                  item.description == null &&  item.englishDescription == null? Offstage() : SizedBox(height: getSize(3),),
+                  item.description == null &&  item.englishDescription == null? Offstage() : MyText(
+                    title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
                     fontSize: 14,
                     line: 2,
                     overflow: TextOverflow.ellipsis,
@@ -244,7 +244,7 @@ class ItemWidget extends StatelessWidget {
 
                               // Display the price
                               TextSpan(
-                                text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
+                                text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
@@ -255,7 +255,7 @@ class ItemWidget extends StatelessWidget {
                               // Conditionally show the original price if a discount is present
                               if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                                 TextSpan(
-                                  text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                                  text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,

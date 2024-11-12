@@ -133,26 +133,30 @@ class _MainMenuViewState extends State<MainMenuView> {
                 },
               ),
               SizedBox(height: getSize(15),),
-              GestureDetector(
-                onTap: (){
-                  controller.showAllCategories.value = !controller.showAllCategories.value;
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyText(
-                      title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    SizedBox(
-                      width: getSize(5),
-                    ),
-                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+              
+              Obx(()=> Visibility(
+                visible: (controller.menuModel.value.data?.categories?.length??0) >8,
+                child: GestureDetector(
+                  onTap: (){
+                    controller.showAllCategories.value = !controller.showAllCategories.value;
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MyText(
+                        title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(
+                        width: getSize(5),
+                      ),
+                      Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
 
-                  ],
+                    ],
+                  ),
                 ),
-              )
+              ))
             ],
           ): Offstage()),
 
@@ -398,7 +402,7 @@ class CustomItemCard extends StatelessWidget {
 
                     // Display the price
                     TextSpan(
-                      text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
+                      text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -409,7 +413,7 @@ class CustomItemCard extends StatelessWidget {
                     // Conditionally show the original price if a discount is present
                     if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                       TextSpan(
-                        text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                        text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,

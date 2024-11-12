@@ -129,4 +129,5 @@ final Map<String, String> enUs = {
   "estimated_pickup_time": "Estimated Pickup Time",
   "locate_me": "Locate Me",
   "branch": "Branch",
+  "lbl_bottle": "Bottle",
 };

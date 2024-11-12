@@ -100,7 +100,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                               fontWeight: FontWeight.bold,
                             ),
                             MyText(title:
-                              "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${item.price.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+                              "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                               fontWeight: FontWeight.bold,
                             ),
                           ],
@@ -175,7 +175,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           ),
           MyText(title:
-            "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}${amount.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr}",
+            "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${amount.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
               fontSize: fontSize,
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           ),

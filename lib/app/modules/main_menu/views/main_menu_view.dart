@@ -1,12 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/widgets/cart_bottom.dart';
 import 'package:fruitables/app/data/widgets/custom_collapsable_widget.dart';
 import 'package:fruitables/app/data/widgets/custom_drawer.dart';
-import 'package:fruitables/app/modules/category_detail/views/category_detail_view.dart';
-
-import 'package:get/get.dart';
 
 import '../controllers/main_menu_controller.dart';
 
@@ -50,8 +46,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                 children: [
                   MyText(
                     title: !Constants.isDelivery.value ? "pickup_from".tr : "lbl_deliver_to".tr,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  fontSize:Utils.checkIfArabicLocale()?11: 14,
+                    fontWeight: FontWeight.w500,
                     color: ColorConstant.white,
                   ),
                   Icon(Icons.keyboard_arrow_down,color: ColorConstant.white,size: getSize(20),)
@@ -59,8 +55,8 @@ class _MainMenuViewState extends State<MainMenuView> {
               ),
               MyText(
                 title: Constants.selectedBranch?.address??"",
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+                 fontSize:Utils.checkIfArabicLocale()?11: 14,
+                    fontWeight: FontWeight.w600,
                 color: ColorConstant.white,
               )
             ],
@@ -90,12 +86,20 @@ class _MainMenuViewState extends State<MainMenuView> {
             children: [
               SizedBox(height: getSize(15),),
               GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, // Number of items per row
-                  childAspectRatio: 0.68, // Adjust the aspect ratio as needed
+                padding: getPadding(right: getSize(8), left: getSize(8)),
+                
+                gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 2,
+                  
+                  crossAxisSpacing: 2.5,
+                   // Number of items per row
+                  childAspectRatio:  .7,// Adjust the aspect ratio as needed
                 ),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap:true,
+                
+                
                 itemCount: !controller.showAllCategories.value ?
 
                 (  (controller.menuModel.value.data?.categories?.length??0) >8
@@ -108,23 +112,28 @@ class _MainMenuViewState extends State<MainMenuView> {
                       Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
                     },
                     child: Container(
-                      padding: getPadding(left: 10,right: 10,top: 5,bottom: 10),
+                      padding: getPadding(left: 3,right: 3,top: 5,bottom:0),
+                      
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomImageView(
                             url:Utils.getCompleteUrl( cat.appImage?.key),
+                            radius: 12,
                             // url: cat.image,
-                            height: getSize(80),
-                            padding: getPadding(all: getSize(5)),
+                            height: getSize(66),
+                            padding: getPadding(bottom: getSize(8),top: getSize(8), left: getSize(16), right: getSize(16)),
                             margin: getMargin(bottom: getSize(5)),
-                            width: size.width,
+                            width: getSize(60),
+                            
                             border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
                           MyText(
                             title: Utils.checkIfArabicLocale() ? cat.arabicName??"" : cat.englishName??"",
                             center: true,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
+                            fontSize:Utils.checkIfArabicLocale()?10.5: 12,
+                            
+                            fontWeight: FontWeight.w600,
                           )
                         ],
                       ),
@@ -132,31 +141,28 @@ class _MainMenuViewState extends State<MainMenuView> {
                   );
                 },
               ),
-              SizedBox(height: getSize(15),),
-              
-              Obx(()=> Visibility(
-                visible: (controller.menuModel.value.data?.categories?.length??0) >8,
-                child: GestureDetector(
-                  onTap: (){
-                    controller.showAllCategories.value = !controller.showAllCategories.value;
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyText(
-                        title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      SizedBox(
-                        width: getSize(5),
-                      ),
-                      Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+              // SizedBox(height: getSize(5),),
+              if((controller.menuModel.value.data?.categories?.length??0  ) > 8)
+              GestureDetector(
+                onTap: (){
+                  controller.showAllCategories.value = !controller.showAllCategories.value;
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyText(
+                      title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
+                      fontSize:Utils.checkIfArabicLocale()?11: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(
+                      width: getSize(5),
+                    ),
+                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
 
-                    ],
-                  ),
+                  ],
                 ),
-              ))
+              )
             ],
           ): Offstage()),
 
@@ -164,7 +170,6 @@ class _MainMenuViewState extends State<MainMenuView> {
           Column(
             children: [
 
-              const SizedBox(height: 10),
 
               ListView.separated(
                 itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
@@ -183,14 +188,14 @@ class _MainMenuViewState extends State<MainMenuView> {
                     children: [
                       // Category Header
                       Container(
-                        padding: getPadding(all: 16),
+                        padding: getPadding(left: 16, right: 16, bottom: 8, top: 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             MyText(
                               title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
 
                             Visibility(
@@ -201,8 +206,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                                 },
                                 child: MyText(
                                   title: 'lbl_view_all'.tr,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize:Utils.checkIfArabicLocale()?11: 14,
+                                  fontWeight: FontWeight.w500,
                                   color: ColorConstant.black.withOpacity(.6),
                                 ),
                               ),
@@ -211,13 +216,14 @@ class _MainMenuViewState extends State<MainMenuView> {
                         ),
                       ),
                       Container(
-                        height: getSize(182),
+                        padding: getPadding(right: 12, left: 12),
+                        height: getSize(195),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: items.length>4 ? 4 : items.length,
                           itemBuilder: (context, i) {
                             return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
+                              padding: const EdgeInsets.only(right: 2.0),
                               child: CustomItemCard(item: items[i]),
                             );
                           },
@@ -302,29 +308,32 @@ class CustomItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: getSize(140),
-                height: getSize(130),
+                width: getSize(135),
+                height: getSize(143),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(getSize(10)),
                   // color: ColorConstant.grayBackground.withOpacity(.5),
                   border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                 ),
-                padding: getPadding(all: 5),
+                // padding: getPadding(all: 5),
                 child: Stack(
                   children: [
 
                     Center(
                       child: CustomImageView(
+                        bgColor: Colors.grey.shade300.withOpacity(.3),
                         url: Utils.getCompleteUrl(item.image?.key),
-                        height: getSize(110),
-                        width: getSize(110),
+                        height: getSize(150),
+                        radius: 10,
+                        padding: getPadding(all:12),
+                        width: getSize(140),
                         fit: BoxFit.contain,
                       ),
                     ),
                     controller.checkForDiscountedPercentage(item)!= 0 ?Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        // margin: getMargin(left: 5,top: 5),
+                        margin: getMargin(left: 5,top: 5),
                         padding: getPadding(left: 5,right: 5,top: 3,bottom: 3),
                         decoration: BoxDecoration(
                           color: Colors.red,
@@ -332,8 +341,8 @@ class CustomItemCard extends StatelessWidget {
                         ),
                         child: MyText(
                           title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
-                          fontSize: 8,
-                          fontWeight: FontWeight.w700,
+                          fontSize:Utils.checkIfArabicLocale()?9: 9,
+                          fontWeight: FontWeight.w500,
                           color: ColorConstant.white,
                         ),
                       ),
@@ -383,18 +392,20 @@ class CustomItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: getSize(3)),
+              SizedBox(height: getSize(8)),
 
               // Pricing
               RichText(
+                textAlign: Utils.checkIfArabicLocale()?TextAlign.right:TextAlign.left,
                 text: TextSpan(
+                  
                   children: [
                     // Check if the prefix 'From' should be added
                     if (controller.checkForMultipleValues(item))
                       TextSpan(
                         text: '${'lbl_from'.tr} ', // Prefix text
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize:Utils.checkIfArabicLocale()?10.5: 12,
                           fontWeight: FontWeight.w700,
                           color: controller.checkForMultipleValues(item) ? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
                         ),
@@ -402,21 +413,20 @@ class CustomItemCard extends StatelessWidget {
 
                     // Display the price
                     TextSpan(
-                      text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
+                      text: "${Utils.checkIfArabicLocale() ? "lbl_rs".tr: "lbl_rs".tr} ${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                         color: controller.checkForDiscountedPrice(item) != 0? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
                       ),
                     ),
-
                     // Conditionally show the original price if a discount is present
                     if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
                       TextSpan(
-                        text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                        text: "${Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ${controller.calculatePrice(item)} ${!Utils.checkIfArabicLocale() ? "": "lbl_rs".tr} ",
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
                           color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                           decoration: TextDecoration.lineThrough, // Strikethrough for original price
                         ),
@@ -424,11 +434,11 @@ class CustomItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: getSize(2),),
+              SizedBox(height: getSize(0),),
               MyText(
                 title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontSize:Utils.checkIfArabicLocale()?11: 13,
+                fontWeight: FontWeight.w400,
                 color: ColorConstant.textGrey,
                 line: 1,
                 overflow: TextOverflow.ellipsis,

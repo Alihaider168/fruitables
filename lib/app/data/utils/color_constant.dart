@@ -18,7 +18,7 @@ class ColorConstant {
   static Color unselectedIcon = fromHex('#CDCDCD');
   static Color grayBorder = fromHex('#707070');
   static Color greenActive = fromHex('#6DD400');
-  static Color textGrey = fromHex('#A3A8AD');
+  static Color textGrey = fromHex('#909191');
   static Color grayBackground = fromHex('#f0f0f0');
   static Color gray50 = fromHex('#fbfbfd');
   static Color gray300 = fromHex('#e6e6e6');

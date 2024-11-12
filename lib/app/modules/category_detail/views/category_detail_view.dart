@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/widgets/cart_bottom.dart';
-import 'package:fruitables/app/data/widgets/custom_collapsable_widget.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
-
-import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../controllers/category_detail_controller.dart';
@@ -20,10 +16,10 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
           padding:  Utils.checkIfArabicLocale() ? getPadding(right: 15): getPadding(left: 15),
           child: GestureDetector(
             onTap: ()=>  Get.back(),
-            child: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
+            child: Icon(Icons.arrow_back_ios,color: ColorConstant.white,size: getSize(18),),
           ),
         ),
-        leadingWidth: getSize(35),
+        leadingWidth: getSize(30),
         title: GestureDetector(
           onTap: (){
             Get.toNamed(Routes.LOCATION_SELECTION);
@@ -35,8 +31,8 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                 children: [
                   MyText(
                     title: !Constants.isDelivery.value ? "pickup_from".tr :"lbl_deliver_to".tr,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize:Utils.checkIfArabicLocale() ?11: 14,
+                    fontWeight: FontWeight.w500,
                     color: ColorConstant.white,
                   ),
                   Icon(Icons.keyboard_arrow_down,color: ColorConstant.white,size: getSize(20),)
@@ -44,8 +40,8 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
               ),
               MyText(
                 title: Constants.selectedBranch?.address??"",
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+                fontSize:Utils.checkIfArabicLocale() ?11: 14,
+                fontWeight: FontWeight.w600,
                 color: ColorConstant.white,
               )
             ],
@@ -95,11 +91,12 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                         ),
                         child: Center(
                           child: MyText(
-                            title: Utils.checkIfArabicLocale() ? item.arabicName ?? "" : item.englishName ?? "",
+                            title: Utils.checkIfArabicLocale() ? item.arabicName ?? "" : item.englishName?.toUpperCase() ?? "",
                             color: controller.selectedCategoryIndex.value == index
                                 ? Colors.white
                                 : ColorConstant.textGrey,
-                            fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                            fontWeight:controller.selectedCategoryIndex.value == index? FontWeight.w500:FontWeight.w600,
                           ),
                         ),
                       ),
@@ -124,12 +121,15 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
                     children: [
                       // Category Header
                       Container(
-                        padding: getPadding(right: 16,left: 16,bottom: 16),
+                        width: Get.width,
+                       
+                        padding: getPadding(right: 16,left: 16,bottom: 6,top: 24),
                         child: MyText(
-                          title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
+                          alignRight: Utils.checkIfArabicLocale(),
+                          title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName?.toUpperCase()??"",
                           // style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontSize:Utils.checkIfArabicLocale() ?22: 22,
+                          fontWeight: FontWeight.w600,
                           // ),
                         ),
                       ),
@@ -168,7 +168,7 @@ class ItemWidget extends StatelessWidget {
         controller.showAddToCartItemSheet(context,item,fromFav: fromFav,onFavTap: onFavTap);
       },
       child: Container(
-        padding: getPadding(top: 15,bottom: 20,left: 16,right: 16),
+        padding: getPadding(top: 10,bottom: 15,left: 16,right: 16),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: ColorConstant.grayBackground,width: 3)
@@ -189,7 +189,7 @@ class ItemWidget extends StatelessWidget {
                         // width: getSize(70),
                         height: getSize(30),
                         margin: getMargin(bottom: 10),
-                        padding: getPadding(left: 15,right: 15),
+                        padding: getPadding(left: Utils.checkIfArabicLocale() ?15:10,right:Utils.checkIfArabicLocale() ?15: 10),
                         decoration: BoxDecoration(
                             color: ColorConstant.primaryPink,
                             borderRadius: BorderRadius.only(
@@ -201,8 +201,8 @@ class ItemWidget extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child: MyText(title: item.isNew == true ? "lbl_new".tr : item.isHot == true ? "lbl_hot".tr : item.isTrending == true ? "lbl_trending".tr : "",
-                          color: ColorConstant.white,fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          color: ColorConstant.white,fontWeight: FontWeight.w500,
+                          fontSize: 11,
                           ),
                       ),
                     ],
@@ -210,18 +210,19 @@ class ItemWidget extends StatelessWidget {
 
                   MyText(
                     title: Utils.checkIfArabicLocale() ? item.name??"" : item.englishName??"",
-                    fontSize: 15,
+                    fontSize:Utils.checkIfArabicLocale() ?13: 14,
                     line: 1,
                     overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                   item.description == null &&  item.englishDescription == null? Offstage() : SizedBox(height: getSize(3),),
                   item.description == null &&  item.englishDescription == null? Offstage() : MyText(
                     title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
-                    fontSize: 14,
+                    fontSize: Utils.checkIfArabicLocale() ?10.5:12,
                     line: 2,
+                    alignRight: Utils.checkIfArabicLocale(),
                     overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                     color: ColorConstant.textGrey,
                   ),
                   SizedBox(height: getSize(10),),
@@ -229,41 +230,42 @@ class ItemWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: RichText(
+                          textAlign: Utils.checkIfArabicLocale() ?TextAlign.right:TextAlign.left,
                           text: TextSpan(
-                            children: [
-                              // Check if the prefix 'From' should be added
-                              if (controller.checkForMultipleValues(item))
-                                TextSpan(
-                                  text: '${'lbl_from'.tr}  ', // Prefix text
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black, // Change this to the desired color
-                                  ),
-                                ),
+                             
+                  children: [
+                    // Check if the prefix 'From' should be added
+                    if (controller.checkForMultipleValues(item))
+                      TextSpan(
+                        text: '${'lbl_from'.tr} ', // Prefix text
+                        style: TextStyle(
+                          fontSize:Utils.checkIfArabicLocale()?10.5: 12,
+                          fontWeight: FontWeight.w700,
+                          color: controller.checkForMultipleValues(item) ? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
+                        ),
+                      ),
 
-                              // Display the price
-                              TextSpan(
-                                text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.checkForDiscountedPrice(item) != 0 ? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"} ",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black, // Change this to the desired color
-                                ),
-                              ),
-
-                              // Conditionally show the original price if a discount is present
-                              if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
-                                TextSpan(
-                                  text: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.calculatePrice(item)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
-                                    decoration: TextDecoration.lineThrough, // Strikethrough for original price
-                                  ),
-                                ),
-                            ],
+                    // Display the price
+                    TextSpan(
+                      text: "${Utils.checkIfArabicLocale() ? "lbl_rs".tr: "lbl_rs".tr} ${controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item)? controller.checkForDiscountedPrice(item) : controller.calculatePrice(item)}  ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: controller.checkForDiscountedPrice(item) != 0? ColorConstant.primaryPink :Colors.black, // Change this to the desired color
+                      ),
+                    ),
+                    // Conditionally show the original price if a discount is present
+                    if (controller.checkForDiscountedPrice(item) != 0 && controller.checkForDiscountedPrice(item) != controller.calculatePrice(item))
+                      TextSpan(
+                        text: "${Utils.checkIfArabicLocale() ? "lbl_rs".tr: "lbl_rs".tr} ${controller.calculatePrice(item)} ",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
+                          decoration: TextDecoration.lineThrough, // Strikethrough for original price
+                        ),
+                      ),
+                  ],
                           ),
                         ),
                       ),
@@ -279,8 +281,8 @@ class ItemWidget extends StatelessWidget {
                           ),
                           child: MyText(
                             title: "${controller.checkForDiscountedPercentage(item)!= 0? controller.checkForDiscountedPercentage(item).toString().split(".")[0] :""}% ${'lbl_off'.tr}",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),

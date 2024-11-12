@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/utils/helper_functions.dart';
 import 'package:fruitables/app/data/utils/language_utils.dart';
@@ -82,12 +81,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 color: ColorConstant.white
               ),
               accountName: MyText(
-                title: 'Syed Ali Haider',
+                title: 'Ali Haider',
                 fontSize: 18, fontWeight: FontWeight.bold,
                 color: ColorConstant.black,
               ),
               accountEmail: MyText(
-                title: '+923076497552',
+                title: '+923164260000',
                 fontSize: 14,
                 color: ColorConstant.black,
               ),
@@ -393,12 +392,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
               SizedBox(height: getSize(20)),
               CustomButton(
-                text: "customercare@odpakistan.com",
+                text: "customercare@rexsa.com",
                 prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
                 onTap: (){
                   final Uri emailUri = Uri(
                       scheme: 'mailto',
-                      path: 'customercare@odpakistan.com',
+                      path: 'customercare@rexsa.com',
                       queryParameters: {
                         'subject': 'Support Request'
                       }

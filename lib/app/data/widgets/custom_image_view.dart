@@ -28,8 +28,9 @@ class CustomImageView extends StatelessWidget {
   VoidCallback? onTap;
   EdgeInsetsGeometry? margin;
   EdgeInsetsGeometry? padding;
-  BorderRadiusGeometry? radius;
+  double? radius;
   BoxBorder? border;
+  Color? bgColor;
   bool boxShadow = false;
 
   ///a [CustomImageView] it can be used for showing any type of images
@@ -43,6 +44,7 @@ class CustomImageView extends StatelessWidget {
       this.height,
       this.width,
       this.color,
+      this.bgColor,
       this.fit,
       this.alignment,
       this.padding,
@@ -78,7 +80,7 @@ class CustomImageView extends StatelessWidget {
   _buildCircleImage() {
     if (radius != null) {
       return ClipRRect(
-        borderRadius: radius!,
+        borderRadius: BorderRadius.circular(radius??0),
         child: _buildImageWithBorder(),
       );
     } else {
@@ -90,10 +92,13 @@ class CustomImageView extends StatelessWidget {
   _buildImageWithBorder() {
     if (border != null) {
       return Container(
+
         padding: padding,
         decoration: BoxDecoration(
+                                              color: bgColor,
+
           border: border,
-          borderRadius: radius,
+          borderRadius: BorderRadius.circular(radius??0),
         ),
         child: _buildImageView(),
       );
@@ -105,7 +110,9 @@ class CustomImageView extends StatelessWidget {
   Widget _buildImageView() {
     if (svgPath != null && svgPath!.isNotEmpty) {
       return boxShadow == true
-          ? Container(
+          ? Container(                                              color: bgColor ,
+
+            
               height: height,
               width: width,
               decoration: BoxDecoration(
@@ -119,6 +126,7 @@ class CustomImageView extends StatelessWidget {
                 ],
               ),
               child: SvgPicture.asset(
+                
                 svgPath!,
                 height: height,
                 width: width,
@@ -126,10 +134,13 @@ class CustomImageView extends StatelessWidget {
                 color: color,
               ),
             )
-          : SizedBox(
+          : Container(
+                                              color: bgColor ,
+
               height: height,
               width: width,
               child: SvgPicture.asset(
+
                 svgPath!,
                 height: height,
                 width: width,
@@ -138,42 +149,56 @@ class CustomImageView extends StatelessWidget {
               ),
             );
     } else if (file != null && file!.path.isNotEmpty) {
-      return Image.file(
-        file!,
-        height: height,
-        width: width,
-        fit: fit ?? BoxFit.cover,
-        color: color,
-      );
-    } else if (url != null && url!.isNotEmpty) {
-      return CachedNetworkImage(
-        height: height,
-        width: width,
-        fit: fit,
-        imageUrl: url!,
-        color: color,
-        placeholder: (context, url) => SizedBox(
-          height: 30,
-          width: 30,
-          child: LinearProgressIndicator(
-            color: Colors.grey.shade200,
-            backgroundColor: Colors.grey.shade100,
-          ),
-        ),
-        errorWidget: (context, url, error) => Image.asset(
-          placeHolder,
+      return Container(
+                                              color: bgColor,
+
+        child: Image.file(
+        
+          file!,
           height: height,
           width: width,
           fit: fit ?? BoxFit.cover,
+          color: color,
+        ),
+      );
+    } else if (url != null && url!.isNotEmpty) {
+      return Container(
+                                    color: bgColor,
+
+        child: CachedNetworkImage(
+          height: height,
+          width: width,
+          fit: fit,
+          imageUrl: url!,
+          color: color,
+          placeholder: (context, url) => SizedBox(
+            height: 30,
+            width: 30,
+            child: LinearProgressIndicator(
+              color: Colors.grey.shade200,
+              backgroundColor: Colors.grey.shade100,
+            ),
+          ),
+          errorWidget: (context, url, error) => Image.asset(
+            placeHolder,
+            height: height,
+            width: width,
+            fit: fit ?? BoxFit.cover,
+          ),
         ),
       );
     } else if (imagePath != null && imagePath!.isNotEmpty) {
-      return Image.asset(
-        imagePath!,
-        height: height,
-        width: width,
-        fit: fit ?? BoxFit.cover,
-        color: color,
+      return Container(
+        color: bgColor,
+
+        child: Image.asset(
+          
+          imagePath!,
+          height: height,
+          width: width,
+          fit: fit ?? BoxFit.cover,
+          color: color,
+        ),
       );
     }
     return const SizedBox();

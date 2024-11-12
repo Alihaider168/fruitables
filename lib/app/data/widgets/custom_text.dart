@@ -47,7 +47,7 @@ class MyTextState extends State<MyText> {
       overflow: widget.overflow ?? TextOverflow.visible,
       maxLines: widget.line,
       textScaleFactor: 1.0,
-      style: GoogleFonts.getFont(widget.family ?? "Nunito",
+      style: GoogleFonts.getFont(Utils.checkIfArabicLocale()?"Noto Kufi Arabic":"Poppins",
           wordSpacing: widget.letterSpacing,
           height: widget.height,
           decoration: widget.under == true
@@ -68,3 +68,6 @@ class MyTextState extends State<MyText> {
     );
   }
 }
+// Amiri
+//Noto Kufi Arabic
+//Noto Naskh Arabic

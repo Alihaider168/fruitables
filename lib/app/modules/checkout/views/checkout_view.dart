@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
-
-import 'package:get/get.dart';
 
 import '../../../data/core/app_export.dart';
 import '../controllers/checkout_controller.dart';
@@ -59,7 +56,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "Syed Ali Haider",
+                          title: "Ali Haider",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -71,7 +68,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "+923076497552",
+                          title: "+923164260000",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),

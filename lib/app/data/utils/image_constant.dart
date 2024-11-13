@@ -2,6 +2,7 @@ class ImageConstant {
   static final String _imagePath = 'assets/images';
 
   static String splash = '$_imagePath/splashLogo.png';
+  static String sp = '$_imagePath/sp.jpg';
     static String logo2 = '$_imagePath/logo3.png';
   static String delivery = '$_imagePath/delivery.svg';
   static String pickup = '$_imagePath/pickup.svg';

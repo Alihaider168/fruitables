@@ -14,8 +14,6 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){
-          controller.menuController.cart.clearCart();
-          controller.menuController.orderAdded.value = true;
           Get.offAllNamed(Routes.MAIN_MENU);
         },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
@@ -30,9 +28,6 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
           IconButton(
             icon: Icon(Icons.close,color: ColorConstant.white,),
             onPressed: ()  {
-              controller.menuController.cart.clearCart();
-              controller.menuController.orderAdded.value = true;
-              controller.menuController.loadCart();
               Get.offAllNamed(Routes.MAIN_MENU);
               },
           ),
@@ -90,7 +85,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        MyText(title:"Payment Method", fontWeight: FontWeight.bold),
+                        MyText(title:"payment_method".tr, fontWeight: FontWeight.bold),
                         SizedBox(height: 5),
                         MyText(title:"cash_on_delivery".tr),
                       ],
@@ -112,17 +107,17 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
                     MyText(title:"item_list".tr, fontSize: 18, fontWeight: FontWeight.bold),
                     SizedBox(height: 10),
                     // Item 1
-                    _buildCartItemsList(),
+                    // _buildCartItemsList(),
 
                     // Subtotal and Delivery Fee
-                    _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+                    // _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+                    // _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+                    // _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+                    // _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
 
                     Divider(thickness: 1, color: ColorConstant.textGrey.withOpacity(.3)),
                     // Grand Total
-                    _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+                    // _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
                   ],
                 ),
               ),
@@ -133,123 +128,84 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
     );
   }
 
-  Widget _buildItemRow({
-    required String itemName,
-    required int quantity,
-    required double price,
-    List<String>? details,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            MyText(title:
-              "$itemName x$quantity",
-              fontSize: 16,
-            ),
-            MyText(title:
-              "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
-              fontSize: 16,
-            ),
-          ],
-        ),
-        if (details != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: details
-                  .map((detail) => MyText(title:
-                detail,
-                color: ColorConstant.textGrey,
-              ))
-                  .toList(),
-            ),
-          ),
-      ],
-    );
-  }
+  // Widget _buildCartItemsList() {
+  //   return ListView.builder(
+  //     scrollDirection: Axis.vertical,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     shrinkWrap: true,
+  //     itemCount: controller.menuController.cart.items.length,
+  //     itemBuilder: (context, i) {
+  //       final item = controller.menuController.cart.items[i];
+  //       return _buildCartItem(item: item,index: i);
+  //     },
+  //   );
+  //
+  //
+  // }
 
-  Widget _buildCartItemsList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: controller.menuController.cart.items.length,
-      itemBuilder: (context, i) {
-        final item = controller.menuController.cart.items[i];
-        return _buildCartItem(item: item,index: i);
-      },
-    );
-
-
-  }
-
-  Widget _buildCartItem({required CartItem item,required int index}) {
-    return Container(
-      margin: getMargin(bottom: 10),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: ColorConstant.textGrey.withOpacity(.3)
-          )
-        )
-      ),
-      child: Padding(
-        padding: getPadding(left: 16,right: 16,top: 10,bottom: 10),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    MyText(
-                      title: Utils.checkIfArabicLocale() ? item.item.name ?? "" : item.item.englishName ?? "",
-                      color: ColorConstant.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    SizedBox(width: getSize(5),),
-
-                    MyText(
-                      title: "(x${item.quantity})",
-                      color: ColorConstant.textGrey,
-                    ),
-                  ],
-                ),
-                controller.menuController.checkForMultipleValues(item.item) ? MyText(
-                  title: "${"lbl_size".tr}: ${item.size}",
-                  color: ColorConstant.black,
-                  fontSize: 14,
-                ) : Offstage(),
-              ],
-            ),
-            Spacer(),
-            MyText(
-              title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
-              color: ColorConstant.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ],
-        ),
-
-      ),
-    );
-  }
+  // Widget _buildCartItem({required CartItem item,required int index}) {
+  //   return Container(
+  //     margin: getMargin(bottom: 10),
+  //     decoration: BoxDecoration(
+  //       border: Border(
+  //         bottom: BorderSide(
+  //           color: ColorConstant.textGrey.withOpacity(.3)
+  //         )
+  //       )
+  //     ),
+  //     child: Padding(
+  //       padding: getPadding(left: 16,right: 16,top: 10,bottom: 10),
+  //       child: Row(
+  //         children: [
+  //           Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   MyText(
+  //                     title: Utils.checkIfArabicLocale() ? item.item.name ?? "" : item.item.englishName ?? "",
+  //                     color: ColorConstant.black,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                   SizedBox(width: getSize(5),),
+  //
+  //                   MyText(
+  //                     title: "(x${item.quantity})",
+  //                     color: ColorConstant.textGrey,
+  //                   ),
+  //                 ],
+  //               ),
+  //               controller.menuController.checkForMultipleValues(item.item) ? MyText(
+  //                 title: "${"lbl_size".tr}: ${item.size}",
+  //                 color: ColorConstant.black,
+  //                 fontSize: 14,
+  //               ) : Offstage(),
+  //             ],
+  //           ),
+  //           Spacer(),
+  //           MyText(
+  //             title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.checkPricesForCheckout(item.item, item.size) * item.quantity}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+  //             color: ColorConstant.black,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ],
+  //       ),
+  //
+  //     ),
+  //   );
+  // }
 
 
-  Widget _buildSummaryRow(String label, String amount, {bool isBold = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
-          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
-        ],
-      ),
-    );
-  }
+  // Widget _buildSummaryRow(String label, String amount, {bool isBold = false}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 4.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+  //         MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

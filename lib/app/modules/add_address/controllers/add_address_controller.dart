@@ -10,6 +10,24 @@ class AddAddressController extends GetxController {
   Rx<Circle> currentCircle  = const Circle(circleId: CircleId('current_location_circle'),).obs;
   TextEditingController addressController = TextEditingController();
   TextEditingController regionController = TextEditingController();
+  TextEditingController floorController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+
+  final List<String> labels = [
+    "home".tr,
+    "work".tr,
+    "partner".tr,
+    "other".tr,
+  ];
+
+  final List<String> labelImages = [
+    ImageConstant.home,
+    ImageConstant.work,
+    ImageConstant.partner,
+    ImageConstant.other,
+  ];
+
+  RxInt selectedLabel = (-1).obs;
 
 
   @override

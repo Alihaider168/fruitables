@@ -1,12 +1,10 @@
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/address_model.dart';
 import 'package:get/get.dart';
 
 class AddressesController extends GetxController {
 
-  RxList<String> addresses = [
-    "Haji Pura Rd, Fatehgarh, Sialkot, Punjab, Pakistan",
-    "FGGC+9JV, Haji Pura Rd, near Mughal-E-Azam Marriage Hall, Boghra, Sialkot, Punjab, Pakistan"
-  ].obs;
+  RxList<Addresses> addresses = <Addresses>[].obs;
 
   bool fromCheckout = false;
 
@@ -17,6 +15,7 @@ class AddressesController extends GetxController {
       fromCheckout = data[Constants.paramCheckout];
     }
     getAddresses();
+    // addAddress();
     super.onInit();
   }
 
@@ -27,6 +26,53 @@ class AddressesController extends GetxController {
         await BaseClient.get(ApiUtils.addresses,
             onSuccess: (response) async {
               print(response);
+              AddressModel addressModel = AddressModel.fromJson(response.data);
+              addresses.value.clear();
+              addresses.value.addAll(addressModel.addresses??[]);
+              addresses.refresh();
+              return true;
+            },
+            onError: (error) {
+              BaseClient.handleApiError(error);
+              return false;
+            },
+          headers: Utils.getHeader(Constants.userModel?.token)
+        );
+      }
+    });
+  }
+
+
+  Future<void> deleteAddress(String? id,int index) async {
+    await Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.delete(ApiUtils.deleteAddress(id),
+            onSuccess: (response) async {
+              print(response);
+              Get.back();
+              addresses.removeAt(index);
+              CustomSnackBar.showCustomToast(message: response.data['message']);
+              getAddresses();
+              return true;
+            },
+            onError: (error) {
+              BaseClient.handleApiError(error);
+              return false;
+            },
+          headers: Utils.getHeader(Constants.userModel?.token)
+        );
+      }
+    });
+  }
+
+  void addAddress({String? label,String? street,String? floor,String? address,}){
+    Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.post(ApiUtils.addresses,
+            onSuccess: (response) async {
+              print(response);
+              CustomSnackBar.showCustomToast(message: response.data['message']);
+              getAddresses();
 
               return true;
             },
@@ -34,7 +80,13 @@ class AddressesController extends GetxController {
               BaseClient.handleApiError(error);
               return false;
             },
-          headers: {}
+            data: {
+              "label": label,
+              "street": street,
+              "floor": floor,
+              "address": address
+            },
+          headers: Utils.getHeader(Constants.userModel?.token)
         );
       }
     });
@@ -73,9 +125,9 @@ class AddressesController extends GetxController {
                 ),
                 SizedBox(width: getSize(10)),
                 TextButton(
-                  onPressed: () {
-                    Get.back();
-                    addresses.removeAt(index);
+                  onPressed: () async {
+                    await deleteAddress(addresses[index].id,index);
+
                   },
                   child: MyText(title: "lbl_yes".tr,color: ColorConstant.blue,),
                 ),

@@ -8,5 +8,9 @@ class ImageConstant {
   static String likeInactive = '$_imagePath/like_inactive.svg';
   static String likeActive = '$_imagePath/like_active.svg';
   static String saudia = '$_imagePath/saudia.png';
+  static String home = '$_imagePath/home.png';
+  static String other = '$_imagePath/other.png';
+  static String partner = '$_imagePath/partner.png';
+  static String work = '$_imagePath/work.png';
 
 }

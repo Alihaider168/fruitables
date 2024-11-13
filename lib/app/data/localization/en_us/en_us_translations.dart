@@ -143,4 +143,13 @@ final Map<String, String> enUs = {
   "enter_username": "Enter Username",
   "signup": "Sign Up",
   "enter_otp1": "Enter OTP",
+  "floor": "Floor",
+  "street": "Street",
+  "label": "Label",
+  "home": "Home",
+  "work": "Work",
+  "partner": "Partner",
+  "other": "Other",
+  "note_to_rider": "Note to Rider",
+  "add_address_amd_select_label": "Please add address and select label",
 };

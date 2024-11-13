@@ -8,6 +8,7 @@ class ApiUtils {
   static const register = '$baseUrl1/register';
   static const login = '$baseUrl1/login';
   static const addresses = '$baseUrl1/addresses';
+  static deleteAddress(String? id) => '$baseUrl1/addresses/$id';
   static const favorites = '$baseUrl1/favorites';
   static const sendOTP = '$baseUrl1/send-otp';
   static const sendOTP1 = '$baseUrl1/send-otp';

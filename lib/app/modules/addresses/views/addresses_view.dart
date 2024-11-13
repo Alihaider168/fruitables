@@ -34,14 +34,24 @@ class AddressesView extends GetView<AddressesController> {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
-                  Get.back(result: controller.addresses[index]);
+                  if(controller.fromCheckout){
+                    Get.back(result: controller.addresses[index]);
+                  }
                 },
                 child: Container(
-                  padding: getPadding(left: 15,top: 10,bottom: 10),
+                  padding: getPadding(left: 15,top: 5,bottom: 5),
                   child: Row(
                     children: [
                       Expanded(
-                        child: MyText(title: address,fontWeight: FontWeight.w500,),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MyText(title: "${"label".tr}: ${address.label??""}",fontWeight: FontWeight.w500,),
+                            MyText(title: "${"address".tr}: ${address.address??""}",fontWeight: FontWeight.w300,fontSize: 12,),
+                            SizedBox(height: getSize(5),),
+                            MyText(title: "${"note_to_rider".tr}: ${address.street!= null ? "${address.street}, " : ""}${address.floor??""}",fontWeight: FontWeight.w300,fontSize: 12,),
+                          ],
+                        ),
                       ),
                       SizedBox(width: getSize(10),),
                       controller.fromCheckout ? Offstage() : IconButton(
@@ -94,10 +104,13 @@ class AddressesView extends GetView<AddressesController> {
           child: Center(
             child: CustomButton(
               onTap: (){
-                Get.toNamed(Routes.ADD_ADDRESS)!.then((address){
-                  if(address!= null){
-                    controller.addresses.add(address);
-                    controller.addresses.refresh();
+                Get.toNamed(Routes.ADD_ADDRESS)!.then((addedAddress){
+                  if(addedAddress != null){
+                    String? address = addedAddress["address"];
+                    String? street = addedAddress["street"];
+                    String? floor = addedAddress["floor"];
+                    String? label = addedAddress["label"];
+                    controller.addAddress(label: label,floor: floor,street: street,address: address);
                   }
                 });
               },

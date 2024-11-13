@@ -281,39 +281,6 @@ class _MainMenuViewState extends State<MainMenuView> {
                   );
                 },
               ),
-
-
-              // Obx(()=> ScrollablePositionedList.builder(
-              //   itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
-              //       ? 5 : (controller.menuModel.value.data?.categories?.length??0),
-              //   itemScrollController: controller.itemScrollController,
-              //   itemPositionsListener: controller.itemPositionsListener,
-              //   physics: NeverScrollableScrollPhysics(),
-              //   shrinkWrap: true,
-              //   itemBuilder: (context, index) {
-              //     final category = controller.menuModel.value.data?.categories![index];
-              //     final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId);
-              //
-              //     return Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         // Category Header
-              //         Container(
-              //           padding: getPadding(all: 16),
-              //           child: MyText(
-              //             title: Utils.checkIfUrduLocale() ? category?.urduName??"" : category?.englishName??"",
-              //             // style: const TextStyle(
-              //             fontSize: 22,
-              //             fontWeight: FontWeight.bold,
-              //             // ),
-              //           ),
-              //         ),
-              //         // Items of the category
-              //         ...items.map((item) => ItemWidget(item: item)),
-              //       ],
-              //     );
-              //   },
-              // )),
             ],
           ),
         )),

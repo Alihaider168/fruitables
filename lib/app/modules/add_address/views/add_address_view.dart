@@ -87,7 +87,7 @@ class AddAddressView extends GetView<AddAddressController> {
                       children: [
                         MyText(
                           title: "new_address".tr,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                         SizedBox(height: getSize(15),),
@@ -103,14 +103,79 @@ class AddAddressView extends GetView<AddAddressController> {
                           hintText: "lbl_select_your_area".tr,
                           readOnly: true,
                         ),
+                        SizedBox(height: getSize(15),),
+                        CustomTextFormField(
+                          controller: controller.streetController,
+                          labelText: "street".tr,
+                          hintText: "street".tr,
+                        ),
+                        SizedBox(height: getSize(15),),
+                        CustomTextFormField(
+                          controller: controller.floorController,
+                          labelText: "floor".tr,
+                          hintText: "floor".tr,
+                        ),
+                        SizedBox(height: getSize(15),),
+                        SizedBox(
+                          height: getSize(60),
+                          child: ListView.separated(
+                            itemCount: controller.labels.length,
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (_,__){
+                              return SizedBox(width: getSize(15),);
+                            },
+                            itemBuilder: (_,index){
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: (){
+                                  controller.selectedLabel.value = index;
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Obx(()=> Container(
+                                      margin: getMargin(bottom: 3),
+                                      padding: getPadding(all: 8),
+                                      decoration: BoxDecoration(
+                                        color: controller.selectedLabel.value == index ? ColorConstant.grayBackground : ColorConstant.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: ColorConstant.grayBorder)
+                                      ),
+                                      child: CustomImageView(
+                                        imagePath: controller.labelImages[index],
+                                        height: getSize(20),
+                                        width: getSize(20),
+                                      ),
+                                    ),),
+                                    MyText(
+                                      title: controller.labels[index],
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   SizedBox(height: getSize(20),),
                   CustomButton(
                     onTap: (){
-                      if(controller.addressController.text.isNotEmpty && controller.regionController.text.isNotEmpty){
-                        Get.back(result: controller.addressController.text);
+                      if(controller.addressController.text.isNotEmpty
+                          && controller.regionController.text.isNotEmpty
+                          && controller.selectedLabel.value != -1
+                      ){
+                        Get.back(result: {
+                          "address" :controller.addressController.text,
+                          "street" : controller.streetController.text,
+                          "floor" : controller.floorController.text,
+                          "label" : controller.labels[controller.selectedLabel.value],
+                        });
+                      }else{
+                        CustomSnackBar.showCustomErrorToast(message: "add_address_amd_select_label".tr);
                       }
                     },
                     text: "save_address".tr,
@@ -120,6 +185,13 @@ class AddAddressView extends GetView<AddAddressController> {
             ),
           ],
         )
+    );
+  }
+
+  Widget labelWidget(String image,String title,{bool isSelected = false}){
+
+    return Container(
+
     );
   }
 }

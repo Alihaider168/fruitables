@@ -35,7 +35,7 @@ class AddressesView extends GetView<AddressesController> {
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
                   if(controller.fromCheckout){
-                    Get.back(result: controller.addresses[index]);
+                    Get.back(result: controller.addresses[index].address);
                   }
                 },
                 child: Container(

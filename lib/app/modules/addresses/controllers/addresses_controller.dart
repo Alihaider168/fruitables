@@ -36,7 +36,7 @@ class AddressesController extends GetxController {
               BaseClient.handleApiError(error);
               return false;
             },
-          headers: Utils.getHeader(Constants.userModel?.token)
+          headers: Utils.getHeader()
         );
       }
     });
@@ -59,7 +59,7 @@ class AddressesController extends GetxController {
               BaseClient.handleApiError(error);
               return false;
             },
-          headers: Utils.getHeader(Constants.userModel?.token)
+          headers: Utils.getHeader()
         );
       }
     });
@@ -86,7 +86,7 @@ class AddressesController extends GetxController {
               "floor": floor,
               "address": address
             },
-          headers: Utils.getHeader(Constants.userModel?.token)
+          headers: Utils.getHeader()
         );
       }
     });

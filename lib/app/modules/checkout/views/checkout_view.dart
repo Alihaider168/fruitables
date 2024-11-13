@@ -209,7 +209,7 @@ class CheckoutView extends GetView<CheckoutController> {
                             SizedBox(width: getSize(10),),
                             Obx(()=> MyText(
                               title: controller.selectedMethod.value.isNotEmpty? controller.selectedMethod.value: "choose_payment_method".tr,
-                              fontSize: 16,
+                              fontSize: 13,
                             )),
                             Spacer(),
                             GestureDetector(
@@ -360,11 +360,12 @@ class CheckoutView extends GetView<CheckoutController> {
               // MyText(title: "Some text here", fontWeight: FontWeight.normal),
               SizedBox(height: getSize(10),),
               CustomButton(
+                controller: controller.checkoutController,
                 text: "confirm_order".tr,
                 onTap: (){
                   if(controller.addressController.text.isNotEmpty){
                     if(controller.selectedMethod.value.isNotEmpty){
-                      Get.toNamed(Routes.ORDER_PLACED);
+                      controller.addOrder();
                     }else{
                       CustomSnackBar.showCustomToast(message: "select_payment_method".tr);
                     }

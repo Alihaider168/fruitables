@@ -1,4 +1,5 @@
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,8 @@ import 'package:intl/intl.dart';
 class CheckoutController extends GetxController {
   MainMenuController menuController = Get.put(MainMenuController());
   RxBool instructions = false.obs;
+
+  RoundedLoadingButtonController checkoutController = RoundedLoadingButtonController();
 
   TextEditingController addressController = TextEditingController();
   TextEditingController instructionsController = TextEditingController();
@@ -24,7 +27,7 @@ class CheckoutController extends GetxController {
   ];
 
   List<int> getHours() {
-    if (selectedDayIndex == 0) {
+    if (selectedDayIndex.value == 0) {
       return List.generate(24 - DateTime.now().hour, (index) => DateTime.now().hour + index);
     } else {
       return List.generate(24, (index) => index);
@@ -32,7 +35,7 @@ class CheckoutController extends GetxController {
   }
 
   List<int> getMinutes() {
-    if (selectedDayIndex == 0 && selectedHourIndex == 0) {
+    if (selectedDayIndex.value == 0 && selectedHourIndex.value == 0) {
       int startingMinute = (DateTime.now().minute ~/ 10 + 1) * 10;
       return List.generate((60 - startingMinute) ~/ 10, (index) => startingMinute + index * 10);
     } else {
@@ -155,4 +158,53 @@ class CheckoutController extends GetxController {
       },
     );
   }
+
+
+  Future<dynamic> addOrder() async {
+    await menuController.cart.loadCartFromPreferences();
+    Utils.check().then((value) async {
+      if (value) {
+        checkoutController.start();
+        List<Map<String, dynamic>> products = [];
+
+        for(int i=0;i<menuController.cart.items.length;i++){
+          final cItem = menuController.cart.items[i];
+          products.add({
+            "productId": cItem.item.id,
+            "name":  Utils.checkIfArabicLocale() ? cItem.item.name : cItem.item.englishName,
+            "size": cItem.size,
+            "quantity": cItem.quantity,
+            "price": menuController.cart.getPrice(cItem)
+          });
+        }
+
+
+
+        await BaseClient.post(ApiUtils.addOrder,
+            onSuccess: (response) async {
+          checkoutController.stop();
+              print(response);
+              CustomSnackBar.showCustomToast(message: "order_created".tr);
+              Get.back();
+          Get.offAndToNamed(Routes.ORDER_PLACED,arguments: {"id":response.data["saleId"]});
+          menuController.cart.clearCart();
+          menuController.bottomBar.value = false;
+              return true;
+            },
+            onError: (error) {
+              checkoutController.stop();
+              BaseClient.handleApiError(error);
+              return false;
+            },
+            headers: Utils.getHeader(),
+            data: {
+              "branch": Constants.selectedBranch?.id,
+              "tax": menuController.cart.getTax(),
+              "discount": menuController.cart.getTotalDiscountForCart(),
+              "products": products
+            });
+      }
+    });
+  }
+
 }

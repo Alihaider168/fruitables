@@ -151,5 +151,6 @@ final Map<String, String> enUs = {
   "partner": "Partner",
   "other": "Other",
   "note_to_rider": "Note to Rider",
+  "order_created": "Order created successfully",
   "add_address_amd_select_label": "Please add address and select label",
 };

@@ -1,6 +1,7 @@
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
+import 'package:fruitables/app/data/utils/fav_utils/fav_utils.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -12,6 +13,7 @@ class MainMenuController extends GetxController {
   RxBool orderAdded = false.obs;
 
   Cart cart = Cart();
+  FavUtils favUtils = FavUtils();
 
   RxBool isLoading = true.obs;
 
@@ -25,6 +27,7 @@ class MainMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    favUtils.getFavourites();
     loadCart();
     getMenu();
   }
@@ -119,7 +122,7 @@ class MainMenuController extends GetxController {
                 ),
             
                 // Conditionally show the original price if a discount is present
-                if (discountedPrice != 0)
+                if (discountedPrice != 0 && discountedPrice != price)
                   MyText(
                     title: "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${price}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
                     fontSize: 12,
@@ -194,6 +197,7 @@ class MainMenuController extends GetxController {
                                     SizedBox(width: getSize(15),),
                                     GestureDetector(
                                       onTap: (){
+                                        favUtils.addOrRemoveFav(item.id);
                                         isLiked.value = !isLiked.value;
                                       },
                                       child: Obx(()=> CustomImageView(
@@ -212,12 +216,12 @@ class MainMenuController extends GetxController {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black,
                                     ),
-                                    MyText(title:  "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)} ${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                                    checkForDiscountedPercentage(item)!= 0 ?MyText(title:  "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${calculatePrice(item)} ${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: ColorConstant.textGrey, // Assuming ColorConstant is a defined color palette
                                       cut: true,
-                                    ),
+                                    ): Offstage(),
                                     // RichText(
                                     //   text: TextSpan(
                                     //     children: [

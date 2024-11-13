@@ -12,6 +12,7 @@ class ApiUtils {
   static const favorites = '$baseUrl1/favorites';
   static const sendOTP = '$baseUrl1/send-otp';
   static const sendOTP1 = '$baseUrl1/send-otp';
+  static const addOrder = '$baseUrl1/sales';
   static customers(String customerId) => '$baseUrl/app-customers/$customerId';
 
 }

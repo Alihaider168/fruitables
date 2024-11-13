@@ -93,17 +93,17 @@ class Cart {
     num discountPrice = 0;
     for (var cartItem in _cartItems) {
       if (cartItem.size == 'small') {
-        totalPrice += (cartItem.item.smallPrice ?? 0);
-        discountPrice += (cartItem.item.mobileSmall ?? 0);
+        totalPrice += ((cartItem.item.smallPrice ?? 0)*cartItem.quantity);
+        discountPrice += ((cartItem.item.mobileSmall ?? 0)*cartItem.quantity);
       } else if (cartItem.size == 'medium') {
-        totalPrice += (cartItem.item.mediumPrice ?? 0);
-        discountPrice += (cartItem.item.mobileMedium ?? 0);
+        totalPrice += ((cartItem.item.mediumPrice ?? 0)*cartItem.quantity);
+        discountPrice += ((cartItem.item.mobileMedium ?? 0)*cartItem.quantity);
       } else if (cartItem.size == 'large') {
-        totalPrice += (cartItem.item.largePrice ?? 0);
-        discountPrice += (cartItem.item.mobileLarge ?? 0);
+        totalPrice += ((cartItem.item.largePrice ?? 0)*cartItem.quantity);
+        discountPrice += ((cartItem.item.mobileLarge ?? 0)*cartItem.quantity);
       }else if (cartItem.size == 'bottle') {
-        totalPrice += (cartItem.item.bottlePrice ?? 0);
-        discountPrice += (cartItem.item.mobileBottle ?? 0);
+        totalPrice += ((cartItem.item.bottlePrice ?? 0)*cartItem.quantity);
+        discountPrice += ((cartItem.item.mobileBottle ?? 0)*cartItem.quantity);
       }
     }
     return totalPrice - discountPrice;

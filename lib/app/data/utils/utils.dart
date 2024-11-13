@@ -351,7 +351,7 @@ class Utils {
   }
 
 
-  static Map<String, dynamic> getHeader(String? token){
-    return {"Authorization": "Bearer $token"};
+  static Map<String, dynamic> getHeader(){
+    return {"Authorization": "Bearer ${Constants.userModel?.token}"};
   }
 }

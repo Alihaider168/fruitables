@@ -113,7 +113,7 @@ final Map<String, String> enUs = {
   "field": "Field",
   "cannot_be_empty": "cannot be empty",
   "is_required": "is required",
-  "you_will_receive_6_digit_otp": "You will receive a 6 digit OTP for email verification",
+  "you_will_receive_6_digit_otp": "You will receive a 6 digit OTP for verification",
   "otp_verification": "OTP Verification",
   "we_sent_otp_to_email": "We have sent an OTP to your email",
   "variation": "Variation",
@@ -139,4 +139,8 @@ final Map<String, String> enUs = {
   "mins": "mins",
   "preparing_order": "Preparing your order",
   "when_its_ready": "When it\s ready, the rider will pick your order",
+  "enter_phone_number": "Enter Phone Number",
+  "enter_username": "Enter Username",
+  "signup": "Sign Up",
+  "enter_otp1": "Enter OTP",
 };

@@ -39,25 +39,20 @@ class HelperFunction {
   }
 
   static String? validateEmailOrPhone(String? value) {
-    // Regular expression for email validation
-    const String emailPattern =
-        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-
     // Improved regular expression for phone number validation
     const String phonePattern =
         r'^\+?(\d{1,3})?[-. ]?(\(?\d{1,4}\)?)?[-. ]?\d{1,4}[-. ]?\d{1,4}[-. ]?\d{1,9}$';
 
     if (value == null || value.isEmpty) {
-      return 'Please enter email or phone number';
+      // return 'Please enter email or phone number';
     }
 
     // Check if the value matches email or phone pattern
-    bool isValidEmail = RegExp(emailPattern).hasMatch(value);
-    bool isValidPhone = RegExp(phonePattern).hasMatch(value);
+    // bool isValidPhone = RegExp(phonePattern).hasMatch(value);
 
-    if (!isValidEmail && !isValidPhone) {
-      return 'Please enter a valid email or phone number';
-    }
+    // if (!isValidPhone) {
+      // return 'Please enter a valid email or phone number';
+    // }
 
     return null;
   }

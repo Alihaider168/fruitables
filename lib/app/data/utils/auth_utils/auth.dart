@@ -14,37 +14,41 @@ class MyAppAuth{
     return _instance;
   }
 
-  Future<dynamic> sendOTP(String email, String mobile) async {
+  Future<dynamic> sendOTP(String mobile,{final void Function(dynamic response)? onSuccess,final void Function()? onError}) async {
     Utils.check().then((value) async {
       if (value) {
         await BaseClient.post(ApiUtils.sendOTP,
             onSuccess: (response) async {
               print(response);
+              onSuccess!(response.data);
+
               return true;
             },
             onError: (error) {
               BaseClient.handleApiError(error);
+              onError!();
               return false;
             },
-            data: {'email': email});
+            data: {'mobile': mobile});
       }
     });
   }
 
-  Future<dynamic> login(String email, String mobile, String otp) async {
+  Future<dynamic> login( String mobile, String otp,{final void Function(dynamic response)? onSuccess,final void Function()? onError}) async {
     Utils.check().then((value) async {
       if (value) {
         await BaseClient.post(ApiUtils.login,
             onSuccess: (response) async {
               print(response);
+              onSuccess!(response.data);
               return true;
             },
             onError: (error) {
               BaseClient.handleApiError(error);
+              onError!();
               return false;
             },
             data: {
-              "email": email,
               "mobile": mobile,
               "otp": otp
             });
@@ -52,16 +56,18 @@ class MyAppAuth{
     });
   }
 
-  Future<dynamic> signup(String name,String email, String mobile, String otp) async {
+  Future<dynamic> signup(String name,String email, String mobile, String otp,{final void Function(dynamic response)? onSuccess,final void Function()? onError}) async {
     Utils.check().then((value) async {
       if (value) {
         await BaseClient.post(ApiUtils.register,
             onSuccess: (response) async {
               print(response);
+              onSuccess!(response.data);
               return true;
             },
             onError: (error) {
               BaseClient.handleApiError(error);
+              onError!();
               return false;
             },
             data: {

@@ -349,4 +349,9 @@ class Utils {
   static String getCompleteUrl(String? url){
     return "https://pub-7fa3ae0aa90f4d319e741b9fa2015658.r2.dev/${url??""}";
   }
+
+
+  static Map<String, dynamic> getHeader(String? token){
+    return {"Authorization": "Bearer $token"};
+  }
 }

@@ -2,7 +2,7 @@ import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
 
-class MainMenuController extends GetxController with GetSingleTickerProviderStateMixin{
+class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   Rx<MenuModel> menuModel = MenuModel().obs;
@@ -15,13 +15,9 @@ class MainMenuController extends GetxController with GetSingleTickerProviderStat
 
   RxBool isLoading = true.obs;
 
-  late AnimationController animController;
-  late Animation<double> animation;
-
 
   @override
   void dispose() {
-    animController.dispose();
     super.dispose();
   }
 
@@ -31,20 +27,6 @@ class MainMenuController extends GetxController with GetSingleTickerProviderStat
     super.onInit();
     loadCart();
     getMenu();
-    // Initialize the animation controller and set up the animation
-    animController
-    = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-    );
-
-    animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-      parent: animController,
-      curve: Curves.easeInOut,
-    ));
-
-    // Start the animation
-    animController.forward();
   }
 
   Future<void> loadCart() async {

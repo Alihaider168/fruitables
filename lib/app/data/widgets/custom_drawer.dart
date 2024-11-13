@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/user_model.dart';
+import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:fruitables/app/data/utils/auth_utils/auth.dart';
 import 'package:fruitables/app/data/utils/helper_functions.dart';
 import 'package:fruitables/app/data/utils/language_utils.dart';
+import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
 import 'package:fruitables/app/data/widgets/otp_text_feild.dart';
 
@@ -16,10 +21,21 @@ CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   // final RxString selectedLanguage = 'English'.obs;
   final TextEditingController otpController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
   final languagePreference = LanguageUtils();
+
+  final AppPreferences _appPreferences = AppPreferences();
+
+  RoundedLoadingButtonController loginController = RoundedLoadingButtonController();
+  RoundedLoadingButtonController otpBtnController = RoundedLoadingButtonController();
+  RoundedLoadingButtonController signupController = RoundedLoadingButtonController();
+
+  MyAppAuth myAppAuth = MyAppAuth();
 
   RxInt min = 00.obs;
   RxInt sec = 60.obs;
@@ -41,8 +57,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   onResend(context) async {
     if (sec.value == 00) {
+      myAppAuth.sendOTP(phoneController.text);
       CustomSnackBar.showCustomToast(message:
-          "${"we_sent_otp_to_email".tr} ${emailController.text}".tr,);
+          "${"we_sent_otp_to_email".tr} ${phoneController.text}".tr,);
       min.value = 00;
       sec.value = 60;
       countDown();
@@ -81,12 +98,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 color: ColorConstant.white
               ),
               accountName: MyText(
-                title: 'Ali Haider',
+                title: Constants.userModel?.customer?.name??"",
                 fontSize: 18, fontWeight: FontWeight.bold,
                 color: ColorConstant.black,
               ),
               accountEmail: MyText(
-                title: '+923164260000',
+                title: Constants.userModel?.customer?.mobile??"",
                 fontSize: 14,
                 color: ColorConstant.black,
               ),
@@ -101,8 +118,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
 
           // Wallet and Loyalty Points Section
-          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.account_balance_wallet,title: "lbl_my_wallet".tr,showPrice: true,price: 0.00),
-          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.loyalty,title: "lbl_loyalty_points".tr,showPrice: true,price: 0.00),
+          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.account_balance_wallet,title: "lbl_my_wallet".tr,showPrice: true,price: Constants.userModel?.customer?.balance??0),
+          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.loyalty,title: "lbl_loyalty_points".tr,showPrice: true,price: Constants.userModel?.customer?.points??0),
 
           // customTile(icon: Icons.language,title: "lbl_change_language".tr,showArrow: true),
           !Constants.isLoggedIn.value ? Offstage() :
@@ -343,9 +360,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(width: getSize(10)),
                 TextButton(
                   onPressed: () {
-                    Get.back();
-                    Constants.isLoggedIn.value = false;
-                    Get.offAllNamed(Routes.MAIN_MENU);
+                    logoutUser();
 
                   },
                   child: MyText(title: "lbl_yes".tr,color: ColorConstant.blue,),
@@ -449,7 +464,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(20)),
                 MyText(
-                  title: "enter_email".tr,
+                  title: "phone_number".tr,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -460,21 +475,131 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(20)),
                 CustomTextFormField(
-                  labelText: "email".tr,
-                  controller: emailController,
+                  labelText: "enter_phone_number".tr,
+                  controller: phoneController,
+                  textInputType: TextInputType.phone,
                   validator: (val){
-                    return HelperFunction.emailValidate(val??"");
+                    return HelperFunction.validateEmailOrPhone(val??"");
                   },
                 ),
                 SizedBox(height: getSize(20)),
                 CustomButton(
                   text: "lbl_login".tr,
+                  controller: loginController,
                   // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
-                  onTap: (){
+                  onTap: () async {
                     if(_formKey.currentState!.validate()){
-                      countDown();
-                      Get.back();
-                      showOtpSheet(context);
+                      loginController.start();
+                      myAppAuth.sendOTP(phoneController.text,onSuccess: (response){
+                        loginController.stop();
+                        Get.back();
+                        if(response["isExist"]== null || response["isExist"] == false ){
+                          countDown();
+                          showSignupSheet(context);
+                        }else{
+                          showOtpSheet(context);
+                        }
+
+                      },
+                        onError: (){
+                          loginController.stop();
+                        }
+                      );
+
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showSignupSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(20))),
+      ),
+      isScrollControlled: true,
+      backgroundColor: ColorConstant.white,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(context).viewInsets.bottom + 50),
+          child: Form(
+            key: _formKey2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: CustomImageView(
+                    imagePath: ImageConstant.splash,
+                    height: getSize(200),
+                  ),
+                ),
+                SizedBox(height: getSize(20)),
+                CustomTextFormField(
+                  labelText: "enter_username".tr,
+                  controller: nameController,
+                  textInputType: TextInputType.name,
+                  validator: (val){
+                    return HelperFunction.stringValidate(val??"");
+                  },
+                ),
+                SizedBox(height: getSize(15),),
+                CustomTextFormField(
+                  labelText: "enter_phone_number".tr,
+                  controller: phoneController,
+                  textInputType: TextInputType.phone,
+                  readOnly: true,
+                  validator: (val){
+                    return HelperFunction.validateEmailOrPhone(val??"");
+                  },
+                ),
+                SizedBox(height: getSize(15),),
+                CustomTextFormField(
+                  labelText: "enter_email".tr,
+                  controller: emailController,
+                  textInputType: TextInputType.phone,
+                  validator: (val){
+                    return HelperFunction.emailValidate(val??"");
+                  },
+                ),
+                SizedBox(height: getSize(15),),
+                CustomTextFormField(
+                  labelText: "enter_otp1".tr,
+                  controller: otpController,
+                  textInputType: TextInputType.number,
+                  validator: (val){
+                    return HelperFunction.stringValidate(val??"");
+                  },
+                ),
+                SizedBox(height: getSize(20)),
+                CustomButton(
+                  text: "signup".tr,
+                  controller: signupController,
+                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
+                  onTap: () async {
+                    if(_formKey2.currentState!.validate()){
+                      signupController.start();
+                      myAppAuth.signup(nameController.text,emailController.text,phoneController.text,otpController.text,onSuccess: (response) async {
+                        signupController.stop();
+                        Get.back();
+                        Constants.isLoggedIn.value = true;
+                        Constants.userModel = UserModel.fromJson(response);
+                        await _appPreferences.isPreferenceReady;
+                        _appPreferences.setUserData(data: jsonEncode(response));
+                        _appPreferences.setIsLoggedIn(loggedIn: true);
+                      },
+                        onError: (){
+                          signupController.stop();
+                        }
+                      );
+
                     }
                   },
                 ),
@@ -518,7 +643,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   fontSize: 18,
                 ),
                 MyText(
-                  title: "${"we_sent_otp_to_email".tr}\n${emailController.text}",
+                  title: "${"we_sent_otp_to_email".tr}\n${phoneController.text}",
                   fontSize: 14,
                   color: ColorConstant.textGrey,
                 ),
@@ -532,8 +657,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       controller: otpController,
                       onChanged: (a) {
                         if (a.length == Constants.otpLength) {
-                          Get.back();
-                          Constants.isLoggedIn.value = true;
+                          callVerifyOtp();
                         }
                       },
                       onComplete: (a) {
@@ -577,13 +701,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 SizedBox(height: getSize(20)),
                 CustomButton(
                   text: "verify".tr,
+                  controller: otpBtnController,
                   onTap: (){
                     if(otpController.text.length == 6){
-                      Get.back();
-                      if (Get.isBottomSheetOpen == true) {
-                        Get.back();
-                      }
-                      Constants.isLoggedIn.value = true;
+                      callVerifyOtp();
                     }else {
                       CustomSnackBar.showCustomErrorToast(message: "enter_valid_otp".tr);
                     }
@@ -594,6 +715,38 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         );
       },
+    );
+  }
+
+
+  Future<void> logoutUser() async {
+    await _appPreferences.isPreferenceReady;
+    Get.back();
+    Constants.isLoggedIn.value = false;
+    Constants.userModel = null;
+    _appPreferences.setIsLoggedIn(loggedIn: false);
+    _appPreferences.setUserData(data: "");
+    Get.offAllNamed(Routes.MAIN_MENU);
+  }
+
+  void  callVerifyOtp(){
+    otpBtnController.start();
+    myAppAuth.login( phoneController.text, otpController.text,onSuccess: (response) async {
+      otpBtnController.stop();
+      Get.back();
+      if (Get.isBottomSheetOpen == true) {
+        Get.back();
+      }
+      Constants.isLoggedIn.value = true;
+      Constants.userModel = UserModel.fromJson(response);
+      await _appPreferences.isPreferenceReady;
+      _appPreferences.setUserData(data: jsonEncode(response));
+      _appPreferences.setIsLoggedIn(loggedIn: true);
+
+    },
+        onError: (){
+          otpBtnController.stop();
+        }
     );
   }
 }

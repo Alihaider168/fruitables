@@ -16,7 +16,28 @@ class AddressesController extends GetxController {
     if(data!= null && data[Constants.paramCheckout]!= null){
       fromCheckout = data[Constants.paramCheckout];
     }
+    getAddresses();
     super.onInit();
+  }
+
+
+  void getAddresses(){
+    Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.get(ApiUtils.addresses,
+            onSuccess: (response) async {
+              print(response);
+
+              return true;
+            },
+            onError: (error) {
+              BaseClient.handleApiError(error);
+              return false;
+            },
+          headers: {}
+        );
+      }
+    });
   }
 
   void showDeleteAddressDialog(BuildContext context,int index) {

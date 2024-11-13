@@ -136,6 +136,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
               child: Column(
                 children: [
                   _buildTotalRow("lbl_subtotal".tr, subtotal),
+                  _buildTotalRow("lbl_discount".tr, controller.order.discount.toDouble()),
                   _buildTotalRow("lbl_delivery_fee".tr, controller.order.deliveryFee),
                   SizedBox(height: getSize(16)),
                   Divider(thickness: 1),
@@ -193,6 +194,7 @@ class Order {
   final String status;
   final String address;
   final String paymentMethod;
+  final num discount;
   final List<OrderItem> items;
   final double deliveryFee;
 
@@ -204,6 +206,7 @@ class Order {
     required this.address,
     required this.paymentMethod,
     required this.items,
+    required this.discount,
     required this.deliveryFee,
   });
 }

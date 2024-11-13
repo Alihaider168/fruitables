@@ -319,7 +319,7 @@ class _MainMenuViewState extends State<MainMenuView> {
         )),
       ),
       ),
-      bottomNavigationBar: CartBottom(),
+      bottomNavigationBar: CartBottom(showCurrentOrder: true,),
     );
   }
 }

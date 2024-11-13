@@ -223,7 +223,7 @@ class ItemWidget extends StatelessWidget {
                     fontSize: Utils.checkIfArabicLocale() ?10.5:12,
                     line: 2,
                     
-                    alignRight: Utils.checkIfArabicLocale(),
+                    alignRight: Utils.checkIfArabicLocale() ? true : null,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w400,
                     color: ColorConstant.textGrey,

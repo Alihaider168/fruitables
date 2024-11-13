@@ -2,13 +2,75 @@ import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
-class CartBottom extends StatelessWidget{
+class CartBottom extends StatelessWidget  {
 
   final controller = Get.put(MainMenuController());
 
+  CartBottom({super.key,this.showCurrentOrder = false});
+
+  final bool showCurrentOrder;
+
   @override
   Widget build(BuildContext context) {
-    return Obx(()=>  controller.bottomBar.value
+    return
+      showCurrentOrder ?
+    GestureDetector(
+      onTap: (){
+        Get.toNamed(Routes.CURRENT_ORDER_DETAIL);
+      },
+      child: Container(
+        // height: getSize(100),
+        padding: getPadding(all: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(getSize(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            OrderStatusIndicator(currentIndex: 1),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      SizedBox(height: getSize(10)),
+                      MyText(
+                        title: '${"order_number".tr}12345',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                      ),
+                      SizedBox(height: getSize(3)),
+                      MyText(
+                        title: 'your_order_being_prepared'.tr,
+                          color: Colors.grey[600],
+                        fontSize: 12,
+                      ),
+                    ],
+                  ),
+                ),
+                MyText(
+                  title: '20 - 35 ${"mins".tr}',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ):
+      Obx(()=>  controller.bottomBar.value
         ? Container(
       width: size.width,
       height: size.height*0.12,
@@ -103,4 +165,110 @@ class CartBottom extends StatelessWidget{
         : Offstage());
   }
 
+}
+
+class OrderStatusIndicator extends StatefulWidget {
+  final int currentIndex;
+
+  const OrderStatusIndicator({
+    Key? key,
+    required this.currentIndex,
+  }) : super(key: key);
+
+  @override
+  _OrderStatusIndicatorState createState() => _OrderStatusIndicatorState();
+}
+
+class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(); // Repeats the animation indefinitely
+
+    _animation = Tween<double>(begin: -50, end: 50).animate(_controller); // Move left to right
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(4, (index) {
+          if (index < widget.currentIndex) {
+            // Completed stage: pink color
+            return _buildStatusContainer(ColorConstant.primaryPink);
+          } else if (index == widget.currentIndex) {
+            // Current stage: continuously animated pink container
+            return _buildAnimatedContainer();
+          } else {
+            // Future stage: grey color
+            return _buildStatusContainer(Colors.grey[300]!);
+          }
+        }),
+      ),
+    );
+  }
+
+  Widget _buildStatusContainer(Color color) {
+    return Container(
+      height: 5,
+      width: size.width/6,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(5),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedContainer() {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Stack(
+            children: [
+              Container(
+                width: size.width/6,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              Positioned(
+                left: _animation.value,
+                child: Container(
+                  width: 50,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [ColorConstant.primaryPink1.withOpacity(.3), ColorConstant.primaryPink1.withOpacity(.6), ColorConstant.primaryPink1],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

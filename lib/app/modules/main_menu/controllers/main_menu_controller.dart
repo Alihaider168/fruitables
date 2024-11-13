@@ -2,7 +2,7 @@ import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
 
-class MainMenuController extends GetxController {
+class MainMenuController extends GetxController with GetSingleTickerProviderStateMixin{
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   Rx<MenuModel> menuModel = MenuModel().obs;
@@ -15,11 +15,36 @@ class MainMenuController extends GetxController {
 
   RxBool isLoading = true.obs;
 
+  late AnimationController animController;
+  late Animation<double> animation;
+
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
+
+
   @override
   void onInit() {
     super.onInit();
     loadCart();
     getMenu();
+    // Initialize the animation controller and set up the animation
+    animController
+    = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+      parent: animController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start the animation
+    animController.forward();
   }
 
   Future<void> loadCart() async {
@@ -274,7 +299,7 @@ class MainMenuController extends GetxController {
                                   title: Utils.checkIfArabicLocale() ? (item.description??"") : (item.englishDescription??""),
                                   fontSize: 14,
                                   color: ColorConstant.black,
-                                  alignRight: Utils.checkIfArabicLocale(),
+                                  alignRight: Utils.checkIfArabicLocale() ? true : null,
                                 ),
                                 SizedBox(height: getSize(15),),
                                 Divider(),

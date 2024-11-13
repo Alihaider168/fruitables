@@ -23,5 +23,6 @@ class OrderDetailController extends GetxController {
       ),
     ],
     deliveryFee: 120.0,
+    discount: 30.0,
   );
 }

@@ -80,9 +80,33 @@ class Cart {
         totalPrice += (cartItem.item.mediumPrice ?? 0);
       } else if (cartItem.size == 'large') {
         totalPrice += (cartItem.item.largePrice ?? 0);
+      }else if (cartItem.size == 'bottle') {
+        totalPrice += (cartItem.item.bottlePrice ?? 0);
       }
     }
     return totalPrice;
+  }
+
+  // Get the total price of items in the cart
+  num getTotalDiscountForCart() {
+    num totalPrice = 0;
+    num discountPrice = 0;
+    for (var cartItem in _cartItems) {
+      if (cartItem.size == 'small') {
+        totalPrice += (cartItem.item.smallPrice ?? 0);
+        discountPrice += (cartItem.item.mobileSmall ?? 0);
+      } else if (cartItem.size == 'medium') {
+        totalPrice += (cartItem.item.mediumPrice ?? 0);
+        discountPrice += (cartItem.item.mobileMedium ?? 0);
+      } else if (cartItem.size == 'large') {
+        totalPrice += (cartItem.item.largePrice ?? 0);
+        discountPrice += (cartItem.item.mobileLarge ?? 0);
+      }else if (cartItem.size == 'bottle') {
+        totalPrice += (cartItem.item.bottlePrice ?? 0);
+        discountPrice += (cartItem.item.mobileBottle ?? 0);
+      }
+    }
+    return totalPrice - discountPrice;
   }
 
   // Get the total price of items in the cart
@@ -107,6 +131,12 @@ class Cart {
           totalPrice += ((cartItem.item.mobileLarge ?? 0) * cartItem.quantity);
         }else{
           totalPrice += ((cartItem.item.largePrice ?? 0) * cartItem.quantity);
+        }
+      } else if (cartItem.size == 'bottle') {
+        if((cartItem.item.mobileBottle??0)!=0 && cartItem.item.mobileBottle != cartItem.item.bottlePrice){
+          totalPrice += ((cartItem.item.mobileBottle ?? 0) * cartItem.quantity);
+        }else{
+          totalPrice += ((cartItem.item.bottlePrice ?? 0) * cartItem.quantity);
         }
       }
     }
@@ -161,6 +191,8 @@ class Cart {
         return cartItem.item.mediumPrice ?? 0;
       case 'large':
         return cartItem.item.largePrice ?? 0;
+      case 'bottle':
+        return cartItem.item.bottlePrice ?? 0;
       default:
         return 0;
     }

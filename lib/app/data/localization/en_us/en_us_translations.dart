@@ -129,5 +129,14 @@ final Map<String, String> enUs = {
   "estimated_pickup_time": "Estimated Pickup Time",
   "locate_me": "Locate Me",
   "branch": "Branch",
+
+
+  "help": "Help",
+  "lbl_discount": "Discount",
   "lbl_bottle": "Bottle",
+  "order_number": "Order #",
+  "your_order_being_prepared": "Your order is being prepared",
+  "mins": "mins",
+  "preparing_order": "Preparing your order",
+  "when_its_ready": "When it\s ready, the rider will pick your order",
 };

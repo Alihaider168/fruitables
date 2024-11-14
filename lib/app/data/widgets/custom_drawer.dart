@@ -266,21 +266,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  // void _changeLanguage(String languageCode) async{
-  //   selectedLanguage.value = languageCode;
-  //   if (languageCode == 'English') {
-  //     Get.updateLocale(Locale('en', 'US'));
-  //   } else if (languageCode == 'اردو') {
-  //     Get.updateLocale(Locale('ur', 'PK'));
-  //   }
-  //   Get.back();
-  //   await languagePreference.saveLanguage(languageCode);
-  // }
-
-  // void getLanguage() async {
-  //   selectedLanguage.value = (await languagePreference.getLanguage())??"English";
-  // }
-
   void showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,

@@ -3,8 +3,8 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fruitables/app/data/core/app_export.dart';
 
 class CustomImageView extends StatelessWidget {
   ///[url] is required parameter for fetching network image
@@ -93,13 +93,13 @@ class CustomImageView extends StatelessWidget {
     if (border != null) {
       return Container(
 
-        padding: padding,
-        decoration: BoxDecoration(
-                                              color: bgColor,
+        // padding: getPadding(all:8),
+        // decoration: BoxDecoration(
+        //                                       color: bgColor,
 
-          border: border,
-          borderRadius: BorderRadius.circular(radius??0),
-        ),
+        //   border: border,
+        //   borderRadius: BorderRadius.circular(radius??0),
+        // ),
         child: _buildImageView(),
       );
     } else {
@@ -126,6 +126,7 @@ class CustomImageView extends StatelessWidget {
                 ],
               ),
               child: SvgPicture.asset(
+                
                 
                 svgPath!,
                 height: height,

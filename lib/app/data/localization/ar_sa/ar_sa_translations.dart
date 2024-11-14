@@ -9,6 +9,9 @@ final Map<String, String> arSa = {
   'lbl_area_sub_region': 'المنطقة / المنطقة الفرعية',
   'lbl_select_your_area': 'اختر منطقتك',
   'lbl_confirm_location': 'تأكيد الموقع',
+  "enter_username": "أدخل الاسم الكامل",
+  "enter_phone_number":"هاتف #",
+
   'lbl_done': 'تم',
   'lbl_search': 'بحث',
   'lbl_close': 'إغلاق',
@@ -114,7 +117,7 @@ final Map<String, String> arSa = {
   "is_required": "مطلوب",
   "you_will_receive_6_digit_otp": "ستتلقى رمز تحقق مكون من 6 أرقام للتحقق من البريد الإلكتروني",
   "otp_verification": "التحقق من رمز التحقق",
-  "we_sent_otp_to_email": "أرسلنا رمز تحقق إلى بريدك الإلكتروني",
+  "we_sent_otp_to_email": "لقد أرسلنا OTP إلى هاتفك",
   "variation": "الاختلاف",
   "select_option": "يرجى اختيار خيار واحد للمتابعة",
   "items": "العناصر",

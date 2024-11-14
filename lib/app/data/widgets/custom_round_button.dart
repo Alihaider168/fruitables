@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// States that your button can assume via the controller
@@ -168,14 +169,26 @@ class RoundedLoadingButtonState extends State<RoundedLoadingButton>
           : null,
     );
 
-    Widget _loader = SizedBox(
-      height: widget.loaderSize,
-      width: widget.loaderSize,
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(widget.valueColor),
-        strokeWidth: widget.loaderStrokeWidth,
+Widget _loader = SizedBox(
+  width: Get.width,
+  child: Center(
+    child: Container(
+      constraints: BoxConstraints(
+        maxHeight: widget.loaderSize,
+        maxWidth: widget.loaderSize,
       ),
-    );
+      child: SizedBox(
+        height: widget.loaderSize,
+        width: widget.loaderSize,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(widget.valueColor),
+          strokeWidth: widget.loaderStrokeWidth,
+        ),
+      ),
+    ),
+  ),
+);
+
 
     Widget childStream = StreamBuilder(
       stream: _state,

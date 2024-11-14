@@ -120,11 +120,12 @@ class _MainMenuViewState extends State<MainMenuView> {
                           CustomImageView(
                             url:Utils.getCompleteUrl( cat.appImage?.key),
                             radius: 12,
+                            // bgColor: Colors.red,
                             // url: cat.image,
-                            height: getSize(66),
+                            height: getSize(75),
                             padding: getPadding(bottom: getSize(8),top: getSize(8), left: getSize(16), right: getSize(16)),
                             margin: getMargin(bottom: getSize(5)),
-                            width: getSize(60),
+                            width: getSize(70),
                             
                             border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
@@ -319,7 +320,7 @@ class CustomItemCard extends StatelessWidget {
                 height: getSize(143),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(getSize(10)),
-                  // color: ColorConstant.grayBackground.withOpacity(.5),
+                  color: Colors.grey.shade300.withOpacity(.3),
                   border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                 ),
                 // padding: getPadding(all: 5),
@@ -328,7 +329,7 @@ class CustomItemCard extends StatelessWidget {
 
                     Center(
                       child: CustomImageView(
-                        bgColor: Colors.grey.shade300.withOpacity(.3),
+                        // bgColor: Colors.grey.shade300.withOpacity(.3),
                         url: Utils.getCompleteUrl(item.image?.key),
                         height: getSize(120),
                         radius: 10,

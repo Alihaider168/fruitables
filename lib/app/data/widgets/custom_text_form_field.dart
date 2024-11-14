@@ -113,10 +113,15 @@ class CustomTextFormField extends StatelessWidget {
 
   _buildDecoration() {
     return InputDecoration(
+      
       hintText: hintText ?? "",
       labelText: labelText,
       labelStyle: _setLabelFontStyle(),
-      hintStyle: _setHintFontStyle(),
+      hintStyle: 
+      TextStyle(
+        color: ColorConstant.textGrey,
+        fontSize: Utils.checkIfArabicLocale()?16:14
+      ),
       border: _setBorderStyle(),
       enabledBorder: _setBorderStyle(),
       focusedBorder: _setBorderStyle(),
@@ -164,11 +169,12 @@ class CustomTextFormField extends StatelessWidget {
     switch (fontStyle) {
       default:
         return GoogleFonts.getFont(
-          "Inter",
+          "Poppins",
           color: ColorConstant.white60,
           fontSize: getFontSize(
             14,
           ),
+          decorationColor: ColorConstant.textGrey,
           fontWeight: FontWeight.w400,
         );
     }

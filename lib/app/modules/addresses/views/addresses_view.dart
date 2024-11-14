@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
-
-import 'package:get/get.dart';
+import 'package:fruitables/app/data/widgets/noData.dart';
 
 import '../controllers/addresses_controller.dart';
 
@@ -20,7 +18,9 @@ class AddressesView extends GetView<AddressesController> {
         title: MyText(title: "lbl_my_addresses".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body: Padding(
+      body:controller.addresses.isEmpty? NoData(
+        svgPath: 'assets/images/address.svg',
+        name: "No Addresses Found !",message: "You haven't added an address yet. Let's get started by adding one now!",):Padding(
         padding: getPadding(
           top: 15,bottom: 15
         ),

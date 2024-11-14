@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/user_model.dart';
 import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
@@ -396,13 +397,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
               MyText(
                 title: "lbl_support_center".tr,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: Utils.checkIfArabicLocale()?16:18,
               ),
               SizedBox(height: getSize(10)),
               MyText(
                 title:'lbl_for_queries'.tr,
                   color: ColorConstant.textGrey,
-                  fontSize: 14,
+                  alignRight: Utils.checkIfArabicLocale(),
+                  fontSize: Utils.checkIfArabicLocale()?12:14,
                 center: true,
               ),
               SizedBox(height: getSize(20)),
@@ -457,25 +459,33 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: CustomImageView(
-                    imagePath: ImageConstant.splash,
-                    height: getSize(200),
-                  ),
+                  child: SvgPicture.asset(ImageConstant.online,
+                  height: getSize(150),
+
+                  )
+                  // (
+                  //   imagePath: ImageConstant.online,
+                  //   height: getSize(200),
+                  // ),
                 ),
                 SizedBox(height: getSize(20)),
                 MyText(
                   title: "phone_number".tr,
+                 alignRight:  Utils.checkIfArabicLocale(),
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: Utils.checkIfArabicLocale()?18: 16,
                 ),
                 MyText(
                   title: "you_will_receive_6_digit_otp".tr,
-                  fontSize: 14,
+                  fontSize: Utils.checkIfArabicLocale()?12:14,
+                  alignRight:  Utils.checkIfArabicLocale(),
                   color: ColorConstant.textGrey,
                 ),
                 SizedBox(height: getSize(20)),
                 CustomTextFormField(
-                  labelText: "enter_phone_number".tr,
+                
+                  hintText: 'enter_phone_number'.tr,
+                  // labelText: "enter_phone_number".tr,
                   controller: phoneController,
                   textInputType: TextInputType.phone,
                   validator: (val){
@@ -484,11 +494,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(20)),
                 CustomButton(
+                  
                   text: "lbl_login".tr,
                   controller: loginController,
                   // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
                   onTap: () async {
                     if(_formKey.currentState!.validate()){
+                      
                       loginController.start();
                       myAppAuth.sendOTP(phoneController.text,onSuccess: (response){
                         loginController.stop();
@@ -536,14 +548,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: CustomImageView(
-                    imagePath: ImageConstant.splash,
-                    height: getSize(200),
+                  child: SvgPicture.asset(
+                     ImageConstant.terms,
+                    height: getSize(120),
                   ),
                 ),
                 SizedBox(height: getSize(20)),
                 CustomTextFormField(
-                  labelText: "enter_username".tr,
+                  hintText: "enter_username".tr,
+                  // labelText: "enter_username".tr,
                   controller: nameController,
                   textInputType: TextInputType.name,
                   validator: (val){
@@ -552,7 +565,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(15),),
                 CustomTextFormField(
-                  labelText: "enter_phone_number".tr,
+                  hintText:"enter_phone_number".tr ,
+                  // labelText: "enter_phone_number".tr,
                   controller: phoneController,
                   textInputType: TextInputType.phone,
                   readOnly: true,
@@ -562,16 +576,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
                 SizedBox(height: getSize(15),),
                 CustomTextFormField(
-                  labelText: "enter_email".tr,
+                  // labelText: "enter_email".tr,
+                  hintText: "enter_email".tr ,
                   controller: emailController,
-                  textInputType: TextInputType.phone,
+                  textInputType: TextInputType.emailAddress,
                   validator: (val){
-                    return HelperFunction.emailValidate(val??"");
+                    return HelperFunction.emailValidate(val??'');
                   },
                 ),
                 SizedBox(height: getSize(15),),
                 CustomTextFormField(
-                  labelText: "enter_otp1".tr,
+                  hintText:"enter_otp1".tr ,
+                  // labelText: "enter_otp1".tr,
                   controller: otpController,
                   textInputType: TextInputType.number,
                   validator: (val){
@@ -631,20 +647,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: CustomImageView(
-                    imagePath: ImageConstant.splash,
-                    height: getSize(200),
+                  child: SvgPicture.asset(
+                     ImageConstant.messageSent,
+                                         height: getSize(120),
+
                   ),
                 ),
                 SizedBox(height: getSize(20)),
                 MyText(
                   title: "otp_verification".tr,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize:Utils.checkIfArabicLocale()?16: 18,
                 ),
                 MyText(
-                  title: "${"we_sent_otp_to_email".tr}\n${phoneController.text}",
-                  fontSize: 14,
+                  title: "${"we_sent_otp_to_email".tr} ${phoneController.text}",
+                  fontSize:Utils.checkIfArabicLocale()?12: 14,
+                  alignRight: Utils.checkIfArabicLocale(),
                   color: ColorConstant.textGrey,
                 ),
                 SizedBox(height: getSize(20)),

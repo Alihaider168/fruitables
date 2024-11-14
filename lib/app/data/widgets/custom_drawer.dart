@@ -6,6 +6,7 @@ import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/user_model.dart';
 import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:fruitables/app/data/utils/auth_utils/auth.dart';
+import 'package:fruitables/app/data/utils/fav_utils/fav_utils.dart';
 import 'package:fruitables/app/data/utils/helper_functions.dart';
 import 'package:fruitables/app/data/utils/language_utils.dart';
 import 'package:fruitables/app/data/widgets/custom_round_button.dart';
@@ -37,6 +38,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   RoundedLoadingButtonController signupController = RoundedLoadingButtonController();
 
   MyAppAuth myAppAuth = MyAppAuth();
+  FavUtils favUtils = FavUtils();
 
   RxInt min = 00.obs;
   RxInt sec = 60.obs;
@@ -190,7 +192,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
             showArrow: true,
               onTap: (){
                 Get.back();
-                Get.toNamed(Routes.FAVOURITES);
+                Get.toNamed(Routes.FAVOURITES)!.then((val){
+                  favUtils.getFavourites();
+                });
               }
           ),
           customTile(

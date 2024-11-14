@@ -2,6 +2,7 @@
 
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/city_model.dart';
+import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/data/models/user_model.dart';
 
 class Constants {
@@ -24,6 +25,8 @@ class Constants {
   static RxBool isDelivery = true.obs;
 
   static UserModel? userModel;
+
+  static List<Items?> menuItems =[];
 
   static bool showToast = true;
   static bool showNoInternetToast = false;

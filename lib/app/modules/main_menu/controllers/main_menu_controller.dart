@@ -48,6 +48,8 @@ class MainMenuController extends GetxController {
         await BaseClient.get(ApiUtils.getMenu,
           onSuccess: (response) async {
             menuModel.value = MenuModel.fromJson(response.data);
+            Constants.menuItems = [];
+            Constants.menuItems.addAll(menuModel.value.data?.items??[]);
             isLoading.value = false;
             return true;
           },
@@ -80,6 +82,10 @@ class MainMenuController extends GetxController {
       selectedSize.value = "medium";
     }else if((item.smallPrice??0) != 0 ) {
       selectedSize.value = "small";
+    }
+
+    if(favUtils.productIds.contains(item.id)){
+      isLiked.value = true;
     }
 
       Widget getCheckbox({String value = 'small',required String title,num price = 0,num discountedPrice = 0,}){
@@ -199,6 +205,10 @@ class MainMenuController extends GetxController {
                                       onTap: (){
                                         favUtils.addOrRemoveFav(item.id);
                                         isLiked.value = !isLiked.value;
+                                        if(onFavTap!= null){
+                                          onFavTap();
+                                        }
+
                                       },
                                       child: Obx(()=> CustomImageView(
                                         svgPath: isLiked.value ? ImageConstant.likeActive : ImageConstant.likeInactive,

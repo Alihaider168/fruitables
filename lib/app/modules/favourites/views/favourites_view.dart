@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/menu_model.dart';
 import 'package:fruitables/app/modules/category_detail/views/category_detail_view.dart';
 
 import 'package:get/get.dart';
@@ -26,7 +27,12 @@ class FavouritesView extends GetView<FavouritesController> {
           final item = controller.initialList[index];
 
           return ItemWidget(
-            item: item,fromFav: true,
+            item: item??Items(),fromFav: true,
+            onFavTap: (){
+              Get.back();
+              controller.initialList.removeAt(index);
+              controller.initialList.refresh();
+            },
 
           );
         },

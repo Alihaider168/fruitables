@@ -88,28 +88,32 @@ class CheckoutView extends GetView<CheckoutController> {
                               fontWeight: FontWeight.normal,
                             ),
                             SizedBox(height: getSize(10),),
+                            MyText(
+                              title: "delivery_address".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: getSize(3),),
+                            GestureDetector(
+                              onTap: (){
+                                Get.toNamed(Routes.ADDRESSES,arguments: {Constants.paramCheckout : true})!.then((address){
+                                  if(address != null){
+                                    controller.selectedAddress.value= address??"";
+                                  }
+                                });
+                              },
+                              child: MyText(
+                                title: controller.selectedAddress.value.isEmpty ? "select_delivery_address".tr : controller.selectedAddress.value,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ],
                         ): Offstage()),
 
+
                         Constants.isDelivery.value ?
-                        CustomTextFormField(
-                          controller: controller.addressController,
-                          labelText: "delivery_address".tr,
-                          readOnly: true,
-                          onTap: () async {
-                            if(Constants.isLoggedIn.value){
-                              Get.toNamed(Routes.ADDRESSES,arguments: {Constants.paramCheckout : true})!.then((address){
-                                if(address != null){
-                                  controller.addressController.text = address??"";
-                                }
-                              });
-                            }else{
-                              controller.menuController.showLoginSheet(context);
-                            }
-
-
-                          },
-                        ) :
+                        Offstage() :
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -375,7 +379,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 controller: controller.checkoutController,
                 text: "confirm_order".tr,
                 onTap: (){
-                  if(!Constants.isDelivery.value||controller.addressController.text.isNotEmpty){
+                  if(!Constants.isDelivery.value||controller.selectedAddress.value.isNotEmpty){
                     if(!Constants.isDelivery.value || controller.selectedMethod.value.isNotEmpty){
                       controller.addOrder();
                     }else{

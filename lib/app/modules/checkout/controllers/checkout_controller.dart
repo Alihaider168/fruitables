@@ -26,9 +26,10 @@ class CheckoutController extends GetxController {
 
   RoundedLoadingButtonController checkoutController = RoundedLoadingButtonController();
 
-  TextEditingController addressController = TextEditingController();
+  // TextEditingController addressController = TextEditingController();
   TextEditingController instructionsController = TextEditingController();
 
+  RxString selectedAddress= "".obs;
   RxString selectedMethod = "".obs;
   RxString selectedTime = "".obs;
 
@@ -219,7 +220,7 @@ class CheckoutController extends GetxController {
               "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
               "tax": menuController.cart.getTax(),
               "type" : Constants.isDelivery.value ? "delivery" : "pickup",
-              "address": addressController.text,
+              "address": selectedAddress.value,
               "instructions" : instructionsController.text,
               "discount": menuController.cart.getTotalDiscountForCart(),
               "products": products

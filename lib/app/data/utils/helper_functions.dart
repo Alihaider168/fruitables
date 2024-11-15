@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:intl/intl.dart';
 
 class HelperFunction {

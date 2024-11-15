@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/widgets/cart_bottom.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 
 import 'package:get/get.dart';
 

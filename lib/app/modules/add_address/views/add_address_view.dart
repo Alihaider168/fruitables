@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/widgets/custom_button.dart';
-import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

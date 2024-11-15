@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 
 class CustomGetStartedButton extends StatelessWidget {
   const CustomGetStartedButton({super.key,required this.image, required this.title, this.onTap});

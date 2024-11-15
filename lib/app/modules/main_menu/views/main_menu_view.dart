@@ -1,8 +1,8 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/data/widgets/cart_bottom.dart';
-import 'package:fruitables/app/data/widgets/custom_collapsable_widget.dart';
-import 'package:fruitables/app/data/widgets/custom_drawer.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_collapsable_widget.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_drawer.dart';
 
 import '../controllers/main_menu_controller.dart';
 

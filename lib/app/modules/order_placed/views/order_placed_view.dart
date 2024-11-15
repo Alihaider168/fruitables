@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/utils/cart/cart.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

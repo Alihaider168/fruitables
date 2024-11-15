@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 
 class CustomImageView extends StatelessWidget {
   ///[url] is required parameter for fetching network image

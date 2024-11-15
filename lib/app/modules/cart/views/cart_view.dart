@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/data/utils/cart/cart.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends StatefulWidget {

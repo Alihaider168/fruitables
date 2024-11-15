@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextFormField extends StatelessWidget {

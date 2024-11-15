@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/orders_model.dart';
-import 'package:fruitables/app/data/models/user_model.dart';
-import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
-import 'package:fruitables/app/data/utils/auth_utils/auth.dart';
-import 'package:fruitables/app/data/utils/helper_functions.dart';
-import 'package:fruitables/app/data/widgets/custom_round_button.dart';
-import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
-import 'package:fruitables/app/data/widgets/otp_text_feild.dart';
-import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
+// import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:rexsa_cafe/app/data/utils/auth_utils/auth.dart';
+import 'package:rexsa_cafe/app/data/utils/helper_functions.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../data/core/app_export.dart';

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
-import 'package:fruitables/app/modules/orders/controllers/orders_controller.dart';
+import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:rexsa_cafe/app/modules/orders/controllers/orders_controller.dart';
 import 'package:http/http.dart' as http;
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/data/models/orders_model.dart';
-import 'package:fruitables/app/data/utils/cart/cart.dart';
-import 'package:fruitables/app/data/utils/fav_utils/fav_utils.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
+import 'package:rexsa_cafe/app/data/utils/fav_utils/fav_utils.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

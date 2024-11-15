@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:fruitables/app/data/models/city_model.dart';
-import 'package:fruitables/app/data/utils/api_utils.dart';
-import 'package:fruitables/app/data/utils/utils.dart';
-import 'package:fruitables/app/data/widgets/custom_button.dart';
-import 'package:fruitables/app/services/base_client.dart';
+import 'package:rexsa_cafe/app/data/models/city_model.dart';
+import 'package:rexsa_cafe/app/data/utils/api_utils.dart';
+import 'package:rexsa_cafe/app/data/utils/utils.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
+import 'package:rexsa_cafe/app/services/base_client.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

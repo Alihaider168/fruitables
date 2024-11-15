@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 
 import '../../../data/core/app_export.dart';
 import '../controllers/checkout_controller.dart';

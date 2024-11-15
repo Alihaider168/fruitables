@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/widgets/cart_bottom.dart';
-import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
-import 'package:fruitables/app/modules/category_detail/views/category_detail_view.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/modules/category_detail/views/category_detail_view.dart';
 
 import 'package:get/get.dart';
 

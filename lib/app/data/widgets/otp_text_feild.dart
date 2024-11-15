@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 

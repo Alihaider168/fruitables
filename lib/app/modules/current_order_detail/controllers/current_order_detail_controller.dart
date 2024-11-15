@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:get/get.dart';
 
 class CurrentOrderDetailController extends GetxController {

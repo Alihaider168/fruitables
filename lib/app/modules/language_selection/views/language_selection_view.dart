@@ -1,5 +1,5 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/utils/language_utils.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/utils/language_utils.dart';
 
 import '../controllers/language_selection_controller.dart';
 

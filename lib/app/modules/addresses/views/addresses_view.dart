@@ -1,5 +1,5 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/widgets/noData.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/widgets/noData.dart';
 
 import '../controllers/addresses_controller.dart';
 

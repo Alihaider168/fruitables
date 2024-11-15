@@ -2,7 +2,7 @@ import 'dart:io';
 
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 

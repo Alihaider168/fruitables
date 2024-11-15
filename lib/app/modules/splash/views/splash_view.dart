@@ -1,5 +1,5 @@
-import 'package:fruitables/app/data/utils/base/baseview_auth_screen.dart';
-import 'package:fruitables/app/data/utils/image_constant.dart';
+import 'package:rexsa_cafe/app/data/utils/base/baseview_auth_screen.dart';
+import 'package:rexsa_cafe/app/data/utils/image_constant.dart';
 
 import '../../../data/core/app_export.dart';
 import '../controllers/splash_controller.dart';

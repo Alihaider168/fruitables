@@ -1,9 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/city_model.dart';
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/city_model.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/models/user_model.dart';
 
 class Constants {
 

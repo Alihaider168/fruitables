@@ -1,7 +1,7 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/favourite_model.dart';
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/favourite_model.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 class FavUtils{
 

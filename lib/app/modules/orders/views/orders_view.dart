@@ -1,8 +1,8 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 
 import 'package:get/get.dart';
-import 'package:fruitables/app/data/widgets/noData.dart';
+import 'package:rexsa_cafe/app/data/widgets/noData.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/orders_controller.dart';

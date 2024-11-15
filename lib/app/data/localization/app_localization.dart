@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/localization/ar_sa/ar_sa_translations.dart';
+import 'package:rexsa_cafe/app/data/localization/ar_sa/ar_sa_translations.dart';
 import 'package:get/get.dart';
 
 import 'en_us/en_us_translations.dart';

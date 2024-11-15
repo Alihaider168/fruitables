@@ -1,5 +1,5 @@
-import 'package:fruitables/app/data/models/menu_model.dart';
-import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:get/get.dart';
 
 class SearchViewController extends GetxController {

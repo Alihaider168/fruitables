@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/localization/app_localization.dart';
-import 'package:fruitables/app/data/utils/initial_bindings.dart';
-import 'package:fruitables/app/data/utils/language_utils.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/localization/app_localization.dart';
+import 'package:rexsa_cafe/app/data/utils/initial_bindings.dart';
+import 'package:rexsa_cafe/app/data/utils/language_utils.dart';
 
 import 'package:get/get.dart';
 

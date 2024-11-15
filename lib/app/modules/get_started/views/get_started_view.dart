@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/widgets/custom_get_started_button.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_get_started_button.dart';
 import '../../../data/core/app_export.dart';
 import '../controllers/get_started_controller.dart';
 

@@ -1,4 +1,4 @@
-import 'package:fruitables/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 
 class FavouriteModel {
   int? code;

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:fruitables/app/data/widgets/custom_snackbar.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_snackbar.dart';
 import 'package:get/get.dart' as gttt;
 import 'package:get/get_utils/get_utils.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

@@ -1,6 +1,6 @@
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/address_model.dart';
-import 'package:fruitables/app/data/widgets/custom_round_button.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/address_model.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:get/get.dart';
 
 class AddressesController extends GetxController {

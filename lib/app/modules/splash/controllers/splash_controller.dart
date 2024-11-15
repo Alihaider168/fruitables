@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:fruitables/app/data/core/app_export.dart';
-import 'package:fruitables/app/data/models/user_model.dart';
-import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {

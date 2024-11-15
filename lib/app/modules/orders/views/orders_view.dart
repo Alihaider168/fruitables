@@ -23,21 +23,24 @@ class OrdersView extends GetView<OrdersController> {
         title: MyText(title: "lbl_my_orders".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body: Obx(()=> ListView.builder(
+        body: Obx(()=> controller.myOrders.isEmpty ?
+        Container(
+          height: Get.height,width: Get.width,
+          child: Center(child: NoData(
+            svgPath: 'assets/images/emptyCart.svg',
+            name: "no_order_found".tr,
+            message: "no_order_found_desc".tr,
+          )),
+        ):
+
+      Obx(()=> ListView.builder(
         itemCount: controller.myOrders.length,
-      body:controller.orders.isEmpty? Container(height: Get.height,width: Get.width,
-      child: Center(child: NoData(
-        svgPath: 'assets/images/emptyCart.svg',
-        name: "no_order_found".tr,
-        message: "no_order_found_desc".tr,
-      ))): ListView.builder(
-        itemCount: controller.orders.length,
         padding: getPadding(all: 16),
         itemBuilder: (context, index) {
           final order = controller.myOrders[index];
           return OrderCard(order: order);
         },
-      )),
+      )))
     );
   }
 }

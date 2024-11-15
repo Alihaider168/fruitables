@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
@@ -20,11 +19,11 @@ class CartBottom extends StatelessWidget  {
       },
       child: Container(
         // height: getSize(100),
-        padding: getPadding(all: 10),
+        padding: getPadding(right: 12, left: 12, top: 17, bottom: 15),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(getSize(10)),
-          boxShadow: [
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(getSize(15)),topRight: Radius.circular(getSize(15))),
+          boxShadow:const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 8,
@@ -33,36 +32,72 @@ class CartBottom extends StatelessWidget  {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            OrderStatusIndicator(currentIndex: 1),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Row(
+                           children: [
+                                                                                                               SizedBox(width: getSize(8)),
 
-                      SizedBox(height: getSize(10)),
-                      MyText(
-                        title: '${"order_number".tr}12345',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                      ),
-                      SizedBox(height: getSize(3)),
-                      MyText(
-                        title: 'your_order_being_prepared'.tr,
-                          color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
-                    ],
+                             Container(
+                             width: getSize(13),
+                             height: getSize(13),
+                             decoration: BoxDecoration(
+                               color: ColorConstant.primaryPink1,
+                             
+                               borderRadius:BorderRadius.circular(12)
+                             ),
+                                               ),
+                                                                                   SizedBox(width: getSize(14)),
+                         
+                                                 MyText(
+                            title: '12345',
+                              fontWeight: FontWeight.w600,
+                              fontSize: getFontSize(16),
+                          ),
+                           ],
+                         ),
+                         Icon(Icons.keyboard_arrow_down, size: getSize(25),color: ColorConstant.black,)
+                       ],
+                     ),
+                                                                                                    SizedBox(height: getSize(7)),
+
+
+                  
+            Container(
+              width: Get.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  OrderStatusIndicator(currentIndex: 1),
+                ],
+              )),
+              SizedBox(height: getSize(10)),
+          
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    '${'Preparing'.tr}\n${'your_order_being_prepared'.tr}',
+                     style: TextStyle( color: Colors.grey[700],
+                     height: 1.2,
+                    fontSize: 14,),
+                    
+                            softWrap: true,
+
                   ),
                 ),
                 MyText(
-                  title: '20 - 35 ${"mins".tr}',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  title: 'view_details'.tr,
+                  fontWeight: FontWeight.w600,
+
+                  fontSize: 13,
                 ),
               ],
             ),
@@ -225,8 +260,9 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
 
   Widget _buildStatusContainer(Color color) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
       height: 5,
-      width: size.width/6,
+      width: size.width/8,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
@@ -243,7 +279,9 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
           child: Stack(
             children: [
               Container(
-                width: size.width/6,
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+
+                width: size.width/7,
                 height: 5,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
@@ -251,13 +289,16 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
                 ),
               ),
               Positioned(
+
                 left: _animation.value,
                 child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+
                   width: 50,
                   height: 5,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [ColorConstant.primaryPink1.withOpacity(.3), ColorConstant.primaryPink1.withOpacity(.6), ColorConstant.primaryPink1],
+                      colors: [ColorConstant.primaryPink1.withOpacity(.7), ColorConstant.primaryPink1.withOpacity(.8), ColorConstant.primaryPink1],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

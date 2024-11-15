@@ -136,5 +136,8 @@ final Map<String, String> arSa = {
   "no_order_found": "لم يتم العثور على الطلبات!",
   "no_order_found_desc": "يبدو أنه فارغ هنا، فلنملأه بشيء مذهل!",
   "no_address_found":"لم يتم العثور على عناوين!",
-  "no_address_found_desc":"لم تقم بإضافة عنوان بعد. لنبدأ بإضافة واحدة الآن!"
+  "no_address_found_desc":"لم تقم بإضافة عنوان بعد. لنبدأ بإضافة واحدة الآن!",
+  "view_details": "عرض التفاصيل",
+  "your_order_being_prepared": "طلبك قيد الإعداد",
+
 };

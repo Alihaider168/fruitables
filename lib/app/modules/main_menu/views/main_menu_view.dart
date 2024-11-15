@@ -287,7 +287,7 @@ class _MainMenuViewState extends State<MainMenuView> {
         )),
       ),
       ),
-      bottomNavigationBar: Obx(()=> CartBottom(showCurrentOrder :controller.orderAdded.value,order: controller.currentOrder.value,)),
+      bottomNavigationBar: Obx(()=>  !controller.bottomBar.value  && !controller.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.orderAdded.value,order: controller.currentOrder.value,)),
     );
   }
 }

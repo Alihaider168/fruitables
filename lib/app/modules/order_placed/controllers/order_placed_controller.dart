@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 class OrderPlacedController extends GetxController {
 
   MainMenuController menuController = Get.put(MainMenuController());
-  OrdersController ordersController = Get.put(OrdersController());
 
   RxBool isLoading = false.obs;
 

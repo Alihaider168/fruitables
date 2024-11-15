@@ -11,7 +11,6 @@ import 'package:rexsa_cafe/app/data/utils/fav_utils/fav_utils.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  OrdersController ordersController = Get.put(OrdersController());
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
   AppPreferences appPreferences = AppPreferences();
@@ -36,7 +35,7 @@ class MainMenuController extends GetxController {
   void onInit() {
     super.onInit();
     getInitialApisData();
-    loadCart();
+
     getMenu();
   }
 
@@ -46,8 +45,13 @@ class MainMenuController extends GetxController {
       if(value==true){
         getOrderStatus();
         favUtils.getFavourites();
+      }else{
+        bottomBar.value = false;
       }
+      loadCart();
     }).catchError((err) async {
+      bottomBar.value = false;
+      loadCart();
     });
   }
 

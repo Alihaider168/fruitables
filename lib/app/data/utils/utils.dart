@@ -351,7 +351,26 @@ class Utils {
   }
 
 
-  static Map<String, dynamic> getHeader(){
-    return {"Authorization": "Bearer ${Constants.userModel?.token}"};
+  static Map<String, dynamic>? getHeader(){
+    return Constants.isLoggedIn.value ? {"Authorization": "Bearer ${Constants.userModel?.token}"}: null;
+  }
+
+
+  static String formatNumberWithText(String input) {
+    // Extract the number part and format it
+    RegExp regex = RegExp(r'\d+(\.\d+)?');
+    Match? match = regex.firstMatch(input);
+
+    if (match != null) {
+      String numberPart = match.group(0)!;
+      double number = double.parse(numberPart);
+      String formattedNumber = number.toStringAsFixed(2);
+
+      // Replace the original number with the formatted one
+      return input.replaceFirst(numberPart, formattedNumber);
+    }
+
+    // If no number is found, return the input as it is
+    return input;
   }
 }

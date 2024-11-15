@@ -54,7 +54,12 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.ORDER_DETAIL,arguments: {'order': order});
+        if(order.status == 'delivered' || order.status == 'cancelled'){
+          Get.toNamed(Routes.ORDER_PLACED,arguments: {'order': order});
+        }else{
+          Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {'order': order});
+        }
+
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

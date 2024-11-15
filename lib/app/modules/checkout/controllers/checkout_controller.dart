@@ -260,6 +260,9 @@ class CheckoutController extends GetxController {
               "pickupTime": Constants.isDelivery.value ? null : selectedTime.value,
               "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
               "tax": menuController.cart.getTax(),
+              "type" : Constants.isDelivery.value ? "delivery" : "pickup",
+              "address": addressController.text,
+              "instructions" : instructionsController.text,
               "discount": menuController.cart.getTotalDiscountForCart(),
               "products": products
             });

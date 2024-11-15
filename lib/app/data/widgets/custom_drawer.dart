@@ -305,6 +305,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onPressed: () {
                     Get.back();
                     Constants.isLoggedIn.value = false;
+                    Constants.userModel = null;
+                    _appPreferences.setIsLoggedIn(loggedIn:false);
+                    _appPreferences.setUserData(data: "");
                     Get.offAllNamed(Routes.MAIN_MENU);
 
                   },

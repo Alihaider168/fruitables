@@ -32,7 +32,7 @@ class CartBottom extends StatelessWidget  {
 
     return Obx(()=> Container(
       width: size.width,
-      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.19 :size.height*0.12,
+      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.2 :size.height*0.12,
       padding: getPadding(left: 16,right: 16,bottom: 15,top: 15),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -74,35 +74,59 @@ class CartBottom extends StatelessWidget  {
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OrderStatusIndicator(currentIndex: index),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                    Row(
+                      children: [
+                        SizedBox(width: getSize(8)),
 
-                          SizedBox(height: getSize(10)),
-                          MyText(
-                            title: '${"order_number".tr}${order?.saleId}',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                        Container(
+                          width: getSize(13),
+                          height: getSize(13),
+                          decoration: BoxDecoration(
+                              color: ColorConstant.primaryPink1,
+
+                              borderRadius:BorderRadius.circular(12)
                           ),
-                          SizedBox(height: getSize(3)),
-                          MyText(
-                            title: "${'your_order_being'.tr}${order?.status}",
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ],
+                        ),
+                        SizedBox(width: getSize(14)),
+
+                        MyText(
+                          title: "${order?.saleId}",
+                          fontWeight: FontWeight.w600,
+                          fontSize: getFontSize(16),
+                        ),
+                      ],
+                    ),
+                    Icon(Icons.keyboard_arrow_down, size: getSize(25),color: ColorConstant.black,)
+                  ],
+                ),
+                SizedBox(height: getSize(7)),
+                OrderStatusIndicator(currentIndex: index),
+                SizedBox(height: getSize(10)),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        '${'your_order_being'.tr}${order?.status}',
+                        style: TextStyle( color: Colors.grey[700],
+                          height: 1.2,
+                          fontSize: 14,),
+
+                        softWrap: true,
+
                       ),
                     ),
                     MyText(
-                      title: '20 - 35 ${"mins".tr}',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      title: 'view_details'.tr,
+                      fontWeight: FontWeight.w600,
+
+                      fontSize: 13,
                     ),
                   ],
                 ),

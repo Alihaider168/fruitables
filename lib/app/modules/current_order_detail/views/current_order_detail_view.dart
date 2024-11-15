@@ -176,7 +176,7 @@ class CurrentOrderDetailView extends GetView<CurrentOrderDetailController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(controller.order?.totalAmount??0) - (controller.order?.discount??0) -(Constants.DELIVERY_FEES)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+                          _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(controller.order?.totalAmount??0) - (controller.order?.discount??0) -((controller.order?.type??"") == "delivery" ? Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
                           _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(controller.order?.discount??0).toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
                         (controller.order?.type??"") == "delivery" ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"): Offstage(),
                           _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.order?.tax??0}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
@@ -203,7 +203,7 @@ class CurrentOrderDetailView extends GetView<CurrentOrderDetailController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
-          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+          MyText(title: Utils.formatNumberWithText(amount), fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
         ],
       ),
     );

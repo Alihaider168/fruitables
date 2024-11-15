@@ -17,7 +17,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
           Get.offAllNamed(Routes.MAIN_MENU);
           controller.menuController.bottomBar.value = false;
           controller.menuController.orderAdded.value = true;
-          controller.ordersController.getOrders();
+          controller.menuController.getCurrentOrderContinious();
         },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
         ),
@@ -34,7 +34,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
               Get.offAllNamed(Routes.MAIN_MENU);
               controller.menuController.bottomBar.value = false;
               controller.menuController.orderAdded.value = true;
-              controller.ordersController.getOrders();
+              controller.menuController.getCurrentOrderContinious();
             },
           ),
         ],
@@ -138,7 +138,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
                 padding: getPadding(left: 8,right: 8),
                 child: Column(
                   children: [
-                    _buildTotalRow("lbl_subtotal".tr, (controller.order.value.totalAmount??0) - (controller.order.value.discount??0) -(Constants.DELIVERY_FEES)),
+                    _buildTotalRow("lbl_subtotal".tr, (controller.order.value.totalAmount??0) - (controller.order.value.discount??0) -((controller.order.value.type??"") == "delivery" ? Constants.DELIVERY_FEES : 0)),
                     _buildTotalRow("lbl_discount".tr, (controller.order.value.discount??0).toDouble()),
                     (controller.order.value.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
                     SizedBox(height: getSize(16)),

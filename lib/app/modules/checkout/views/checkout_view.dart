@@ -402,7 +402,7 @@ class CheckoutView extends GetView<CheckoutController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
-          MyText(title: amount, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+          MyText(title: Utils.formatNumberWithText(amount), fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
         ],
       ),
     );

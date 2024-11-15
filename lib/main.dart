@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
         // locale: Get.deviceLocale,
         locale: widget.language!= null && widget.language == 'arabic' ? const Locale('ar', 'SA'):const Locale('en', 'US'),
         fallbackLocale: const Locale('en', 'US'),
-        title: 'Fruitables',
+        title: 'Rexsa Cafe',
         initialBinding: InitialBindings(),
         // showSemanticsDebugger: true,
         theme: ThemeData(

@@ -1,4 +1,4 @@
-# fruitables
+# Rexsa Cafe
 
 A new Flutter project.
 

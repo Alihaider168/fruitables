@@ -1,26 +1,43 @@
-import 'package:fruitables/app/modules/orders/views/orders_view.dart';
+import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
+import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:get/get.dart';
 
 class OrdersController extends GetxController {
-  final List<Order> orders = [
-    Order(
-      id: "5RM4-59HG6",
-      date: DateTime.now().subtract(Duration(days: 1)),
-      status: "delivered".tr,
-      total: 1120.0,
-    ),
-    Order(
-      id: "3GH8-42RT2",
-      date: DateTime.now().subtract(Duration(days: 2)),
-      status: "in_progress".tr,
-      total: 745.0,
-    ),
-    Order(
-      id: "7DK2-71NL8",
-      date: DateTime.now().subtract(Duration(days: 3)),
-      status: "cancelled".tr,
-      total: 500.0,
-    ),
-    // Add more orders as needed
-  ];
+  
+  RxList<Orders> myOrders = <Orders>[].obs;
+
+
+  @override
+  void onInit() {
+    getOrders();
+    super.onInit();
+  }
+
+
+  void getOrders({final void Function(String?)? onSuccess}){
+    Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.get(ApiUtils.getOrders,
+            onSuccess: (response) async {
+              print(response);
+              OrdersModel orderModel = OrdersModel.fromJson(response.data);
+              myOrders.value.clear();
+              myOrders.value.addAll(orderModel.orders??[]);
+              if(onSuccess!= null && myOrders.isNotEmpty && (myOrders[0].status != "delivered" || myOrders[0].status != "cancelled")){
+                onSuccess(myOrders[0].id);
+              }
+              myOrders.refresh();
+              return true;
+            },
+            onError: (error) {
+              BaseClient.handleApiError(error);
+              return false;
+            },
+            headers: Utils.getHeader()
+        );
+      }
+    });
+  }
+  
 }

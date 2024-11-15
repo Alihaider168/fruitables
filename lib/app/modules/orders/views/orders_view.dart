@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,20 +23,20 @@ class OrdersView extends GetView<OrdersController> {
         title: MyText(title: "lbl_my_orders".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: controller.orders.length,
+      body: Obx(()=> ListView.builder(
+        itemCount: controller.myOrders.length,
         padding: getPadding(all: 16),
         itemBuilder: (context, index) {
-          final order = controller.orders[index];
+          final order = controller.myOrders[index];
           return OrderCard(order: order);
         },
-      ),
+      )),
     );
   }
 }
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  final Orders order;
 
   const OrderCard({required this.order});
 
@@ -43,7 +44,7 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.ORDER_DETAIL,arguments: {'status': order.status});
+        Get.toNamed(Routes.ORDER_DETAIL,arguments: {'order': order});
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -57,24 +58,39 @@ class OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyText(title:
-                    "${"order".tr} #${order.id}",
-                    fontSize: 16, fontWeight: FontWeight.bold,
+                    "${"order".tr} #${order.saleId}",
+                    fontSize: 14, fontWeight: FontWeight.bold,
                   ),
                   MyText(title:
-                    DateFormat('MMM d, yyyy').format(order.date),
-                    color: Colors.grey,
+                  DateFormat("d MMM, yy").format(DateTime.parse(order.createdAt??"")),
+                    color: ColorConstant.textGrey,
                   ),
                 ],
               ),
               SizedBox(height: getSize(8)),
               MyText(title:
-                "${"status".tr}: ${order.status}",
-                  color: order.status == "delivered".tr
-                      ? Colors.green
-                      : order.status == "cancelled".tr
-                      ? Colors.red
-                      : Colors.orange,
+                "${"status".tr}: ${(order.status??" ").capitalizeFirst}",
+                  color: order.status == "completed"
+                      ? ColorConstant.green
+                      : order.status == "cancelled"
+                      ? ColorConstant.red
+                      : order.status == "ready"
+                      ? ColorConstant.primaryPink1
+                      : ColorConstant.primaryPink,
                   fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              SizedBox(height: getSize(8)),
+              MyText(title:
+                "${"instructions".tr}: ${(order.instructions??"").isNotEmpty ? (order.instructions) :("none".tr)}",
+                  color:ColorConstant.primaryPink,
+                fontSize: 12,
+              ),
+              SizedBox(height: getSize(8)),
+              MyText(title:
+                "${"items".tr}: ${(order.products??[]).length}",
+                  color:ColorConstant.primaryPink,
+                fontSize: 12,
               ),
               SizedBox(height: getSize(8)),
               Row(
@@ -82,11 +98,11 @@ class OrderCard extends StatelessWidget {
                 children: [
                   MyText(title:
                     "lbl_total".tr,
-                    color: Colors.grey,
+                    color: ColorConstant.textGrey,
                   ),
                   MyText(title:
-                    "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${order.total.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
-                    fontSize: 16, fontWeight: FontWeight.bold,
+                    "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${order.totalAmount??0.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                    fontSize: 14, fontWeight: FontWeight.bold,
                   ),
                 ],
               ),
@@ -97,19 +113,3 @@ class OrderCard extends StatelessWidget {
     );
   }
 }
-
-// Order Model
-class Order {
-  final String id;
-  final DateTime date;
-  final String status;
-  final double total;
-
-  Order({
-    required this.id,
-    required this.date,
-    required this.status,
-    required this.total,
-  });
-}
-

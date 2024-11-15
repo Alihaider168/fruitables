@@ -1,16 +1,23 @@
+import 'dart:convert';
+
+import 'package:fruitables/app/modules/orders/controllers/orders_controller.dart';
+import 'package:http/http.dart' as http;
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
 import 'package:fruitables/app/data/utils/fav_utils/fav_utils.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+  OrdersController ordersController = Get.put(OrdersController());
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
 
   RxBool showAllCategories = false.obs;
   RxBool orderAdded = false.obs;
+
+  Rx<Orders> currentOrder = Orders().obs;
 
   Cart cart = Cart();
   FavUtils favUtils = FavUtils();
@@ -27,10 +34,20 @@ class MainMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getOrderStatus();
     favUtils.getFavourites();
     loadCart();
     getMenu();
   }
+
+  void getOrderStatus(){
+    ordersController.getOrders(
+        onSuccess: (val){
+          getCurrentOrderContinious(val);
+        }
+    );
+  }
+
 
   Future<void> loadCart() async {
     await cart.loadCartFromPreferences();
@@ -514,5 +531,33 @@ class MainMenuController extends GetxController {
         return item.largePrice??0;
       }
     }
+  }
+
+  Future<void> getCurrentOrderContinious(String? id) async {
+    Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.get(ApiUtils.getOrderDetail(id),
+            onSuccess: (response) async {
+              Orders? order = Orders.fromJson(response.data);
+              currentOrder.value = order;
+              if(order.status!= null && (order.status != "delivered" || order.status != "cancelled")){
+                orderAdded.value = true;
+                await Future.delayed(Duration(seconds: 10));
+                getCurrentOrderContinious(id);
+              }else{
+                orderAdded.value = false;
+              }
+
+              return true;
+            },
+            onError: (error) {
+              // BaseClient.handleApiError(error);
+              return false;
+            },
+            headers: Utils.getHeader()
+        );
+      }
+    });
+
   }
 }

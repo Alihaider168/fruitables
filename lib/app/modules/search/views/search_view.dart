@@ -49,7 +49,7 @@ class SearchView extends GetView<SearchViewController> {
           ],
         ),
       ),
-      bottomNavigationBar: CartBottom(),
+      bottomNavigationBar: Obx(()=> CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value,)),
     );
   }
 }

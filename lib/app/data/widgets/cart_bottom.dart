@@ -1,22 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 class CartBottom extends StatelessWidget  {
 
   final controller = Get.put(MainMenuController());
 
-  CartBottom({super.key,this.showCurrentOrder = false});
+  CartBottom({super.key,this.showCurrentOrder = false,this.order});
 
   final bool showCurrentOrder;
+  final Orders? order;
+
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    if(order?.status == "pending"){
+      index = 0;
+    }
+    if(order?.status == "preparing"){
+      index = 1;
+    }
+    if(order?.status == "ready"){
+      index = 2;
+    }
+
     return
       showCurrentOrder ?
     GestureDetector(
       onTap: (){
-        Get.toNamed(Routes.CURRENT_ORDER_DETAIL);
+        Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
       },
       child: Container(
         // height: getSize(100),
@@ -35,7 +50,7 @@ class CartBottom extends StatelessWidget  {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            OrderStatusIndicator(currentIndex: 1),
+            OrderStatusIndicator(currentIndex: index),
             Row(
               children: [
                 Expanded(
@@ -46,13 +61,13 @@ class CartBottom extends StatelessWidget  {
 
                       SizedBox(height: getSize(10)),
                       MyText(
-                        title: '${"order_number".tr}12345',
+                        title: '${"order_number".tr}${order?.saleId}',
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                       ),
                       SizedBox(height: getSize(3)),
                       MyText(
-                        title: 'your_order_being_prepared'.tr,
+                        title: "${'your_order_being'.tr}${order?.status}",
                           color: Colors.grey[600],
                         fontSize: 12,
                       ),

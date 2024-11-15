@@ -363,7 +363,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 controller: controller.checkoutController,
                 text: "confirm_order".tr,
                 onTap: (){
-                  if(controller.addressController.text.isNotEmpty){
+                  if(!Constants.isDelivery.value||controller.addressController.text.isNotEmpty){
                     if(controller.selectedMethod.value.isNotEmpty){
                       controller.addOrder();
                     }else{

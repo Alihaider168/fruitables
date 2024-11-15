@@ -1,23 +1,27 @@
+import 'package:fruitables/app/data/models/orders_model.dart';
 import 'package:get/get.dart';
 
 class CurrentOrderDetailController extends GetxController {
-  //TODO: Implement CurrentOrderDetailController
+  Orders? order;
 
-  final count = 0.obs;
+  int index = 0;
+
   @override
   void onInit() {
+    var data= Get.arguments;
+    if(data!= null && data['order']!= null){
+      order =  data['order'];
+      if(order?.status == "pending"){
+        index = 0;
+      }
+      if(order?.status == "preparing"){
+        index = 1;
+      }
+      if(order?.status == "ready"){
+        index = 2;
+      }
+    }
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

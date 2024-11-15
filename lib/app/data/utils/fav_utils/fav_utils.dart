@@ -58,7 +58,7 @@ class FavUtils{
               return true;
             },
             onError: (error) {
-              BaseClient.handleApiError(error);
+              // BaseClient.handleApiError(error);
               return false;
             },
           headers: Utils.getHeader()

@@ -1,10 +1,12 @@
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/address_model.dart';
+import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:get/get.dart';
 
 class AddressesController extends GetxController {
 
   RxList<Addresses> addresses = <Addresses>[].obs;
+  RoundedLoadingButtonController btnController = RoundedLoadingButtonController();
 
   bool fromCheckout = false;
 
@@ -23,8 +25,10 @@ class AddressesController extends GetxController {
   void getAddresses(){
     Utils.check().then((value) async {
       if (value) {
+        btnController.start();
         await BaseClient.get(ApiUtils.addresses,
             onSuccess: (response) async {
+              btnController.stop();
               print(response);
               AddressModel addressModel = AddressModel.fromJson(response.data);
               addresses.value.clear();
@@ -33,6 +37,7 @@ class AddressesController extends GetxController {
               return true;
             },
             onError: (error) {
+              btnController.stop();
               BaseClient.handleApiError(error);
               return false;
             },
@@ -68,15 +73,18 @@ class AddressesController extends GetxController {
   void addAddress({String? label,String? street,String? floor,String? address,}){
     Utils.check().then((value) async {
       if (value) {
+        btnController.start();
         await BaseClient.post(ApiUtils.addresses,
             onSuccess: (response) async {
               print(response);
+              btnController.stop();
               CustomSnackBar.showCustomToast(message: response.data['message']);
               getAddresses();
 
               return true;
             },
             onError: (error) {
+              btnController.stop();
               BaseClient.handleApiError(error);
               return false;
             },

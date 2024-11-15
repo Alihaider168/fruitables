@@ -103,6 +103,7 @@ class AddressesView extends GetView<AddressesController> {
           ),
           child: Center(
             child: CustomButton(
+              controller: controller.btnController,
               onTap: (){
                 Get.toNamed(Routes.ADD_ADDRESS)!.then((addedAddress){
                   if(addedAddress != null){
@@ -110,7 +111,7 @@ class AddressesView extends GetView<AddressesController> {
                     String? street = addedAddress["street"];
                     String? floor = addedAddress["floor"];
                     String? label = addedAddress["label"];
-                    controller.addAddress(label: label,floor: floor,street: street,address: address);
+                    controller.addAddress(label: label.toString().capitalizeFirst,floor: floor,street: street,address: address);
                   }
                 });
               },

@@ -136,8 +136,10 @@ final Map<String, String> enUs = {
   "lbl_bottle": "Bottle",
   "order_number": "Order #",
   "your_order_being_prepared": "Your order is being prepared",
+  "your_order_being": "Your order is ",
   "mins": "mins",
   "preparing_order": "Preparing your order",
+  "your_order": "Your order",
   "when_its_ready": "When it\s ready, the rider will pick your order",
   "enter_phone_number": "Phone #",
   "enter_username": "Full Name",
@@ -153,4 +155,7 @@ final Map<String, String> enUs = {
   "note_to_rider": "Note to Rider",
   "order_created": "Order created successfully",
   "add_address_amd_select_label": "Please add address and select label",
+  "instructions": "Instructions",
+  "none": "None",
+  "order_type": "Order Type",
 };

@@ -27,6 +27,9 @@ class AddAddressView extends GetView<AddAddressController> {
               ),
               zoomControlsEnabled: false,
               myLocationEnabled: false,
+              onTap: (LatLng latlng){
+                controller.moveToNewLocation(latlng);
+              },
             ),),
             Positioned(
                 top: 50,left: Utils.checkIfArabicLocale() ? null : 16,right: Utils.checkIfArabicLocale() ? 16 : null,
@@ -98,13 +101,6 @@ class AddAddressView extends GetView<AddAddressController> {
                         ),
                         SizedBox(height: getSize(15),),
                         CustomTextFormField(
-                          controller: controller.regionController,
-                          labelText: "lbl_area_sub_region".tr,
-                          hintText: "lbl_select_your_area".tr,
-                          readOnly: true,
-                        ),
-                        SizedBox(height: getSize(15),),
-                        CustomTextFormField(
                           controller: controller.streetController,
                           labelText: "street".tr,
                           hintText: "street".tr,
@@ -148,7 +144,7 @@ class AddAddressView extends GetView<AddAddressController> {
                                       ),
                                     ),),
                                     MyText(
-                                      title: controller.labels[index],
+                                      title: controller.labels[index].tr,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -165,7 +161,6 @@ class AddAddressView extends GetView<AddAddressController> {
                   CustomButton(
                     onTap: (){
                       if(controller.addressController.text.isNotEmpty
-                          && controller.regionController.text.isNotEmpty
                           && controller.selectedLabel.value != -1
                       ){
                         Get.back(result: {

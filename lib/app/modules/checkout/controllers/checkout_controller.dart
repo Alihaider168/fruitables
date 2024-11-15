@@ -1,4 +1,5 @@
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
 import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:get/get.dart';
@@ -186,9 +187,8 @@ class CheckoutController extends GetxController {
               print(response);
               CustomSnackBar.showCustomToast(message: "order_created".tr);
               Get.back();
-          Get.offAndToNamed(Routes.ORDER_PLACED,arguments: {"id":response.data["saleId"]});
+          Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
-          menuController.bottomBar.value = false;
               return true;
             },
             onError: (error) {

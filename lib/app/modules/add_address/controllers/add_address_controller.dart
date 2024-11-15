@@ -1,7 +1,9 @@
 import 'package:fruitables/app/data/core/app_export.dart';
+import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geocoding/geocoding.dart';
 
 class AddAddressController extends GetxController {
   late GoogleMapController mapController;
@@ -9,15 +11,14 @@ class AddAddressController extends GetxController {
   Rx<Marker> currentMarker = const Marker(markerId: MarkerId('current_location'),).obs;
   Rx<Circle> currentCircle  = const Circle(circleId: CircleId('current_location_circle'),).obs;
   TextEditingController addressController = TextEditingController();
-  TextEditingController regionController = TextEditingController();
   TextEditingController floorController = TextEditingController();
   TextEditingController streetController = TextEditingController();
 
   final List<String> labels = [
-    "home".tr,
-    "work".tr,
-    "partner".tr,
-    "other".tr,
+    "home",
+    "work",
+    "partner",
+    "other",
   ];
 
   final List<String> labelImages = [
@@ -33,7 +34,6 @@ class AddAddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    regionController.text = Constants.selectedBranch?.address??"";
     _getCurrentLocation();
   }
 
@@ -62,7 +62,7 @@ class AddAddressController extends GetxController {
       strokeColor: Colors.blue,
       strokeWidth: 2,
     );
-
+    getAddressFromLatLng(currentPosition.latitude, currentPosition.longitude);
     moveToCurrentLocation();
 
 
@@ -71,6 +71,34 @@ class AddAddressController extends GetxController {
   // Move the camera to the current location
   moveToCurrentLocation(){
     mapController.animateCamera(CameraUpdate.newLatLng(currentPosition));
+  }
+  // Move the camera to the new location
+  moveToNewLocation(LatLng latlng){
+    currentPosition = latlng;
+    mapController.animateCamera(CameraUpdate.newLatLng(latlng));
+    currentMarker.value = Marker(
+      markerId: const MarkerId('current_location'),
+      position: currentPosition,
+    );
+
+    getAddressFromLatLng(latlng.latitude, latlng.longitude);
+  }
+
+
+  Future<void> getAddressFromLatLng(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+      // Extract the first placemark from the list
+      Placemark place = placemarks[0];
+
+      // Create a formatted address string
+      String address = '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}';
+      addressController.text = address;
+    } catch (e) {
+      print(e);
+      addressController.text = "";
+    }
   }
 
 

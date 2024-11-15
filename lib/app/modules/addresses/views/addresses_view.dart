@@ -39,26 +39,56 @@ class AddressesView extends GetView<AddressesController> {
                   }
                 },
                 child: Container(
-                  padding: getPadding(left: 15,top: 5,bottom: 5),
+                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: ColorConstant.textGrey.withOpacity(.4)))),
+                  padding: getPadding(left: 0,top: 5,bottom: 10),
                   child: Row(
                     children: [
+                      Container(
+                        padding: getPadding(top: 5),
+                        alignment: Alignment.topCenter,
+                        height:getSize(70),
+                        width:getSize(50),child: Icon(Icons.location_on_outlined, color: ColorConstant.textGrey,size: getSize(23),),),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            MyText(title: "${"label".tr}: ${address.label??""}",fontWeight: FontWeight.w500,),
-                            MyText(title: "${"address".tr}: ${address.address??""}",fontWeight: FontWeight.w300,fontSize: 12,),
-                            SizedBox(height: getSize(5),),
-                            MyText(title: "${"note_to_rider".tr}: ${address.street!= null ? "${address.street}, " : ""}${address.floor??""}",fontWeight: FontWeight.w300,fontSize: 12,),
+                            
+                            // Text("${address.label??""}",
+                            
+                            // style: TextStyle(
+                            //   fontWeight: FontWeight.w600,fontSize: getFontSize(13),
+                              
+
+                            // ),),
+                            Text("${"address".tr}: ${address.address??""}",style: TextStyle( 
+                              fontWeight: FontWeight.w400,fontSize: getFontSize(12),
+                              color: ColorConstant.textGrey,
+                              height: 1.2
+                              
+
+                            ),),
+                            Text( "${"note_to_rider".tr}: ${address.street!= null ? "${address.street}, " : ""}${address.floor??""}",style: TextStyle( 
+                              fontWeight: FontWeight.w400,fontSize: getFontSize(12),
+                              color: ColorConstant.textGrey,
+                              height: 1.2
+                              
+
+                            )),
                           ],
                         ),
                       ),
-                      SizedBox(width: getSize(10),),
                       controller.fromCheckout ? Offstage() : IconButton(
                         onPressed: (){
                           controller.showDeleteAddressDialog(context,index);
                         },
-                        icon: Icon(Icons.delete,color: ColorConstant.primaryPink,),
+                        icon: Icon(Icons.edit_outlined,color: ColorConstant.primaryPink,),
+                      ),
+
+                      controller.fromCheckout ? Offstage() : IconButton(
+                        onPressed: (){
+                          controller.showDeleteAddressDialog(context,index);
+                        },
+                        icon: Icon(Icons.delete_outline_outlined,color: ColorConstant.primaryPink,),
                       )
                     ],
                   ),

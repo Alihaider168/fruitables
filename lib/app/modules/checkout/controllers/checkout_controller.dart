@@ -31,12 +31,6 @@ class CheckoutController extends GetxController {
 
   MyAppAuth myAppAuth = MyAppAuth();
 
-  @override
-  void onInit(){
-    super.onInit();
-  }
-
-
   RxInt min = 00.obs;
   RxInt sec = 60.obs;
   RxBool resendOtpBool = true.obs;
@@ -252,6 +246,7 @@ class CheckoutController extends GetxController {
               Get.back();
           Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
+          menuController.bottomBar.value = false;
               return true;
             },
             onError: (error) {

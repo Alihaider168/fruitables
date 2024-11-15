@@ -262,7 +262,7 @@ class CheckoutController extends GetxController {
             headers: Utils.getHeader(),
             data: {
               "branch": Constants.selectedBranch?.id,
-              "pickupTime": selectedTime.value,
+              "pickupTime": Constants.isDelivery.value ? null : selectedTime.value,
               "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
               "tax": menuController.cart.getTax(),
               "discount": menuController.cart.getTotalDiscountForCart(),

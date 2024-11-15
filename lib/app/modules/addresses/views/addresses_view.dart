@@ -97,64 +97,82 @@ class AddressesView extends GetView<AddressesController> {
             }
         )),
       )),
-      bottomNavigationBar: Container(
-          width: size.width,
-          height: size.height*0.12,
-          padding: getPadding(left: 16,right: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(getSize(20)),
-              topRight: Radius.circular(getSize(20)),
-            ),
-            boxShadow: [
-              // Top shadow
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-                spreadRadius: 1,
-                blurRadius: 8,
-                offset: Offset(0, -4), // Move shadow upwards
-              ),
-              // Left shadow
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-                spreadRadius: 1,
-                blurRadius: 8,
-                offset: Offset(-4, 0), // Move shadow to the left
-              ),
-              // Right shadow
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3), // Card-like shadow color
-                spreadRadius: 1,
-                blurRadius: 8,
-                offset: Offset(4, 0), // Move shadow to the right
-              ),
-            ],
-          ),
-          child: Center(
-            child: CustomButton(
-              controller: controller.btnController,
-              onTap: (){
-                Get.toNamed(Routes.ADD_ADDRESS)!.then((addedAddress){
-                  if(addedAddress != null){
-                    String? address = addedAddress["address"];
-                    String? street = addedAddress["street"];
-                    String? floor = addedAddress["floor"];
-                    String? label = addedAddress["label"];
-                    controller.addAddress(label: label.toString().capitalizeFirst,floor: floor,street: street,address: address);
-                  }
-                });
-              },
-              prefixWidget: Padding(
-                padding: getPadding(right: 5),
-                child: Icon(
-                  Icons.add,color: ColorConstant.white,
-                ),
-              ),
-              text: "lbl_add_address".tr,
-            ),
-          ),
-        )
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Get.toNamed(Routes.ADD_ADDRESS)!.then((addedAddress){
+            if(addedAddress != null){
+              String? address = addedAddress["address"];
+              String? street = addedAddress["street"];
+              String? floor = addedAddress["floor"];
+              String? label = addedAddress["label"];
+              controller.addAddress(label: label.toString().capitalizeFirst,floor: floor,street: street,address: address);
+            }
+          });
+        },
+        backgroundColor: ColorConstant.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(getSize(50))
+        ),
+        child: Icon(Icons.add,color: ColorConstant.white,),
+      ),
+      // bottomNavigationBar: Container(
+      //     width: size.width,
+      //     height: size.height*0.12,
+      //     padding: getPadding(left: 16,right: 16),
+      //     decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(getSize(20)),
+      //         topRight: Radius.circular(getSize(20)),
+      //       ),
+      //       boxShadow: [
+      //         // Top shadow
+      //         BoxShadow(
+      //           color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+      //           spreadRadius: 1,
+      //           blurRadius: 8,
+      //           offset: Offset(0, -4), // Move shadow upwards
+      //         ),
+      //         // Left shadow
+      //         BoxShadow(
+      //           color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+      //           spreadRadius: 1,
+      //           blurRadius: 8,
+      //           offset: Offset(-4, 0), // Move shadow to the left
+      //         ),
+      //         // Right shadow
+      //         BoxShadow(
+      //           color: Colors.grey.withOpacity(0.3), // Card-like shadow color
+      //           spreadRadius: 1,
+      //           blurRadius: 8,
+      //           offset: Offset(4, 0), // Move shadow to the right
+      //         ),
+      //       ],
+      //     ),
+      //     child: Center(
+      //       child: CustomButton(
+      //         controller: controller.btnController,
+      //         onTap: (){
+      //           Get.toNamed(Routes.ADD_ADDRESS)!.then((addedAddress){
+      //             if(addedAddress != null){
+      //               String? address = addedAddress["address"];
+      //               String? street = addedAddress["street"];
+      //               String? floor = addedAddress["floor"];
+      //               String? label = addedAddress["label"];
+      //               controller.addAddress(label: label.toString().capitalizeFirst,floor: floor,street: street,address: address);
+      //             }
+      //           });
+      //         },
+      //         prefixWidget: Padding(
+      //           padding: getPadding(right: 5),
+      //           child: Icon(
+      //             Icons.add,color: ColorConstant.white,
+      //           ),
+      //         ),
+      //         text: "lbl_add_address".tr,
+      //       ),
+      //     ),
+      //   )
     );
   }
 }

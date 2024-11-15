@@ -30,13 +30,10 @@ class CartBottom extends StatelessWidget  {
       index = 3;
     }
 
-    return
-
-      Obx(()=>  controller.bottomBar.value
-        ? Container(
+    return Obx(()=> Container(
       width: size.width,
-      height: size.height*0.12,
-      padding: getPadding(left: 16,right: 16),
+      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.19 :size.height*0.12,
+      padding: getPadding(left: 16,right: 16,bottom: 15,top: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -67,120 +64,111 @@ class CartBottom extends StatelessWidget  {
           ),
         ],
       ),
-      child: Center(
-        child: GestureDetector(
-          onTap: ()=> Get.toNamed(Routes.CART),
-          child: Container(
-            width: size.width,
-            // height: getSize(50),
-            decoration: BoxDecoration(
-                color: ColorConstant.primaryPink,
-                borderRadius: BorderRadius.circular(getSize(5))
-            ),
-            padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
-            child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          showCurrentOrder ?
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  padding: getPadding(all: 8),
-                  margin: Utils.checkIfArabicLocale() ? getMargin(left: 15) : getMargin(right: 10),
-                  decoration: BoxDecoration(
-                      color: ColorConstant.white,
-                      shape: BoxShape.circle
-                  ),
-                  child: Obx(()=> MyText(
-                    title: '${controller.cart.items.value.length}',
-                    color: ColorConstant.primaryPink,
-                  )),
-                ),
-                MyText(
-                  title: "lbl_view_cart".tr,
-                  fontSize: 18,
-                  color: ColorConstant.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                Spacer(),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                OrderStatusIndicator(currentIndex: index),
+                Row(
                   children: [
-                    Obx(()=> MyText(
-                      title:
-                       '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.cart.getTotalDiscountedPrice().toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}',
-                      fontSize: 14,
-                      color: ColorConstant.white,
-                      fontWeight: FontWeight.bold,
-                    ),),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          SizedBox(height: getSize(10)),
+                          MyText(
+                            title: '${"order_number".tr}${order?.saleId}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                          SizedBox(height: getSize(3)),
+                          MyText(
+                            title: "${'your_order_being'.tr}${order?.status}",
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
+                    ),
                     MyText(
-                      title: 'price_exclusive_tax'.tr,
-                      fontSize: 12,
-                      color: ColorConstant.white,
-                      // fontWeight: FontWeight.bold,
+                      title: '20 - 35 ${"mins".tr}',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
                     ),
                   ],
-                )
+                ),
               ],
             ),
-          ),
-        ),
-      ),
-    )
-        : showCurrentOrder ?
-      GestureDetector(
-        onTap: (){
-          Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
-        },
-        child: Container(
-          // height: getSize(100),
-          padding: getPadding(all: 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(getSize(10)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 8,
-                offset: Offset(0, 4),
+          ): Spacer(),
+          Spacer(),
+          Obx(()=>  controller.bottomBar.value
+              ? GestureDetector(
+            onTap: ()=> Get.toNamed(Routes.CART),
+            child: Container(
+              width: size.width,
+              // height: getSize(50),
+              decoration: BoxDecoration(
+                  color: ColorConstant.primaryPink,
+                  borderRadius: BorderRadius.circular(getSize(5))
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              OrderStatusIndicator(currentIndex: index),
-              Row(
+              padding: getPadding(left: 15,right: 15,top: 10,bottom: 10),
+              child: Row(
                 children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        SizedBox(height: getSize(10)),
-                        MyText(
-                          title: '${"order_number".tr}${order?.saleId}',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                        SizedBox(height: getSize(3)),
-                        MyText(
-                          title: "${'your_order_being'.tr}${order?.status}",
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ],
+                  Container(
+                    padding: getPadding(all: 8),
+                    margin: Utils.checkIfArabicLocale() ? getMargin(left: 15) : getMargin(right: 10),
+                    decoration: BoxDecoration(
+                        color: ColorConstant.white,
+                        shape: BoxShape.circle
                     ),
+                    child: Obx(()=> MyText(
+                      title: '${controller.cart.items.value.length}',
+                      color: ColorConstant.primaryPink,
+                    )),
                   ),
                   MyText(
-                    title: '20 - 35 ${"mins".tr}',
+                    title: "lbl_view_cart".tr,
+                    fontSize: 18,
+                    color: ColorConstant.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
                   ),
+                  Spacer(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Obx(()=> MyText(
+                        title:
+                        '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.cart.getTotalDiscountedPrice().toDouble()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}',
+                        fontSize: 14,
+                        color: ColorConstant.white,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      MyText(
+                        title: 'price_exclusive_tax'.tr,
+                        fontSize: 12,
+                        color: ColorConstant.white,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  )
                 ],
               ),
-            ],
-          ),
-        ),
-      ):Offstage());
+            ),
+          )
+              : Offstage())
+        ],
+      ),
+    ));
   }
 
 }

@@ -163,5 +163,6 @@ final Map<String, String> enUs = {
   "no_order_found": "No Orders Found !",
   "no_order_found_desc": "Looks like it's empty here, Let’s fill it up with something amazing!",
   "no_address_found":"No Addresses Found !",
-  "no_address_found_desc":"You haven't added an address yet. Let's get started by adding one now!"
+  "no_address_found_desc":"You haven't added an address yet. Let's get started by adding one now!",
+  "login_to_confirm_order":"Login to Confirm Order",
 };

@@ -37,54 +37,60 @@ class CheckoutView extends GetView<CheckoutController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        Obx(()=> Constants.isLoggedIn.value ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.person_outlined,color: ColorConstant.primaryPink,),
-                            SizedBox(width: getSize(5),),
+                            Row(
+                              children: [
+                                Icon(Icons.person_outlined,color: ColorConstant.primaryPink,),
+                                SizedBox(width: getSize(5),),
+                                MyText(
+                                  title: "customer_details".tr,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: getSize(15),),
                             MyText(
-                              title: "customer_details".tr,
-                              fontSize: 18,
+                              title: "full_name".tr,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
+                            SizedBox(height: getSize(3),),
+                            MyText(
+                              title: Constants.userModel?.customer?.name??"",
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            SizedBox(height: getSize(10),),
+                            MyText(
+                              title: "phone_number".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: getSize(3),),
+                            MyText(
+                              title: Constants.userModel?.customer?.mobile??"",
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            SizedBox(height: getSize(10),),
+                            MyText(
+                              title: "email".tr,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: getSize(3),),
+                            MyText(
+                              title: Constants.userModel?.customer?.email??"",
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            SizedBox(height: getSize(10),),
                           ],
-                        ),
-                        SizedBox(height: getSize(15),),
-                        MyText(
-                          title: "full_name".tr,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        SizedBox(height: getSize(3),),
-                        MyText(
-                          title: Constants.userModel?.customer?.name??"",
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        SizedBox(height: getSize(10),),
-                        MyText(
-                          title: "phone_number".tr,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        SizedBox(height: getSize(3),),
-                        MyText(
-                          title: Constants.userModel?.customer?.mobile??"",
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        SizedBox(height: getSize(10),),
-                        MyText(
-                          title: "email".tr,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        SizedBox(height: getSize(3),),
-                        MyText(
-                          title: Constants.userModel?.customer?.email??"",
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        SizedBox(height: getSize(10),),
+                        ): Offstage()),
+
                         Constants.isDelivery.value ?
                         CustomTextFormField(
                           controller: controller.addressController,
@@ -179,7 +185,7 @@ class CheckoutView extends GetView<CheckoutController> {
                   ),
                 ),
                 SizedBox(height: getSize(20),),
-                Constants.isDelivery.value ? Card(
+                Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
                   ),
@@ -236,8 +242,8 @@ class CheckoutView extends GetView<CheckoutController> {
                       ],
                     ),
                   ),
-                ) : Offstage(),
-                Constants.isDelivery.value ? SizedBox(height: getSize(20),): Offstage(),
+                ),
+                SizedBox(height: getSize(20),),
                 !Constants.isDelivery.value ? Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
@@ -255,7 +261,7 @@ class CheckoutView extends GetView<CheckoutController> {
                             Icon(Icons.timelapse_sharp,color: ColorConstant.primaryPink,),
                             SizedBox(width: getSize(5),),
                             MyText(
-                              title: !Constants.isDelivery.value ? "estimated_pickup_time".tr : "estimated_delivery_time".tr,
+                              title: "estimated_pickup_time".tr,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -359,7 +365,8 @@ class CheckoutView extends GetView<CheckoutController> {
             children: [
               // MyText(title: "Some text here", fontWeight: FontWeight.normal),
               SizedBox(height: getSize(10),),
-              CustomButton(
+              Obx(()=> Constants.isLoggedIn.value?
+                  CustomButton(
                 controller: controller.checkoutController,
                 text: "confirm_order".tr,
                 onTap: (){
@@ -373,6 +380,14 @@ class CheckoutView extends GetView<CheckoutController> {
                     CustomSnackBar.showCustomToast(message: "select_delivery_address".tr);
                   }
                 },
+              ) :
+                  CustomButton(
+                controller: controller.checkoutController,
+                text:  "login_to_confirm_order".tr,
+                onTap: (){
+                  controller.showLoginSheet(context);
+                },
+              )
               ),
             ],
           ),

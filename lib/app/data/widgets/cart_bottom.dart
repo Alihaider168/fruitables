@@ -31,63 +31,7 @@ class CartBottom extends StatelessWidget  {
     }
 
     return
-      showCurrentOrder ?
-    GestureDetector(
-      onTap: (){
-        Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
-      },
-      child: Container(
-        // height: getSize(100),
-        padding: getPadding(all: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(getSize(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 8,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            OrderStatusIndicator(currentIndex: index),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
 
-                      SizedBox(height: getSize(10)),
-                      MyText(
-                        title: '${"order_number".tr}${order?.saleId}',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                      ),
-                      SizedBox(height: getSize(3)),
-                      MyText(
-                        title: "${'your_order_being'.tr}${order?.status}",
-                          color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
-                    ],
-                  ),
-                ),
-                MyText(
-                  title: '20 - 35 ${"mins".tr}',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ):
       Obx(()=>  controller.bottomBar.value
         ? Container(
       width: size.width,
@@ -180,7 +124,63 @@ class CartBottom extends StatelessWidget  {
         ),
       ),
     )
-        : Offstage());
+        : showCurrentOrder ?
+      GestureDetector(
+        onTap: (){
+          Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
+        },
+        child: Container(
+          // height: getSize(100),
+          padding: getPadding(all: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(getSize(10)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              OrderStatusIndicator(currentIndex: index),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        SizedBox(height: getSize(10)),
+                        MyText(
+                          title: '${"order_number".tr}${order?.saleId}',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                        SizedBox(height: getSize(3)),
+                        MyText(
+                          title: "${'your_order_being'.tr}${order?.status}",
+                          color: Colors.grey[600],
+                          fontSize: 12,
+                        ),
+                      ],
+                    ),
+                  ),
+                  MyText(
+                    title: '20 - 35 ${"mins".tr}',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ):Offstage());
   }
 
 }

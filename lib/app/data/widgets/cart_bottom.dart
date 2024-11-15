@@ -231,8 +231,9 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
 
   Widget _buildStatusContainer(Color color) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
       height: 5,
-      width: size.width/6,
+      width: size.width/8,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(5),
@@ -249,7 +250,9 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
           child: Stack(
             children: [
               Container(
-                width: size.width/6,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+
+                width: size.width/7,
                 height: 5,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
@@ -257,13 +260,16 @@ class _OrderStatusIndicatorState extends State<OrderStatusIndicator>
                 ),
               ),
               Positioned(
+
                 left: _animation.value,
                 child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+
                   width: 50,
                   height: 5,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [ColorConstant.primaryPink1.withOpacity(.3), ColorConstant.primaryPink1.withOpacity(.6), ColorConstant.primaryPink1],
+                      colors: [ColorConstant.primaryPink1.withOpacity(.7), ColorConstant.primaryPink1.withOpacity(.8), ColorConstant.primaryPink1],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

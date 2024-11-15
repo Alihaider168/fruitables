@@ -25,15 +25,15 @@ class NoData extends StatelessWidget {
           ),
           SizedBox(
               height: getSize(20)),
-          Text(
-            name ?? '',
-            textAlign: TextAlign.center,
-            style: 
-                TextStyle(
+          MyText(
+            title: 
+            name??'',
+            fontWeight: FontWeight.bold,
+            // textAlign: TextAlign.center,
+            
                   fontSize:
                     getSize(20),
-                    fontWeight: FontWeight.bold
-                )),
+               ),
           
           SizedBox(
               height:  getSize(5)),
@@ -45,7 +45,7 @@ class NoData extends StatelessWidget {
               maxLines: 3,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: ColorConstant.textGrey,
-                  fontSize: getSize(14)),
+                  fontSize: getSize(16)),
               textAlign: TextAlign.center,
             ),
           ),

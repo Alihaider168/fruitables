@@ -131,4 +131,10 @@ final Map<String, String> arSa = {
   "estimated_pickup_time": "الوقت المقدر للاستلام",
   "locate_me": "تحديد موقعي",
   "branch": "الفرع",
+  "lbl_no_favorite":"لا توجد مفضلة هنا بعد!",
+  "lbl_no_fav_description":"قائمة المفضلة لديك في انتظارك، ابحث عما تحبه واحفظه هنا.",
+  "no_order_found": "لم يتم العثور على الطلبات!",
+  "no_order_found_desc": "يبدو أنه فارغ هنا، فلنملأه بشيء مذهل!",
+  "no_address_found":"لم يتم العثور على عناوين!",
+  "no_address_found_desc":"لم تقم بإضافة عنوان بعد. لنبدأ بإضافة واحدة الآن!"
 };

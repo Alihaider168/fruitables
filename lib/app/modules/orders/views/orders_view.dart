@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/orders_model.dart';
 
 import 'package:get/get.dart';
+import 'package:fruitables/app/data/widgets/noData.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/orders_controller.dart';
@@ -25,6 +25,13 @@ class OrdersView extends GetView<OrdersController> {
       ),
       body: Obx(()=> ListView.builder(
         itemCount: controller.myOrders.length,
+      body:controller.orders.isEmpty? Container(height: Get.height,width: Get.width,
+      child: Center(child: NoData(
+        svgPath: 'assets/images/emptyCart.svg',
+        name: "no_order_found".tr,
+        message: "no_order_found_desc".tr,
+      ))): ListView.builder(
+        itemCount: controller.orders.length,
         padding: getPadding(all: 16),
         itemBuilder: (context, index) {
           final order = controller.myOrders[index];

@@ -20,7 +20,7 @@ class AddressesView extends GetView<AddressesController> {
       ),
       body:controller.addresses.isEmpty? NoData(
         svgPath: 'assets/images/address.svg',
-        name: "No Addresses Found !",message: "You haven't added an address yet. Let's get started by adding one now!",):Padding(
+        name: "no_address_found".tr,message: "no_address_found_desc".tr,):Padding(
         padding: getPadding(
           top: 15,bottom: 15
         ),

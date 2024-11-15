@@ -129,6 +129,8 @@ final Map<String, String> enUs = {
   "estimated_pickup_time": "Estimated Pickup Time",
   "locate_me": "Locate Me",
   "branch": "Branch",
+  "lbl_no_favorite":"No Favorites Here Yet !",
+  "lbl_no_fav_description":"Your favorites list is waiting, Find what you love and save it here.",
 
 
   "help": "Help",
@@ -158,4 +160,8 @@ final Map<String, String> enUs = {
   "instructions": "Instructions",
   "none": "None",
   "order_type": "Order Type",
+  "no_order_found": "No Orders Found !",
+  "no_order_found_desc": "Looks like it's empty here, Let’s fill it up with something amazing!",
+  "no_address_found":"No Addresses Found !",
+  "no_address_found_desc":"You haven't added an address yet. Let's get started by adding one now!"
 };

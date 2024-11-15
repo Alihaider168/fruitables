@@ -7,6 +7,7 @@ class ImageConstant {
   static String messageSent = '$_imagePath/messageSent.svg';
 
   static String terms = '$_imagePath/terms.svg';
+  static String mail = '$_imagePath/mail.svg';
 
   static String sp = '$_imagePath/sp.jpg';
   static String logo2 = '$_imagePath/logo3.png';

@@ -378,8 +378,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomImageView(
-                imagePath: ImageConstant.splash,
+              SvgPicture.asset(
+                 ImageConstant.mail,
                 height: getSize(150),
               ),
               SizedBox(height: getSize(15)),

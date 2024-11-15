@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:fruitables/app/data/core/app_export.dart';
-
-import 'package:get/get.dart';
+import 'package:fruitables/app/data/widgets/noData.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/orders_controller.dart';
@@ -22,7 +20,12 @@ class OrdersView extends GetView<OrdersController> {
         title: MyText(title: "lbl_my_orders".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body: ListView.builder(
+      body:controller.orders.isEmpty? Container(height: Get.height,width: Get.width,
+      child: Center(child: NoData(
+        svgPath: 'assets/images/emptyCart.svg',
+        name: "no_order_found".tr,
+        message: "no_order_found_desc".tr,
+      ))): ListView.builder(
         itemCount: controller.orders.length,
         padding: getPadding(all: 16),
         itemBuilder: (context, index) {

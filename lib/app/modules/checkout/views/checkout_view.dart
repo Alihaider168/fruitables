@@ -97,11 +97,16 @@ class CheckoutView extends GetView<CheckoutController> {
                           labelText: "delivery_address".tr,
                           readOnly: true,
                           onTap: () async {
-                            Get.toNamed(Routes.ADDRESSES,arguments: {Constants.paramCheckout : true})!.then((address){
-                              if(address != null){
-                                controller.addressController.text = address??"";
-                              }
-                            });
+                            if(Constants.isLoggedIn.value){
+                              Get.toNamed(Routes.ADDRESSES,arguments: {Constants.paramCheckout : true})!.then((address){
+                                if(address != null){
+                                  controller.addressController.text = address??"";
+                                }
+                              });
+                            }else{
+                              controller.menuController.showLoginSheet(context);
+                            }
+
 
                           },
                         ) :
@@ -385,7 +390,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 controller: controller.checkoutController,
                 text:  "login_to_confirm_order".tr,
                 onTap: (){
-                  controller.showLoginSheet(context);
+                  controller.menuController.showLoginSheet(context);
                 },
               )
               ),

@@ -279,12 +279,17 @@ class _CartViewState extends State<CartView> {
             ],
           ),
           CustomButton(
-            text: "lbl_apply_promo".tr,
+            text: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
             prefixWidget: Container(
               padding: getPadding(right: 10),
               child: Icon(Icons.add,color: ColorConstant.white,
               ),
             ),
+            onTap: (){
+              if(!Constants.isLoggedIn.value){
+                controller.menuController.showLoginSheet(context);
+              }
+            },
           ),
           SizedBox(height: getSize(16)),
           _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),

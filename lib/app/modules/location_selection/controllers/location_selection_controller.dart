@@ -25,6 +25,8 @@ class LocationSelectionController extends GetxController {
   Cities? selectedCityModel ;
   Branches? selectedRegionModel ;
 
+  RxBool isLoading = true.obs;
+
 
   // List to hold filtered search results
   RxList<Branches> filteredLocations = <Branches>[].obs;
@@ -89,10 +91,12 @@ class LocationSelectionController extends GetxController {
   }
 
   Future<dynamic> getRegions() async {
+    isLoading.value = true;
     Utils.check().then((value) async {
       if (value) {
         await BaseClient.get(ApiUtils.getRegions,
           onSuccess: (response) async {
+          isLoading.value = false;
             print(response);
             cityModel = CityModel.fromJson(response.data);
             selectedCity = 0;
@@ -103,6 +107,7 @@ class LocationSelectionController extends GetxController {
             return true;
           },
           onError: (error) {
+            isLoading.value = false;
             BaseClient.handleApiError(error);
             update();
             return false;

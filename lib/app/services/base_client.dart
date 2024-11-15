@@ -98,7 +98,7 @@ class BaseClient {
             url: url,
             statusCode: 500,
           );
-          return onError?.call(exception) ?? handleApiError(exception);
+          // return onError?.call(exception) ?? handleApiError(exception);
         }
 
         var exception = ApiException(
@@ -202,7 +202,7 @@ class BaseClient {
         // var exception = ApiException(message: "msg_server_error".tr, url: url, statusCode: 500,);
         // return onError?.call(exception) ?? handleApiError(exception);
 
-        CustomSnackBar.showCustomErrorToast(message: "msg_server_error".tr);
+        // CustomSnackBar.showCustomErrorToast(message: "msg_server_error".tr);
 
         return;
       }
@@ -310,7 +310,7 @@ class BaseClient {
       if (error.response!.statusCode! >= 500) {
         // var exception = ApiException(message: "msg_server_error".tr, url: url, statusCode: 500,);
         // return onError?.call(exception) ?? handleApiError(exception);
-        CustomSnackBar.showCustomErrorToast(message: "msg_server_error".tr);
+        // CustomSnackBar.showCustomErrorToast(message: "msg_server_error".tr);
         return;
       }
 
@@ -410,7 +410,7 @@ class BaseClient {
           url: url,
           statusCode: 500,
         );
-        return onError?.call(exception) ?? handleApiError(exception);
+        // return onError?.call(exception) ?? handleApiError(exception);
       }
 
       var exception = ApiException(
@@ -504,7 +504,7 @@ class BaseClient {
           url: url,
           statusCode: 500,
         );
-        return onError?.call(exception) ?? handleApiError(exception);
+        // return onError?.call(exception) ?? handleApiError(exception);
       }
 
       var exception = ApiException(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/skeleton.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 import 'package:get/get.dart';
@@ -108,16 +109,21 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                           suffix: Icon(Icons.keyboard_arrow_down),
                         ),
                         SizedBox(height: getSize(15),),
-                        CustomTextFormField(
-                          onTap:(){
-                              controller.showCustomBottomSheet(context);
-                          },
-                          controller: controller.regionController,
-                          labelText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_area_sub_region".tr,
-                          hintText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_select_your_area".tr,
-                          readOnly: true,
-                          suffix: Icon(Icons.keyboard_arrow_down),
-                        ),
+                       Obx(()=>  controller.isLoading.value ?
+                       Skeleton(
+                         height: getSize(46),
+                         width: size.width,
+                       ):
+                       CustomTextFormField(
+                         onTap:(){
+                           controller.showCustomBottomSheet(context);
+                         },
+                         controller: controller.regionController,
+                         labelText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_area_sub_region".tr,
+                         hintText: Utils.checkIfArabicLocale() ? "branch".tr:"lbl_select_your_area".tr,
+                         readOnly: true,
+                         suffix: Icon(Icons.keyboard_arrow_down),
+                       ),)
                       ],
                     ),
                   ),

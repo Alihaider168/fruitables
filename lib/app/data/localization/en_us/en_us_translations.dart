@@ -167,4 +167,6 @@ final Map<String, String> enUs = {
   "no_address_found":"No Addresses Found !",
   "no_address_found_desc":"You haven't added an address yet. Let's get started by adding one now!",
   "login_to_confirm_order":"Login to Confirm Order",
+  "login_to_apply_promo":"Login to Apply Promo",
+  "lbl_order_from":"Order From",
 };

@@ -28,7 +28,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                                  SizedBox(height: getSize(120),),
+                  SizedBox(height: getSize(120),),
         
                   CustomImageView(
                     imagePath: ImageConstant.logo2,
@@ -36,7 +36,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                   ),
                   SizedBox(height: getSize(20),),
                   const MyText(title: "Welcome to Rexsa Cafe",fontWeight: FontWeight.bold,fontSize: 20,),
-                  const MyText(title: "مرحبًا بكم في مقهى ريكسـا",fontWeight: FontWeight.bold,fontSize: 20,),
+                  const MyText(title: "مرحبًا بكم في ريكسا كافيه",fontWeight: FontWeight.bold,fontSize: 20,),
                   SizedBox(height: getSize(15),),
                   // Spacer(),
                   // const Row(
@@ -97,7 +97,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                   Obx(()=> mainWidget(
                     image: ImageConstant.delivery,
                       isSelected: controller.selectedPreference.value == 0,
-                      title: "Delivery - ترسیل",
+                      title: "Delivery - توصيل",
                       index: 0,
                       groupValue: controller.selectedPreference.value,
                       onTap: (){
@@ -108,7 +108,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                   Obx(()=> mainWidget(
                     image: ImageConstant.pickup,
                       isSelected: controller.selectedPreference.value == 1,
-                      title: "Pickup - پک اپ",
+                      title: "Pickup - استلام من الفرع",
                       index: 1,
                       groupValue: controller.selectedPreference.value,
                       onTap: (){

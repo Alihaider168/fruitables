@@ -30,7 +30,7 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
               Row(
                 children: [
                   MyText(
-                    title: !Constants.isDelivery.value ? "pickup_from".tr :"lbl_deliver_to".tr,
+                    title: !Constants.isDelivery.value ? "pickup_from".tr :"lbl_order_from".tr,
                     fontSize:Utils.checkIfArabicLocale() ?11: 14,
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.white,

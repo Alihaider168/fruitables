@@ -118,7 +118,7 @@ final Map<String, String> arSa = {
   "you_will_receive_6_digit_otp": "ستتلقى رمز تحقق مكون من 6 أرقام للتحقق من البريد الإلكتروني",
   "otp_verification": "التحقق من رمز التحقق",
   "we_sent_otp_to_email": "لقد أرسلنا OTP إلى هاتفك",
-  "variation": "الاختلاف",
+  "variation": "اختر الحجم",
   "select_option": "يرجى اختيار خيار واحد للمتابعة",
   "items": "العناصر",
   "msg_didn_t_get_code": "إعادة إرسال رمز التحقق في ",

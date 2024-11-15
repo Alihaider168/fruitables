@@ -1,37 +1,38 @@
 class OrdersModel {
   dynamic totalPages;
   num? totalResults;
-  List<Orders>? results;
+  List<Orders>? orders;
 
   OrdersModel({
     this.totalPages,
     this.totalResults,
-    this.results,
+    this.orders,
   });
 
   OrdersModel.fromJson(Map<String, dynamic> json) {
     totalPages = json['totalPages'];
     totalResults = json['totalResults'] as num?;
-    results = (json['results'] as List?)?.map((dynamic e) => Orders.fromJson(e as Map<String,dynamic>)).toList();
+    orders = (json['results'] as List?)?.map((dynamic e) => Orders.fromJson(e as Map<String,dynamic>)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['totalPages'] = totalPages;
     json['totalResults'] = totalResults;
-    json['results'] = results?.map((e) => e.toJson()).toList();
+    json['results'] = orders?.map((e) => e.toJson()).toList();
     return json;
   }
 }
 
 class Orders {
   String? saleId;
-  OrderCustomer? customer;
+  // OrderCustomer? customer;
   OrderBranch? branch;
   String? instructions;
   List<OrderProduct>? products;
   num? tax;
   num? discount;
+  num? totalAmount;
   String? status;
   String? type;
   String? address;
@@ -45,11 +46,12 @@ class Orders {
 
   Orders({
     this.saleId,
-    this.customer,
+    // this.customer,
     this.branch,
     this.instructions,
     this.products,
     this.tax,
+    this.totalAmount,
     this.discount,
     this.status,
     this.type,
@@ -65,12 +67,13 @@ class Orders {
 
   Orders.fromJson(Map<String, dynamic> json) {
     saleId = json['saleId'] as String?;
-    customer = (json['customer'] as Map<String,dynamic>?) != null ? OrderCustomer.fromJson(json['customer'] as Map<String,dynamic>) : null;
+    // customer = (json['customer'] as Map<String,dynamic>?) != null ? OrderCustomer.fromJson(json['customer'] as Map<String,dynamic>) : null;
     branch = (json['branch'] as Map<String,dynamic>?) != null ? OrderBranch.fromJson(json['branch'] as Map<String,dynamic>) : null;
     instructions = json['instructions'] as String?;
     products = (json['products'] as List?)?.map((dynamic e) => OrderProduct.fromJson(e as Map<String,dynamic>)).toList();
     tax = json['tax'] as num?;
     discount = json['discount'] as num?;
+    totalAmount = json['totalAmount'] as num?;
     status = json['status'] as String?;
     type = json['type'] as String?;
     address = json['address'] as String?;
@@ -80,18 +83,19 @@ class Orders {
     cancelledAt = json['cancelledAt'];
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
-    id = json['id'] as String?;
+    id = json['id'] ?? json['_id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['saleId'] = saleId;
-    json['customer'] = customer?.toJson();
+    // json['customer'] = customer?.toJson();
     json['branch'] = branch?.toJson();
     json['instructions'] = instructions;
     json['products'] = products?.map((e) => e.toJson()).toList();
     json['tax'] = tax;
     json['discount'] = discount;
+    json['totalAmount'] = totalAmount;
     json['status'] = status;
     json['type'] = type;
     json['address'] = address;

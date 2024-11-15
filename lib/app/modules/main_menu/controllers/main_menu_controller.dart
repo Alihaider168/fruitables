@@ -1,16 +1,24 @@
+import 'dart:convert';
+
+import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:fruitables/app/modules/orders/controllers/orders_controller.dart';
+import 'package:http/http.dart' as http;
 import 'package:fruitables/app/data/core/app_export.dart';
 import 'package:fruitables/app/data/models/menu_model.dart';
+import 'package:fruitables/app/data/models/orders_model.dart';
 import 'package:fruitables/app/data/utils/cart/cart.dart';
 import 'package:fruitables/app/data/utils/fav_utils/fav_utils.dart';
 
 class MainMenuController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+  OrdersController ordersController = Get.put(OrdersController());
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
-
+  AppPreferences appPreferences = AppPreferences();
   RxBool showAllCategories = false.obs;
   RxBool orderAdded = false.obs;
+
+  Rx<Orders> currentOrder = Orders().obs;
 
   Cart cart = Cart();
   FavUtils favUtils = FavUtils();
@@ -27,10 +35,26 @@ class MainMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    favUtils.getFavourites();
+    getInitialApisData();
     loadCart();
     getMenu();
   }
+
+  getInitialApisData() async {
+    await appPreferences.isPreferenceReady;
+    appPreferences.getIsLoggedIn().then((value) async {
+      if(value==true){
+        getOrderStatus();
+        favUtils.getFavourites();
+      }
+    }).catchError((err) async {
+    });
+  }
+
+  void getOrderStatus(){
+    getCurrentOrderContinious();
+  }
+
 
   Future<void> loadCart() async {
     await cart.loadCartFromPreferences();
@@ -514,5 +538,33 @@ class MainMenuController extends GetxController {
         return item.largePrice??0;
       }
     }
+  }
+
+  Future<void> getCurrentOrderContinious() async {
+    Utils.check().then((value) async {
+      if (value) {
+        await BaseClient.get(ApiUtils.getCurrentOrders,
+            onSuccess: (response) async {
+              if(((response.data as List?)??[]).isNotEmpty){
+                Orders? order = Orders.fromJson(response.data[0]);
+                currentOrder.value = order;
+                orderAdded.value = true;
+                await Future.delayed(Duration(seconds: 10));
+                getCurrentOrderContinious();
+              }else{
+                orderAdded.value = false;
+              }
+
+              return true;
+            },
+            onError: (error) {
+              // BaseClient.handleApiError(error);
+              return false;
+            },
+            headers: Utils.getHeader()
+        );
+      }
+    });
+
   }
 }

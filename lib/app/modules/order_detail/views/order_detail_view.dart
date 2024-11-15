@@ -10,11 +10,11 @@ class OrderDetailView extends GetView<OrderDetailController> {
   const OrderDetailView({super.key});
   @override
   Widget build(BuildContext context) {
-    double subtotal = controller.order.items.fold(
-      0.0,
-          (sum, item) => sum + (item.price * item.quantity),
-    );
-    double grandTotal = subtotal + controller.order.deliveryFee;
+    // double subtotal = controller.order.items.fold(
+    //   0.0,
+    //       (sum, item) => sum + (item.price * item.quantity),
+    // );
+    // double grandTotal = subtotal + controller.order.deliveryFee;
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +42,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                   ),
                   SizedBox(height: getSize(8)),
                   MyText(title:
-                    controller.order.status,
+                    (controller.order?.status??" ").capitalizeFirst??"",
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                   ),
@@ -57,77 +57,71 @@ class OrderDetailView extends GetView<OrderDetailController> {
             ),
             SizedBox(height: getSize(16)),
             // Order Info
+            // MyText(title:
+            //   "${controller.order?.saleId}",
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 16,
+            // ),
             MyText(title:
-              "${controller.order.id}",
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+              "${"order".tr} #${controller.order?.saleId}",
+              fontWeight: FontWeight.bold,
             ),
             MyText(title:
-              "${"order".tr} #${controller.order.orderNumber}",
-              color: Colors.grey,
-            ),
-            MyText(title:
-              DateFormat.yMMMMd().add_jm().format(controller.order.date),
+            DateFormat("d MMM, yy").format(DateTime.parse(controller.order?.createdAt??"")),
               color: Colors.grey,
             ),
             SizedBox(height: getSize(24)),
-            // Address and Payment Method
-            _buildSectionTitle("delivery_address".tr),
-            MyText(title:controller.order.address),
-            SizedBox(height: getSize(16)),
-            _buildSectionTitle("payment_method".tr),
-            MyText(title:controller.order.paymentMethod),
+      //       // Address and Payment Method
+            _buildSectionTitle(
+              "${"order_type".tr}: ${(controller.order?.type??"") == "delivery" ? "delivery_address".tr : "lbl_pickup".tr}",
+            ),
+            MyText(title:(controller.order?.type??"") == "delivery" ? (controller.order?.address??"") : (controller.order?.branch?.address??"")),
+            // SizedBox(height: getSize(16)),
+            // _buildSectionTitle("payment_method".tr),
+            // MyText(title:controller.order?.p??""),
             SizedBox(height: getSize(24)),
             // Item List
             _buildSectionTitle("item_list".tr),
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: getPadding(all: 16),
-                child: Column(
-                  children: controller.order.items.map((item) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: getSize(16)),
+            Column(
+              children: (controller.order?.products??[]).map((item) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MyText(title:
-                              "${item.name} x${item.quantity}",
-                              fontWeight: FontWeight.bold,
-                            ),
-                            MyText(title:
-                              "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ],
+                        MyText(title:
+                        "${item.name} x${item.quantity}",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
-                        if (item.sauces.isNotEmpty)
-                          Padding(
-                            padding: getPadding(top: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: item.sauces
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (entry) => MyText(title:
-                                  "(${entry.key + 1}ST SAUCE) ${entry.value}",
-                                  color: Colors.grey,
-                                ),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                        Divider(),
+                        MyText(title:
+                        "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                          fontSize: 10,
+                          color: ColorConstant.textGrey,
+                        ),
                       ],
-                    );
-                  }).toList(),
-                ),
-              ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyText(title:
+                        "${"lbl_size".tr}: ${item.size}",
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstant.textGrey,
+                          fontSize: 12,
+                        ),
+                        MyText(title:
+                        "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                          fontSize: 10,
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                  ],
+                );
+              }).toList(),
             ),
             SizedBox(height: getSize(16)),
             // Total Calculation
@@ -135,14 +129,15 @@ class OrderDetailView extends GetView<OrderDetailController> {
               padding: getPadding(left: 8,right: 8),
               child: Column(
                 children: [
-                  _buildTotalRow("lbl_subtotal".tr, subtotal),
-                  _buildTotalRow("lbl_discount".tr, controller.order.discount.toDouble()),
-                  _buildTotalRow("lbl_delivery_fee".tr, controller.order.deliveryFee),
+                  _buildTotalRow("lbl_subtotal".tr, (controller.order?.totalAmount??0) - (controller.order?.discount??0) -(Constants.DELIVERY_FEES)),
+                  _buildTotalRow("lbl_discount".tr, (controller.order?.discount??0).toDouble()),
+                  (controller.order?.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
+                  _buildTotalRow("lbl_discount".tr, (controller.order?.tax??0).toDouble()),
                   SizedBox(height: getSize(16)),
                   Divider(thickness: 1),
                   _buildTotalRow(
                     "lbl_grand_total".tr,
-                    grandTotal,
+                    controller.order?.totalAmount??0,
                     isBold: true,
                     fontSize: 18,
                   ),
@@ -158,13 +153,14 @@ class OrderDetailView extends GetView<OrderDetailController> {
   Widget _buildSectionTitle(String title) {
     return MyText(title:
       title,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
     );
   }
 
-  Widget _buildTotalRow(String label, double amount,
-      {bool isBold = false, double fontSize = 14}) {
+  Widget _buildTotalRow(String label, num amount,
+      {bool isBold = false, double fontSize = 14})
+  {
     return Padding(
       padding: getPadding(top: 4,bottom: 4),
       child: Row(
@@ -184,43 +180,4 @@ class OrderDetailView extends GetView<OrderDetailController> {
       ),
     );
   }
-}
-
-// Order Model
-class Order {
-  final String id;
-  final String orderNumber;
-  final DateTime date;
-  final String status;
-  final String address;
-  final String paymentMethod;
-  final num discount;
-  final List<OrderItem> items;
-  final double deliveryFee;
-
-  Order({
-    required this.id,
-    required this.orderNumber,
-    required this.date,
-    required this.status,
-    required this.address,
-    required this.paymentMethod,
-    required this.items,
-    required this.discount,
-    required this.deliveryFee,
-  });
-}
-
-class OrderItem {
-  final String name;
-  final int quantity;
-  final double price;
-  final List<String> sauces;
-
-  OrderItem({
-    required this.name,
-    required this.quantity,
-    required this.price,
-    this.sauces = const [],
-  });
 }

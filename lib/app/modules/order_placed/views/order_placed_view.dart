@@ -15,6 +15,9 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.offAllNamed(Routes.MAIN_MENU);
+          controller.menuController.bottomBar.value = false;
+          controller.menuController.orderAdded.value = true;
+          controller.ordersController.getOrders();
         },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
         ),
@@ -29,102 +32,238 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
             icon: Icon(Icons.close,color: ColorConstant.white,),
             onPressed: ()  {
               Get.offAllNamed(Routes.MAIN_MENU);
-              },
+              controller.menuController.bottomBar.value = false;
+              controller.menuController.orderAdded.value = true;
+              controller.ordersController.getOrders();
+            },
           ),
         ],
       ),
-      body: Padding(
-        padding: getPadding(all: 16),
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          padding: getPadding(all: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Icon(Icons.inventory, size: 100, color: ColorConstant.textGrey.withOpacity(.7)),
-              SizedBox(height: 10),
+              // Order Status Icon
+              Center(
+                child: Column(
+                  children: [
+                    Icon(Icons.inventory, size: 100, color: ColorConstant.textGrey.withOpacity(.7)),
+                    SizedBox(height: getSize(8)),
+                    MyText(title:
+                    (controller.order.value.status??" ").capitalizeFirst??"",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    SizedBox(height: getSize(8)),
+                    Divider(
+                      thickness: 2,
+                      indent: 40,
+                      endIndent: 40,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: getSize(16)),
+              // Order Info
+              // MyText(title:
+              //   "${controller.order.value.saleId}",
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 16,
+              // ),
               MyText(title:
-                "order_placed".tr,
-                fontSize: 24,
+              "${"order".tr} #${controller.order.value.saleId}",
                 fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 20),
-              // Order ID and Date
-              Column(
-                children: [
-                  MyText(title:
-                    "5RM4-59HG6",
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  MyText(title:"${"order".tr} #15523392"),
-                  MyText(title:
-                    DateFormat('MMMM d, yyyy h:mm a').format(DateTime.now()),
-                    color: ColorConstant.textGrey,
-                  ),
-                ],
+              MyText(title:
+              DateFormat("d MMM, yy").format(DateTime.parse(controller.order.value.createdAt??DateTime.now().toString())),
+                color: Colors.grey,
               ),
-              SizedBox(height: 20),
-              // Delivery Address and Payment Method
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MyText(title:"delivery_address".tr,fontWeight: FontWeight.bold),
-                        SizedBox(height: 5),
-                        MyText(title:
-                          "street turbine, مظفرپور گہمن سیالکوٹ, Muzaffarpur, Sialkot",
-                          color: ColorConstant.textGrey,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        MyText(title:"payment_method".tr, fontWeight: FontWeight.bold),
-                        SizedBox(height: 5),
-                        MyText(title:"cash_on_delivery".tr),
-                      ],
-                    ),
-                  ),
-                ],
+              SizedBox(height: getSize(24)),
+              //       // Address and Payment Method
+              _buildSectionTitle(
+                "${"order_type".tr}: ${(controller.order.value.type??"") == "delivery" ? "delivery_address".tr : "lbl_pickup".tr}",
               ),
-              SizedBox(height: 20),
+              MyText(title:(controller.order.value.type??"") == "delivery" ? (controller.order.value.address??"") : (controller.order.value.branch?.address??"")),
+              // SizedBox(height: getSize(16)),
+              // _buildSectionTitle("payment_method".tr),
+              // MyText(title:controller.order.value.p??""),
+              SizedBox(height: getSize(24)),
               // Item List
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: ColorConstant.textGrey.withOpacity(.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+              _buildSectionTitle("item_list".tr),
+              SizedBox(height: getSize(16)),
+              Column(
+                children: (controller.order.value.products??[]).map((item) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MyText(title:
+                          "${item.name} x${item.quantity}",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          MyText(title:
+                          "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                            fontSize: 10,
+                            color: ColorConstant.textGrey,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MyText(title:
+                          "${"lbl_size".tr}: ${item.size}",
+                            fontWeight: FontWeight.bold,
+                            color: ColorConstant.textGrey,
+                            fontSize: 12,
+                          ),
+                          MyText(title:
+                          "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                            fontSize: 10,
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                    ],
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: getSize(16)),
+              // Total Calculation
+              Padding(
+                padding: getPadding(left: 8,right: 8),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyText(title:"item_list".tr, fontSize: 18, fontWeight: FontWeight.bold),
-                    SizedBox(height: 10),
-                    // Item 1
-                    // _buildCartItemsList(),
-
-                    // Subtotal and Delivery Fee
-                    // _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    // _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    // _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                    // _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-
-                    Divider(thickness: 1, color: ColorConstant.textGrey.withOpacity(.3)),
-                    // Grand Total
-                    // _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+                    _buildTotalRow("lbl_subtotal".tr, (controller.order.value.totalAmount??0) - (controller.order.value.discount??0) -(Constants.DELIVERY_FEES)),
+                    _buildTotalRow("lbl_discount".tr, (controller.order.value.discount??0).toDouble()),
+                    (controller.order.value.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
+                    SizedBox(height: getSize(16)),
+                    Divider(thickness: 1),
+                    _buildTotalRow(
+                      "lbl_grand_total".tr,
+                      controller.order.value.totalAmount??0,
+                      isBold: true,
+                      fontSize: 18,
+                    ),
                   ],
                 ),
               ),
             ],
           ),
         ),
-      ),
+    //   body: Padding(
+    //     padding: getPadding(all: 16),
+    //     child: SingleChildScrollView(
+    //       child: Column(
+    //         children: [
+    //           SizedBox(height: 20),
+    //           Icon(Icons.inventory, size: 100, color: ColorConstant.textGrey.withOpacity(.7)),
+    //           SizedBox(height: 10),
+    //           MyText(title:
+    //           (controller.order.value.status??" ").capitalizeFirst??"",
+    //             fontSize: 20,
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //           SizedBox(height: getSize(8)),
+    //           Divider(
+    //             thickness: 2,
+    //             indent: 40,
+    //             endIndent: 40,
+    //           ),
+    //     SizedBox(height: getSize(16)),
+    //     // Order Info
+    //     // MyText(title:
+    //     //   "${controller.order.value.saleId}",
+    //     //     fontWeight: FontWeight.bold,
+    //     //     fontSize: 16,
+    //     // ),
+    //     MyText(title:
+    //     "${"order".tr} #${controller.order.value.saleId}",
+    //       fontWeight: FontWeight.bold,
+    //     ),
+    //     MyText(title:
+    //     DateFormat("d MMM, yy").format(DateTime.parse(controller.order.value.createdAt??"")),
+    //       color: Colors.grey,
+    //     ),
+    //     SizedBox(height: getSize(24)),
+    //     //       // Address and Payment Method
+    //     _buildSectionTitle(
+    //       "${"order_type".tr}: ${(controller.order.value.type??"") == "delivery" ? "delivery_address".tr : "lbl_pickup".tr}",
+    //     ),
+    //     MyText(title:(controller.order.value.type??"") == "delivery" ? (controller.order.value.address??"") : (controller.order.value.branch?.address??"")),
+    //     // SizedBox(height: getSize(16)),
+    //     // _buildSectionTitle("payment_method".tr),
+    //     // MyText(title:controller.order.value.p??""),
+    //     SizedBox(height: getSize(24)),
+    //     // Item List
+    //     _buildSectionTitle("item_list".tr),
+    //     SizedBox(height: getSize(16)),
+    //     Column(
+    //       children: (controller.order.value.products??[]).map((item) {
+    //         return Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //               children: [
+    //                 MyText(title:
+    //                 "${item.name} x${item.quantity}",
+    //                   fontWeight: FontWeight.bold,
+    //                   fontSize: 14,
+    //                 ),
+    //                 MyText(title:
+    //                 "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+    //                   fontSize: 10,
+    //                   color: ColorConstant.textGrey,
+    //                 ),
+    //               ],
+    //             ),
+    //             Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //               children: [
+    //                 MyText(title:
+    //                 "${"lbl_size".tr}: ${item.size}",
+    //                   fontWeight: FontWeight.bold,
+    //                   color: ColorConstant.textGrey,
+    //                   fontSize: 12,
+    //                 ),
+    //                 MyText(title:
+    //                 "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+    //                   fontSize: 10,
+    //                 ),
+    //               ],
+    //             ),
+    //             Divider(),
+    //           ],
+    //         );
+    //       }).toList(),
+    //     ),
+    //     SizedBox(height: getSize(16)),
+    //     // Total Calculation
+    //     Padding(
+    //       padding: getPadding(left: 8,right: 8),
+    //       child: Column(
+    //         children: [
+    //           _buildTotalRow("lbl_subtotal".tr, (controller.order.value.totalAmount??0) - (controller.order.value.discount??0) -(Constants.DELIVERY_FEES)),
+    //           _buildTotalRow("lbl_discount".tr, (controller.order.value.discount??0).toDouble()),
+    //           (controller.order.value.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
+    //           SizedBox(height: getSize(16)),
+    //           Divider(thickness: 1),
+    //           _buildTotalRow(
+    //             "lbl_grand_total".tr,
+    //             controller.order.value.totalAmount??0,
+    //             isBold: true,
+    //             fontSize: 18,
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // ]),
     );
   }
 
@@ -208,4 +347,36 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
   //     ),
   //   );
   // }
+
+
+  Widget _buildSectionTitle(String title) {
+    return MyText(title:
+    title,
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
+  Widget _buildTotalRow(String label, num amount,
+      {bool isBold = false, double fontSize = 14})
+  {
+    return Padding(
+      padding: getPadding(top: 4,bottom: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          MyText(title:
+          label,
+            fontSize: fontSize,
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          ),
+          MyText(title:
+          "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${amount.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+            fontSize: fontSize,
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          ),
+        ],
+      ),
+    );
+  }
 }

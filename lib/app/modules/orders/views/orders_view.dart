@@ -48,7 +48,7 @@ class OrdersView extends GetView<OrdersController> {
 class OrderCard extends StatelessWidget {
   final Orders order;
 
-  const OrderCard({required this.order});
+  const OrderCard({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {

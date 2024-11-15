@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fruitables/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:fruitables/app/modules/orders/controllers/orders_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:fruitables/app/data/core/app_export.dart';
@@ -13,7 +14,7 @@ class MainMenuController extends GetxController {
   OrdersController ordersController = Get.put(OrdersController());
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
-
+  AppPreferences appPreferences = AppPreferences();
   RxBool showAllCategories = false.obs;
   RxBool orderAdded = false.obs;
 
@@ -34,18 +35,24 @@ class MainMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getOrderStatus();
-    favUtils.getFavourites();
+    getInitialApisData();
     loadCart();
     getMenu();
   }
 
+  getInitialApisData() async {
+    await appPreferences.isPreferenceReady;
+    appPreferences.getIsLoggedIn().then((value) async {
+      if(value==true){
+        getOrderStatus();
+        favUtils.getFavourites();
+      }
+    }).catchError((err) async {
+    });
+  }
+
   void getOrderStatus(){
-    ordersController.getOrders(
-        onSuccess: (val){
-          getCurrentOrderContinious(val);
-        }
-    );
+    getCurrentOrderContinious();
   }
 
 
@@ -533,17 +540,17 @@ class MainMenuController extends GetxController {
     }
   }
 
-  Future<void> getCurrentOrderContinious(String? id) async {
+  Future<void> getCurrentOrderContinious() async {
     Utils.check().then((value) async {
       if (value) {
-        await BaseClient.get(ApiUtils.getOrderDetail(id),
+        await BaseClient.get(ApiUtils.getCurrentOrders,
             onSuccess: (response) async {
-              Orders? order = Orders.fromJson(response.data);
-              currentOrder.value = order;
-              if(order.status!= null && (order.status != "delivered" || order.status != "cancelled")){
+              if(((response.data as List?)??[]).isNotEmpty){
+                Orders? order = Orders.fromJson(response.data[0]);
+                currentOrder.value = order;
                 orderAdded.value = true;
                 await Future.delayed(Duration(seconds: 10));
-                getCurrentOrderContinious(id);
+                getCurrentOrderContinious();
               }else{
                 orderAdded.value = false;
               }

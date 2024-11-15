@@ -18,11 +18,11 @@ class AddressesView extends GetView<AddressesController> {
         title: MyText(title: "lbl_my_addresses".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body:controller.addresses.isEmpty? NoData(
+      body:Obx(()=> controller.addresses.isEmpty? NoData(
         svgPath: 'assets/images/address.svg',
         name: "no_address_found".tr,message: "no_address_found_desc".tr,):Padding(
         padding: getPadding(
-          top: 15,bottom: 15
+            top: 15,bottom: 15
         ),
         child: Obx(()=> ListView.separated(
             itemCount: controller.addresses.length,
@@ -66,7 +66,7 @@ class AddressesView extends GetView<AddressesController> {
               );
             }
         )),
-      ),
+      )),
       bottomNavigationBar: Container(
           width: size.width,
           height: size.height*0.12,

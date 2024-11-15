@@ -12,6 +12,7 @@ import 'package:fruitables/app/data/utils/language_utils.dart';
 import 'package:fruitables/app/data/widgets/custom_round_button.dart';
 import 'package:fruitables/app/data/widgets/custom_text_form_field.dart';
 import 'package:fruitables/app/data/widgets/otp_text_feild.dart';
+import 'package:fruitables/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 class
 CustomDrawer extends StatefulWidget {
@@ -32,6 +33,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final languagePreference = LanguageUtils();
 
   final AppPreferences _appPreferences = AppPreferences();
+
+  MainMenuController mainMenuController = Get.put(MainMenuController());
 
   RoundedLoadingButtonController loginController = RoundedLoadingButtonController();
   RoundedLoadingButtonController otpBtnController = RoundedLoadingButtonController();
@@ -599,6 +602,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         await _appPreferences.isPreferenceReady;
                         _appPreferences.setUserData(data: jsonEncode(response));
                         _appPreferences.setIsLoggedIn(loggedIn: true);
+                        mainMenuController.getInitialApisData();
                       },
                         onError: (){
                           signupController.stop();
@@ -749,6 +753,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       await _appPreferences.isPreferenceReady;
       _appPreferences.setUserData(data: jsonEncode(response));
       _appPreferences.setIsLoggedIn(loggedIn: true);
+      mainMenuController.getInitialApisData();
 
     },
         onError: (){

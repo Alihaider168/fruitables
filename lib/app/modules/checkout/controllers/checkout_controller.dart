@@ -199,6 +199,7 @@ class CheckoutController extends GetxController {
             headers: Utils.getHeader(),
             data: {
               "branch": Constants.selectedBranch?.id,
+              "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
               "tax": menuController.cart.getTax(),
               "discount": menuController.cart.getTotalDiscountForCart(),
               "products": products

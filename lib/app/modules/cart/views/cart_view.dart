@@ -71,7 +71,7 @@ class _CartViewState extends State<CartView> {
           ),
           child: Column(
             children: [
-              _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+              _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ?Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
               CustomButton(
                 text: "lbl_proceed_to_checkout".tr,
                 onTap: (){

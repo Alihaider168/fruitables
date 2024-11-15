@@ -26,6 +26,9 @@ class CartBottom extends StatelessWidget  {
     if(order?.status == "ready"){
       index = 2;
     }
+    if(order?.status == "delivered"){
+      index = 3;
+    }
 
     return
       showCurrentOrder ?

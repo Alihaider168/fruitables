@@ -56,7 +56,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "Ali Haider",
+                          title: Constants.userModel?.customer?.name??"",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -68,7 +68,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "+923164260000",
+                          title: Constants.userModel?.customer?.mobile??"",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -80,7 +80,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         ),
                         SizedBox(height: getSize(3),),
                         MyText(
-                          title: "haideralihaider168@gmail.com",
+                          title: Constants.userModel?.customer?.email??"",
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),
@@ -179,7 +179,7 @@ class CheckoutView extends GetView<CheckoutController> {
                   ),
                 ),
                 SizedBox(height: getSize(20),),
-                Card(
+                Constants.isDelivery.value ? Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
                   ),
@@ -236,9 +236,9 @@ class CheckoutView extends GetView<CheckoutController> {
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: getSize(20),),
-                Card(
+                ) : Offstage(),
+                Constants.isDelivery.value ? SizedBox(height: getSize(20),): Offstage(),
+                !Constants.isDelivery.value ? Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
                   ),
@@ -291,8 +291,8 @@ class CheckoutView extends GetView<CheckoutController> {
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: getSize(20),),
+                ) : Offstage(),
+                !Constants.isDelivery.value ? SizedBox(height: getSize(20),) : Offstage(),
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
@@ -364,7 +364,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 text: "confirm_order".tr,
                 onTap: (){
                   if(!Constants.isDelivery.value||controller.addressController.text.isNotEmpty){
-                    if(controller.selectedMethod.value.isNotEmpty){
+                    if(!Constants.isDelivery.value || controller.selectedMethod.value.isNotEmpty){
                       controller.addOrder();
                     }else{
                       CustomSnackBar.showCustomToast(message: "select_payment_method".tr);

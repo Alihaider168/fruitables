@@ -381,7 +381,8 @@ class CheckoutView extends GetView<CheckoutController> {
                 onTap: (){
                   if(!Constants.isDelivery.value||controller.selectedAddress.value.isNotEmpty){
                     if(!Constants.isDelivery.value || controller.selectedMethod.value.isNotEmpty){
-                      controller.addOrder();
+                      controller.startPayment(context);
+                      // controller.addOrder();
                     }else{
                       CustomSnackBar.showCustomToast(message: "select_payment_method".tr);
                     }

@@ -54,6 +54,8 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print(order.products![0].name);
+        print(order.products![0].arabicName);
         if(order.status == 'delivered' || order.status == 'cancelled'){
           Get.toNamed(Routes.ORDER_PLACED,arguments: {'order': order});
         }else{

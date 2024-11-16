@@ -89,7 +89,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MyText(title:
-                        "${item.name} x${item.quantity}",
+                        "${Utils.checkIfArabicLocale() ? item.arabicName:item.name} x${item.quantity}",
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),

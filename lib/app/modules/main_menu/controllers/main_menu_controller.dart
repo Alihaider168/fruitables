@@ -534,6 +534,7 @@ class MainMenuController extends GetxController {
                 ordersLenght.value = response.data.length;
                 
                 Orders? order = Orders.fromJson(response.data[ordersLenght.value -1]);
+                
                 currentOrder.value = order;
                 orderAdded.value = true;
                 await Future.delayed(Duration(seconds: 10));

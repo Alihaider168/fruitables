@@ -165,4 +165,7 @@ final Map<String, String> enUs = {
   "login_to_confirm_order":"Login to Confirm Order",
   "login_to_apply_promo":"Login to Apply Promo",
   "lbl_order_from":"Order From",
+  "pending":"Pending",
+  "preparing":"Preparing",
+  "ready":"Ready",
 };

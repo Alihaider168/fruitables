@@ -1,10 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
-
-import 'package:get/get.dart';
 
 import '../controllers/current_order_detail_controller.dart';
 
@@ -133,7 +130,7 @@ class CurrentOrderDetailView extends GetView<CurrentOrderDetailController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               MyText(title:
-                              "${item.name} x${item.quantity}",
+                              "${Utils.checkIfArabicLocale() ?item.arabicName:item.name} x${item.quantity}",
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
@@ -154,7 +151,7 @@ class CurrentOrderDetailView extends GetView<CurrentOrderDetailController> {
                                 fontSize: 12,
                               ),
                               MyText(title:
-                              "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${item.price?.toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
+                              "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(item.price! * item.quantity!).toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr}"}",
                                 fontSize: 10,
                               ),
                             ],

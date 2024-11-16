@@ -305,6 +305,8 @@ class OrderRegion {
 class OrderProduct {
   String? productId;
   String? name;
+    String? arabicName;
+
   String? size;
   num? quantity;
   num? price;
@@ -317,6 +319,7 @@ class OrderProduct {
     this.quantity,
     this.price,
     this.id,
+    this.arabicName
   });
 
   OrderProduct.fromJson(Map<String, dynamic> json) {
@@ -326,7 +329,9 @@ class OrderProduct {
     quantity = json['quantity'] as num?;
     price = json['price'] as num?;
     id = json['_id'] as String?;
+    arabicName= json['arabicName']as String?;
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
@@ -336,6 +341,7 @@ class OrderProduct {
     json['quantity'] = quantity;
     json['price'] = price;
     json['_id'] = id;
+    json['arabicName']= arabicName;
     return json;
   }
 }

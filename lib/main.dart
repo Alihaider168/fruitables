@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/localization/app_localization.dart';
 import 'package:rexsa_cafe/app/data/utils/initial_bindings.dart';
 import 'package:rexsa_cafe/app/data/utils/language_utils.dart';
-
-import 'package:get/get.dart';
-
-import 'app/routes/app_pages.dart';
 
 // void main() {
 //   runApp(
@@ -67,8 +62,8 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           appBarTheme: AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.black.withOpacity(0.3), // Adjust opacity as needed
-              statusBarIconBrightness: Brightness.light,
+              statusBarColor: Colors.white, // Adjust opacity as needed
+              statusBarIconBrightness: Brightness.dark,
               systemNavigationBarColor: Colors.black,
               systemNavigationBarIconBrightness: Brightness.light,
             ),

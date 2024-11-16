@@ -165,4 +165,7 @@ final Map<String, String> arSa = {
   "login_to_confirm_order": "قم بتسجيل الدخول لتأكيد الطلب",
   "login_to_apply_promo": "قم بتسجيل الدخول لتطبيق العرض الترويجي",
   "lbl_order_from": "الطلب من",
+  "pending":"قيد الانتظار",
+  "preparing":"التحضير",
+  "ready":"مستعد",
 };

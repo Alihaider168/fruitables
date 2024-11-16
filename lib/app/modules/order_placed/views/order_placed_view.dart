@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:rexsa_cafe/app/data/core/app_export.dart';
-import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
-
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 
 import '../controllers/order_placed_controller.dart';
 
@@ -101,7 +97,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MyText(title:
-                          "${item.name} x${item.quantity}",
+                          "${Utils.checkIfArabicLocale() ?item.arabicName:item.name} x${item.quantity}",
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),

@@ -220,7 +220,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         SizedBox(height: getSize(15),),
                         Row(
                           children: [
-                            Icon(Icons.card_giftcard,color: ColorConstant.primaryPink,),
+                            Icon(Icons.payment,color: ColorConstant.primaryPink,),
                             SizedBox(width: getSize(10),),
                             Obx(()=> MyText(
                               title: controller.selectedMethod.value.isNotEmpty? controller.selectedMethod.value: "choose_payment_method".tr,
@@ -279,7 +279,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         SizedBox(height: getSize(15),),
                         Row(
                           children: [
-                            Icon(Icons.card_giftcard,color: ColorConstant.primaryPink,),
+                            Icon(Icons.watch_later_outlined,color: ColorConstant.primaryPink,),
                             SizedBox(width: getSize(10),),
                             Obx(()=> MyText(
                               title: controller.selectedTime.value.isNotEmpty? controller.selectedTime.value: "asap".tr,

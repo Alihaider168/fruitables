@@ -180,7 +180,8 @@ class CheckoutController extends GetxController {
           final cItem = menuController.cart.items[i];
           products.add({
             "productId": cItem.item.id,
-            "name":  Utils.checkIfArabicLocale() ? cItem.item.name : cItem.item.englishName,
+            "name":   cItem.item.englishName,
+            "arabicName":cItem.item.name,
             "size": cItem.size,
             "quantity": cItem.quantity,
             "price": menuController.cart.getPrice(cItem)

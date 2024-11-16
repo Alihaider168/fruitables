@@ -6,7 +6,7 @@ final Map<String, String> enUs = {
   'lbl_please_select_location':'Please select your location',
   'lbl_city_region':'City / Region',
   'lbl_select_your_city':'Select Your City',
-  'lbl_area_sub_region':'Area / Sub-region',
+  'lbl_area_sub_region':'Branches',
   'lbl_select_your_area':'Select Your Area',
   'lbl_confirm_location':'Confirm Location',
   "enter_username": "Full Name",

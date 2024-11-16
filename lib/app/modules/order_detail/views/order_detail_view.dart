@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:rexsa_cafe/app/data/core/app_export.dart';
-
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 
 import '../controllers/order_detail_controller.dart';
 

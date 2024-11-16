@@ -94,7 +94,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                   
                   crossAxisSpacing: 2.5,
                    // Number of items per row
-                  childAspectRatio:  .7,// Adjust the aspect ratio as needed
+                  childAspectRatio:  .68,// Adjust the aspect ratio as needed
                 ),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap:true,
@@ -122,10 +122,10 @@ class _MainMenuViewState extends State<MainMenuView> {
                             radius: 12,
                             // bgColor: Colors.red,
                             // url: cat.image,
-                            height: getSize(75),
+                            height: getSize(85),
                             padding: getPadding(bottom: getSize(8),top: getSize(8), left: getSize(16), right: getSize(16)),
                             margin: getMargin(bottom: getSize(5)),
-                            width: getSize(70),
+                            width: getSize(80),
                             
                             border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
                           ),
@@ -287,7 +287,7 @@ class _MainMenuViewState extends State<MainMenuView> {
         )),
       ),
       ),
-      bottomNavigationBar: Obx(()=>  !controller.bottomBar.value  && !controller.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.orderAdded.value,order: controller.currentOrder.value,)),
+      bottomNavigationBar: Obx(()=>  !controller.bottomBar.value  && !controller.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.orderAdded.value,order: controller.currentOrder.value,ordersLength: controller.ordersLenght.value-1   ,)),
     );
   }
 }

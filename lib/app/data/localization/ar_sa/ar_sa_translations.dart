@@ -6,7 +6,7 @@ final Map<String, String> arSa = {
   'lbl_please_select_location': 'يرجى اختيار موقعك',
   'lbl_city_region': 'المدينة / المنطقة',
   'lbl_select_your_city': 'اختر مدينتك',
-  'lbl_area_sub_region': 'المنطقة / المنطقة الفرعية',
+  'lbl_area_sub_region': 'الفروع',
   'lbl_select_your_area': 'اختر منطقتك',
   'lbl_confirm_location': 'تأكيد الموقع',
   "enter_username": "أدخل الاسم الكامل",

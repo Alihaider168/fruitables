@@ -48,16 +48,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
   RxBool resendOtpBool = true.obs;
 
   void countDown() {
+    print("function starts");
     resendOtpBool.value = false;
     debugPrint("${sec.value}");
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (sec.value != 0) {
-        sec.value = sec.value - 1;
-      } else {
-        timer.cancel();
-        resendOtpBool.value = true;
-      }
-    });
+    startTimer();
+
+}
+  void startTimer() {
+  if (sec.value != 0) {
+    sec.value = sec.value - 1;
+    print("sec ${sec.value}");
+    Future.delayed(const Duration(seconds: 1), startTimer);
+  } else {
+    resendOtpBool.value = true;
+    print("Timer finished");
+  }
     // sec.value = 60;
   }
 
@@ -471,6 +476,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           countDown();
                           showSignupSheet(context);
                         }else{
+                                                    countDown();
+
                           showOtpSheet(context);
                         }
 
@@ -617,10 +624,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 SizedBox(height: getSize(20)),
-                MyText(
-                  title: "otp_verification".tr,
-                  fontWeight: FontWeight.bold,
-                  fontSize:Utils.checkIfArabicLocale()?16: 18,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyText(
+                      title: "otp_verification".tr,
+                      fontWeight: FontWeight.bold,
+                      fontSize:Utils.checkIfArabicLocale()?16: 18,
+                    ),
+                     Obx(() =>
+                    sec.value != 0 ?SizedBox():
+                     GestureDetector(
+                          onTap: () {
+                            onResend(context);
+                          },
+                          child: MyText(title: "resend".tr,
+                                color: ColorConstant.blue,
+                            fontWeight: FontWeight.w600,
+                            
+                              ),
+                        ))
+                  ],
                 ),
                 MyText(
                   title: "${"we_sent_otp_to_email".tr} ${phoneController.text}",
@@ -632,7 +656,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Directionality(
                   textDirection: TextDirection.ltr,
                   child: Container(
-                    margin: getPadding(left: getSize(20), right: getSize(20)),
+                    margin: getPadding(left: getSize(0), right: getSize(0)),
                     child: OtpTextField(
                       //semanticsLabel: SemanticsLabel.LAB_OTP_FIELD,
                       controller: otpController,
@@ -668,16 +692,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     color: ColorConstant.primaryPink,
                                   ))
                             ]),
-                            textAlign: TextAlign.left)):
-                        GestureDetector(
-                          onTap: () {
-                            onResend(context);
-                          },
-                          child: MyText(title: "resend".tr,
-                                color: ColorConstant.primaryPink,
-                            fontWeight: FontWeight.w600,
-                              ),
-                        )
+                            textAlign: TextAlign.left))
+                       :SizedBox()
                     )),
                 SizedBox(height: getSize(20)),
                 CustomButton(

@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/modules/category_detail/views/category_detail_view.dart';
-
-import 'package:get/get.dart';
 
 import '../controllers/search_controller.dart';
 
@@ -24,7 +21,7 @@ class SearchView extends GetView<SearchViewController> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: getPadding(all: 16),
+        padding: getPadding(top: 16,bottom: 16),
         child: Column(
           children: [
             SizedBox(height: getSize(5),),
@@ -49,7 +46,7 @@ class SearchView extends GetView<SearchViewController> {
           ],
         ),
       ),
-      bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value,)),
+      bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value, ordersLength: controller.mainMenuController.ordersLenght.value -1,)),
     );
   }
 }

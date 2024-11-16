@@ -2,19 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_svg/svg.dart';
-import 'package:rexsa_cafe/app/data/models/user_model.dart';
-import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
-import 'package:rexsa_cafe/app/data/utils/auth_utils/auth.dart';
-import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
-import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
-import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
-import 'package:rexsa_cafe/app/modules/orders/controllers/orders_controller.dart';
-import 'package:http/http.dart' as http;
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
+import 'package:rexsa_cafe/app/data/utils/auth_utils/auth.dart';
 import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
 import 'package:rexsa_cafe/app/data/utils/fav_utils/fav_utils.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
 
 import '../../../data/utils/helper_functions.dart';
 
@@ -27,6 +25,7 @@ class MainMenuController extends GetxController {
   RxBool orderAdded = false.obs;
 
   Rx<Orders> currentOrder = Orders().obs;
+  RxInt ordersLenght = 0.obs;
 
   Cart cart = Cart();
   FavUtils favUtils = FavUtils();
@@ -130,22 +129,28 @@ class MainMenuController extends GetxController {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SizedBox(
+            child: Container(
               height: getSize(30),
               child: GestureDetector(
                 onTap: (){
                   selectedSize.value = value;
                 },
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Obx(()=> Radio<String>(
-                      value: value,
-                      activeColor: ColorConstant.primaryPink,
-                      groupValue: selectedSize.value,
-                      onChanged: (value) {
-                        selectedSize.value = value!;
-                      },
-                    ),),
+                    Container(
+                      margin:getMargin(right: 5),
+                      width: getSize(15)
+                      ,
+                      child: Obx(()=> Radio<String>(
+                        value: value,
+                        activeColor: ColorConstant.primaryPink,
+                        groupValue: selectedSize.value,
+                        onChanged: (value) {
+                          selectedSize.value = value!;
+                        },
+                      ),),
+                    ),
                     MyText(title: title,fontSize: 15,fontWeight: FontWeight.w600,),
                   ],
                 ),
@@ -305,26 +310,26 @@ class MainMenuController extends GetxController {
                                 Divider(),
                                 SizedBox(height: getSize(15),),
                                 checkForMultipleValues(item) ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            MyText(title: "variation".tr,fontWeight: FontWeight.bold,),
-                                            MyText(title: "select_option".tr,fontSize: 12,),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        MyText(title: "required *  ",fontSize: 14,color: ColorConstant.red,),
-                                      ],
-                                    ),
-                                    ((item.smallPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
-                                    ((item.mediumPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
-                                    ((item.largePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
-                                    ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_bottle'.tr,value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
-                                  ],
+                                      
+                                          Row(
+                                            children: [
+                                              MyText(title: "variation".tr,fontWeight: FontWeight.bold,),
+                                                                                              MyText(title: "*".tr,fontWeight: FontWeight.bold,color: Colors.red,),
+                                
+                                            ],
+                                          ),
+                                          MyText(title: "select_option".tr,fontSize: 12,),
+                                      
+                                    
+                                    Column(children: [
+                                      ((item.smallPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
+                                                                        ((item.mediumPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
+                                                                        ((item.largePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                                                        ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_bottle'.tr,value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                                                     
+                                    ],) ],
                                 ): Offstage()
                               ],
                             ),
@@ -526,7 +531,9 @@ class MainMenuController extends GetxController {
         await BaseClient.get(ApiUtils.getCurrentOrders,
             onSuccess: (response) async {
               if(((response.data as List?)??[]).isNotEmpty){
-                Orders? order = Orders.fromJson(response.data[0]);
+                ordersLenght.value = response.data.length;
+                
+                Orders? order = Orders.fromJson(response.data[ordersLenght.value -1]);
                 currentOrder.value = order;
                 orderAdded.value = true;
                 await Future.delayed(Duration(seconds: 10));
@@ -569,16 +576,21 @@ class MainMenuController extends GetxController {
   RxBool resendOtpBool = true.obs;
 
   void countDown() {
+    print("function starts");
     resendOtpBool.value = false;
     debugPrint("${sec.value}");
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (sec.value != 0) {
-        sec.value = sec.value - 1;
-      } else {
-        timer.cancel();
-        resendOtpBool.value = true;
-      }
-    });
+    startTimer();
+
+}
+  void startTimer() {
+  if (sec.value != 0) {
+    sec.value = sec.value - 1;
+    print("sec ${sec.value}");
+    Future.delayed(const Duration(seconds: 1), startTimer);
+  } else {
+    resendOtpBool.value = true;
+    print("Timer finished");
+  }
     // sec.value = 60;
   }
 
@@ -663,9 +675,13 @@ class MainMenuController extends GetxController {
                         Get.back();
                         if(response["isExist"]== null || response["isExist"] == false ){
                           countDown();
+
+
                           showSignupSheet(context);
                         }else{
                           showOtpSheet(context);
+                                                    countDown();
+
                         }
 
                       },
@@ -686,6 +702,7 @@ class MainMenuController extends GetxController {
   }
 
   void showSignupSheet(BuildContext context) {
+
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -807,7 +824,7 @@ class MainMenuController extends GetxController {
                   child: SvgPicture.asset(
                     ImageConstant.messageSent,
                     height: getSize(120),
-
+        
                   ),
                 ),
                 SizedBox(height: getSize(20)),
@@ -817,7 +834,7 @@ class MainMenuController extends GetxController {
                   fontSize:Utils.checkIfArabicLocale()?16: 18,
                 ),
                 MyText(
-                  title: "${"we_sent_otp_to_email".tr} ${phoneController.text}",
+                  title: "${"we_sent_otp_to_email".tr} \n${phoneController.text}",
                   fontSize:Utils.checkIfArabicLocale()?12: 14,
                   alignRight: Utils.checkIfArabicLocale(),
                   color: ColorConstant.textGrey,
@@ -825,25 +842,22 @@ class MainMenuController extends GetxController {
                 SizedBox(height: getSize(20)),
                 Directionality(
                   textDirection: TextDirection.ltr,
-                  child: Container(
-                    margin: getPadding(left: getSize(20), right: getSize(20)),
-                    child: OtpTextField(
-                      //semanticsLabel: SemanticsLabel.LAB_OTP_FIELD,
-                      controller: otpController,
-                      onChanged: (a) {
-                        if (a.length == Constants.otpLength) {
-                          callVerifyOtp();
-                        }
-                      },
-                      onComplete: (a) {
-                        if (a.length == Constants.otpLength) {
-
-                        }
-                      },
-                      // validator: (value) {
-                      //   return HelperFunction.otpValidate(value!);
-                      // },
-                    ),
+                  child: OtpTextField(
+                    //semanticsLabel: SemanticsLabel.LAB_OTP_FIELD,
+                    controller: otpController,
+                    onChanged: (a) {
+                      if (a.length == Constants.otpLength) {
+                        callVerifyOtp();
+                      }
+                    },
+                    onComplete: (a) {
+                      if (a.length == Constants.otpLength) {
+                          
+                      }
+                    },
+                    // validator: (value) {
+                    //   return HelperFunction.otpValidate(value!);
+                    // },
                   ),
                 ),
                 SizedBox(height: getSize(10)),

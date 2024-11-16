@@ -1,11 +1,10 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
-import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
-import 'package:get/get.dart';
 
 class OrdersController extends GetxController {
   
   RxList<Orders> myOrders = <Orders>[].obs;
+  RxBool isLoading = false.obs;
 
 
   @override
@@ -18,8 +17,11 @@ class OrdersController extends GetxController {
   void getOrders({final void Function(String?)? onSuccess}){
     Utils.check().then((value) async {
       if (value) {
+        isLoading.value = true;
         await BaseClient.get(ApiUtils.getOrders,
             onSuccess: (response) async {
+                      isLoading.value = false;
+
               print(response);
               OrdersModel orderModel = OrdersModel.fromJson(response.data);
               myOrders.value.clear();

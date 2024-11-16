@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
-import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/data/widgets/skeleton.dart';
-import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
-
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../controllers/location_selection_controller.dart';
 
@@ -94,19 +89,25 @@ class LocationSelectionView extends GetView<LocationSelectionController> {
                           fontWeight: FontWeight.w600,
                         )),
                         SizedBox(height: getSize(15),),
-                        CustomTextFormField(
-                          onTap:(){
-                            if(controller.cityModel?.cities != null){
-                              controller.showCitySheet(context);
-                            }else{
-                              CustomSnackBar.showCustomToast(message: "lbl_no_cities_available".tr);
-                            }
-                          },
-                          controller: controller.cityController,
-                          labelText: "lbl_city_region".tr,
-                          hintText: "lbl_select_your_city".tr,
-                          readOnly: true,
-                          suffix: Icon(Icons.keyboard_arrow_down),
+                        Obx(
+                          ()=>    controller.isLoading.value ?
+                       Skeleton(
+                         height: getSize(46),
+                         width: size.width,
+                       ): CustomTextFormField(
+                            onTap:(){
+                              if(controller.cityModel?.cities != null){
+                                controller.showCitySheet(context);
+                              }else{
+                                CustomSnackBar.showCustomToast(message: "lbl_no_cities_available".tr);
+                              }
+                            },
+                            controller: controller.cityController,
+                            labelText: "lbl_city_region".tr,
+                            hintText: "lbl_select_your_city".tr,
+                            readOnly: true,
+                            suffix: Icon(Icons.keyboard_arrow_down),
+                          ),
                         ),
                         SizedBox(height: getSize(15),),
                        Obx(()=>  controller.isLoading.value ?

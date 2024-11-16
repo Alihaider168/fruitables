@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
@@ -7,10 +6,11 @@ class CartBottom extends StatelessWidget  {
 
   final controller = Get.put(MainMenuController());
 
-  CartBottom({super.key,this.showCurrentOrder = false,this.order});
+  CartBottom({super.key,this.showCurrentOrder = false,this.order,required this.ordersLength});
 
   final bool showCurrentOrder;
   final Orders? order;
+  final int ordersLength;
 
   int index = 0;
 
@@ -32,8 +32,8 @@ class CartBottom extends StatelessWidget  {
 
     return Obx(()=> Container(
       width: size.width,
-      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.2 :size.height*0.12,
-      padding: getPadding(left: 16,right: 16,bottom: 15,top: 15),
+      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.21 :size.height*0.13,
+      padding: getPadding(left: 16,right: 16,bottom: 10,top: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -68,70 +68,92 @@ class CartBottom extends StatelessWidget  {
         mainAxisSize: MainAxisSize.min,
         children: [
           showCurrentOrder ?
-          GestureDetector(
-            onTap: (){
-              Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(width: getSize(8)),
-
-                        Container(
-                          width: getSize(13),
-                          height: getSize(13),
-                          decoration: BoxDecoration(
-                              color: ColorConstant.primaryPink1,
-
-                              borderRadius:BorderRadius.circular(12)
-                          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: getSize(8)),
+          
+                      Container(
+                        width: getSize(13),
+                        height: getSize(13),
+                        decoration: BoxDecoration(
+                            color: ColorConstant.primaryPink1,
+          
+                            borderRadius:BorderRadius.circular(12)
                         ),
-                        SizedBox(width: getSize(14)),
-
-                        MyText(
+                      ),
+                      SizedBox(width: getSize(14)),
+          
+                      InkWell(
+                        onTap: (){
+                                        Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
+                      
+                        },
+                        child: MyText(
                           title: "${order?.saleId}",
                           fontWeight: FontWeight.w600,
                           fontSize: getFontSize(16),
                         ),
-                      ],
-                    ),
-                    Icon(Icons.keyboard_arrow_down, size: getSize(25),color: ColorConstant.black,)
-                  ],
-                ),
-                SizedBox(height: getSize(7)),
-                OrderStatusIndicator(currentIndex: index),
-                SizedBox(height: getSize(10)),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        '${'your_order_being'.tr}${order?.status}',
-                        style: TextStyle( color: Colors.grey[700],
-                          height: 1.2,
-                          fontSize: 14,),
-
-                        softWrap: true,
-
                       ),
-                    ),
-                    MyText(
-                      title: 'view_details'.tr,
-                      fontWeight: FontWeight.w600,
+                    ],
+                  ),
+                    if(ordersLength >0)
+                            InkWell(
+                              onTap: (){
+                                              Get.toNamed(Routes.ORDERS);
 
-                      fontSize: 13,
+                              },
+                              child: MyText(
+                                                      title: " +$ordersLength",
+                                                      fontWeight: FontWeight.w600,
+                                                      color: ColorConstant.blue,
+                                                      fontSize: getFontSize(16),
+                                                    ),
+                            ),
+                            if(ordersLength <=0)
+                  
+                  Icon(Icons.keyboard_arrow_down, size: getSize(25),color: ColorConstant.black,)
+                ],
+              ),
+              SizedBox(height: getSize(6)),
+              Row(
+                children: [
+                  OrderStatusIndicator(currentIndex: index),
+                ],
+              ),
+              SizedBox(height: getSize(9)),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      '${'Pending'}\n${'your_order_being'.tr}${order?.status}',
+                      style: TextStyle( color: Colors.grey[700],
+                        height: 1.2,
+                        fontSize: 14,),
+          
+                      softWrap: true,
+          
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  MyText(
+                    title: 'view_details'.tr,
+                    fontWeight: FontWeight.w600,
+          
+                    fontSize: 13,
+                  ),
+                ],
+              ),
+                              SizedBox(height: getSize(5)),
+          
+            ],
           ): Spacer(),
           Spacer(),
           Obx(()=>  controller.bottomBar.value

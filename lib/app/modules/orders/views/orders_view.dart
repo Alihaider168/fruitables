@@ -1,9 +1,8 @@
+import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
-
-import 'package:get/get.dart';
 import 'package:rexsa_cafe/app/data/widgets/noData.dart';
-import 'package:intl/intl.dart';
+import 'package:rexsa_cafe/app/data/widgets/skeleton.dart';
 
 import '../controllers/orders_controller.dart';
 
@@ -14,6 +13,7 @@ class OrdersView extends GetView<OrdersController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         leading: IconButton(onPressed: (){
           Get.back();
@@ -23,7 +23,7 @@ class OrdersView extends GetView<OrdersController> {
         title: MyText(title: "lbl_my_orders".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-        body: Obx(()=> controller.myOrders.isEmpty ?
+        body: Obx(()=>controller.isLoading.value? Skeleton(height: Get.height,width: Get.width,):controller.myOrders.isEmpty ?
         Container(
           height: Get.height,width: Get.width,
           child: Center(child: NoData(
@@ -62,6 +62,7 @@ class OrderCard extends StatelessWidget {
 
       },
       child: Card(
+        color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: getMargin(bottom: 16),
         child: Padding(

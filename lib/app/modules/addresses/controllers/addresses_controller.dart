@@ -1,12 +1,12 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/address_model.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
-import 'package:get/get.dart';
 
 class AddressesController extends GetxController {
 
   RxList<Addresses> addresses = <Addresses>[].obs;
   RoundedLoadingButtonController btnController = RoundedLoadingButtonController();
+  RxBool isloading = false.obs;
 
   bool fromCheckout = false;
 
@@ -26,8 +26,10 @@ class AddressesController extends GetxController {
     Utils.check().then((value) async {
       if (value) {
         btnController.start();
+        isloading.value  = true;
         await BaseClient.get(ApiUtils.addresses,
             onSuccess: (response) async {
+isloading.value = false;
               btnController.stop();
               print(response);
               AddressModel addressModel = AddressModel.fromJson(response.data);

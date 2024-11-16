@@ -1,5 +1,6 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/widgets/noData.dart';
+import 'package:rexsa_cafe/app/data/widgets/skeleton.dart';
 
 import '../controllers/addresses_controller.dart';
 
@@ -18,7 +19,10 @@ class AddressesView extends GetView<AddressesController> {
         title: MyText(title: "lbl_my_addresses".tr,fontSize: 18,fontWeight: FontWeight.bold,color: ColorConstant.white,),
         centerTitle: true,
       ),
-      body:Obx(()=> controller.addresses.isEmpty? NoData(
+      body:Obx(()=>
+      controller.isloading.value?Skeleton(height: Get.height,width: double.infinity,):
+    
+       controller.addresses.isEmpty? NoData(
         svgPath: 'assets/images/address.svg',
         name: "no_address_found".tr,message: "no_address_found_desc".tr,):Padding(
         padding: getPadding(
@@ -27,7 +31,7 @@ class AddressesView extends GetView<AddressesController> {
         child: Obx(()=> ListView.separated(
             itemCount: controller.addresses.length,
             separatorBuilder: (_,__){
-              return Divider();
+              return Container();
             },
             itemBuilder: (context, index) {
               final address = controller.addresses[index];
@@ -40,14 +44,24 @@ class AddressesView extends GetView<AddressesController> {
                 },
                 child: Container(
                   decoration: BoxDecoration(border: Border(bottom: BorderSide(color: ColorConstant.textGrey.withOpacity(.4)))),
-                  padding: getPadding(left: 0,top: 5,bottom: 10),
+                  padding: getPadding(left: 0,top:10,bottom: 10),
                   child: Row(
                     children: [
-                      Container(
-                        padding: getPadding(top: 5),
-                        alignment: Alignment.topCenter,
-                        height:getSize(70),
-                        width:getSize(50),child: Icon(Icons.location_on_outlined, color: ColorConstant.textGrey,size: getSize(23),),),
+                    Container(
+                                      margin: getMargin(all: 10),
+                                      padding: getPadding(all: 8),
+                                      decoration: BoxDecoration(
+                                        color:  ColorConstant.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: ColorConstant.grayBorder)
+                                      ),
+                                      child: CustomImageView(
+                                        imagePath: address.label?.toLowerCase() =="home"?   ImageConstant.home:address.label?.toLowerCase() =="work"?ImageConstant.work:
+                                        address.label?.toLowerCase() =="partner"?   ImageConstant.partner:ImageConstant.other,
+                                        height: getSize(15),
+                                        width: getSize(15),
+                                      ),
+                                    ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,14 +74,27 @@ class AddressesView extends GetView<AddressesController> {
                               
 
                             // ),),
-                            Text("${"address".tr}: ${address.address??""}",style: TextStyle( 
+                            Text(address.address.toString(),style: TextStyle( 
                               fontWeight: FontWeight.w400,fontSize: getFontSize(12),
                               color: ColorConstant.textGrey,
                               height: 1.2
                               
 
                             ),),
-                            Text( "${"note_to_rider".tr}: ${address.street!= null ? "${address.street}, " : ""}${address.floor??""}",style: TextStyle( 
+                            if(
+                              address.street!= null 
+                            )
+                            Text( address.street.toString(),style: TextStyle( 
+                              fontWeight: FontWeight.w400,fontSize: getFontSize(12),
+                              color: ColorConstant.textGrey,
+                              height: 1.2
+                              
+
+                            )),
+                            if(
+                              address.floor!= null 
+                            )
+                            Text(  address.floor.toString(),style: TextStyle( 
                               fontWeight: FontWeight.w400,fontSize: getFontSize(12),
                               color: ColorConstant.textGrey,
                               height: 1.2
@@ -77,12 +104,7 @@ class AddressesView extends GetView<AddressesController> {
                           ],
                         ),
                       ),
-                      controller.fromCheckout ? Offstage() : IconButton(
-                        onPressed: (){
-                          controller.showDeleteAddressDialog(context,index);
-                        },
-                        icon: Icon(Icons.edit_outlined,color: ColorConstant.primaryPink,),
-                      ),
+                    
 
                       controller.fromCheckout ? Offstage() : IconButton(
                         onPressed: (){

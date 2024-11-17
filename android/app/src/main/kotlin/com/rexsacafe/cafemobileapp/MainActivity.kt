@@ -1,4 +1,4 @@
-package com.example.fruitables
+package com.rexsacafe.cafemobileapp
 
 import io.flutter.embedding.android.FlutterActivity
 

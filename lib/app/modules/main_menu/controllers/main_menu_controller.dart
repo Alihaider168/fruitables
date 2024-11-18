@@ -45,8 +45,6 @@ class MainMenuController extends GetxController {
     getInitialApisData();
 
     getMenu();
-
-    Utils.initDeepLinkListener();
   }
 
   getInitialApisData() async {

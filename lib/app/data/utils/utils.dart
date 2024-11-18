@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:uni_links2/uni_links.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
@@ -372,5 +372,18 @@ class Utils {
 
     // If no number is found, return the input as it is
     return input;
+  }
+
+  static void initDeepLinkListener() {
+    uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        if (uri.path == '/transaction/success') {
+          Get.back();
+        } else if (uri.path == '/transaction/failure') {
+          // Handle failure
+          Get.back();
+        }
+      }
+    });
   }
 }

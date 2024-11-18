@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class CartItem {
   Items item;
   String size; // 'small', 'medium', or 'large'
-  int quantity;
+  num quantity;
 
   CartItem({required this.item, required this.size, this.quantity = 0});
 
@@ -36,7 +36,7 @@ class Cart {
   static const String cartKey = 'cart_items';
 
   // Add an item to the cart with specified size
-  void addItem(Items item, String size, int quantity) {
+  void addItem(Items item, String size, num quantity) {
     bool itemExists = false;
 
     for (var cartItem in _cartItems) {

@@ -20,6 +20,7 @@ abstract class Routes {
   static const ORDER_DETAIL = _Paths.ORDER_DETAIL;
   static const LANGUAGE_SELECTION = _Paths.LANGUAGE_SELECTION;
   static const CURRENT_ORDER_DETAIL = _Paths.CURRENT_ORDER_DETAIL;
+  static const NEW_DETAIL = _Paths.NEW_DETAIL;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const ORDER_DETAIL = '/order-detail';
   static const LANGUAGE_SELECTION = '/language-selection';
   static const CURRENT_ORDER_DETAIL = '/current-order-detail';
+  static const NEW_DETAIL = '/new-detail';
 }

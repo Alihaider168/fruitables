@@ -45,6 +45,8 @@ class MainMenuController extends GetxController {
     getInitialApisData();
 
     getMenu();
+
+    Utils.initDeepLinkListener();
   }
 
   getInitialApisData() async {
@@ -100,7 +102,7 @@ class MainMenuController extends GetxController {
     });
   }
 
-  void addItemsToCart(Items item, {String size = 'small',int quantity = 1}){
+  void addItemsToCart(Items item, {String size = 'small',num quantity = 1}){
     cart.addItem(item, size, quantity);
     loadCart();
   }

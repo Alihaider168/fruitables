@@ -1,10 +1,13 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 class OrdersController extends GetxController {
   
   RxList<Orders> myOrders = <Orders>[].obs;
   RxBool isLoading = false.obs;
+
+  MainMenuController menuController = Get.put(MainMenuController());
 
 
   @override

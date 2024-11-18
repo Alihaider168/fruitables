@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/widgets/custom_drawer.dart';
 import 'package:rexsa_cafe/app/data/widgets/noData.dart';
 import 'package:rexsa_cafe/app/data/widgets/skeleton.dart';
 
@@ -38,12 +40,41 @@ class OrdersView extends GetView<OrdersController> {
         padding: getPadding(all: 16),
         itemBuilder: (context, index) {
           final order = controller.myOrders[index];
-          return OrderCard(order: order);
+          // return OrderCard(order: order);
+          return PastOrderTile(
+            imageUrl: order.branch?.image??"",
+            title: order.branch?.name??"",
+            deliveryDate: order.deliveredAt??"",
+            description: (order.products??[]).map((element)=> element.name.toString()).join(", "),
+            price: "${order.totalAmount??0}",
+            rating: 3,
+            onReorder: (){
+              for(int i=0;i<(order.products??[]).length;i++){
+                final item = (order.products??[])[i];
+
+                Items? foundItem = (controller.menuController.menuModel.value.data?.items??[]).firstWhere(
+                      (test) => test.id == item.id || test.id == item.productId,
+                );
+                if(foundItem != null){
+                  controller.menuController.addItemsToCart(
+                    foundItem,
+                    size: item.size??'bottle',
+                    quantity: item.quantity??1
+                  );
+                  controller.menuController.loadCart();
+                  controller.menuController.bottomBar.value = true;
+                }
+
+              }
+            },
+          );
         },
       )))
     );
   }
 }
+
+
 
 class OrderCard extends StatelessWidget {
   final Orders order;
@@ -131,3 +162,112 @@ class OrderCard extends StatelessWidget {
     );
   }
 }
+
+class PastOrderTile extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String deliveryDate;
+  final String description;
+  final String price;
+  final double? rating;
+  final void Function()? onReorder;
+
+  const PastOrderTile({
+    Key? key,
+    required this.imageUrl,
+    required this.title,
+    required this.deliveryDate,
+    required this.description,
+    required this.price,
+    this.rating,
+    required this.onReorder,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: ColorConstant.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(getSize(8))),
+      margin: getMargin(top: 8,bottom: 8,),
+      child: Padding(
+        padding: getPadding(all: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomImageView(
+                  url: Utils.getCompleteUrl(imageUrl),
+                  height: getSize(60),
+                  width: getSize(60),
+                  fit: BoxFit.cover,
+                  radius: getSize(8),
+                ),
+                SizedBox(width: getSize(12)),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MyText(title:
+                        title,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: getSize(4)),
+                      MyText(title:
+                        "Delivered on $deliveryDate",
+                          fontSize: 12,
+                          color: Colors.grey,
+                      ),
+                      SizedBox(height: getSize(4)),
+                      MyText(title:
+                        description,
+                          fontSize: 12,
+                          color: Colors.grey,
+                        line: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                MyText(
+                  title: "Rs. $price",
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                ),
+              ],
+            ),
+            SizedBox(height: getSize(12)),
+            CustomButton(
+              onTap: (){
+                onReorder!();
+              },
+              text: "Reorder",
+            ),
+            if (rating != null) SizedBox(height: getSize(8)),
+            if (rating != null) Divider(),
+            if (rating != null) SizedBox(height: getSize(8)),
+            if (rating != null)
+              Row(
+                children: [
+                  MyText(
+                    title:
+                    "You rated this ",
+                   fontSize: 12, color: Colors.grey,
+                  ),
+                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                  MyText(title:
+                    "$rating",
+                    fontSize: 12,
+                  ),
+                ],
+              ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+

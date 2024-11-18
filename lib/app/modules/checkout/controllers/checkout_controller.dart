@@ -172,7 +172,7 @@ class CheckoutController extends GetxController {
   }
 
 
-  Future<dynamic> addOrder() async {
+  Future<dynamic> addOrder({String? paymentId,String? paymentMethod}) async {
     await menuController.cart.loadCartFromPreferences();
     Utils.check().then((value) async {
       if (value) {
@@ -212,6 +212,8 @@ class CheckoutController extends GetxController {
             headers: Utils.getHeader(),
             data: {
               "branch": Constants.selectedBranch?.id,
+              "paymentId": paymentId??"",
+              "paymentMethod": paymentMethod,
               "pickupTime": Constants.isDelivery.value ? null : selectedTime.value,
               "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
               "tax": menuController.cart.getTax(),
@@ -227,22 +229,47 @@ class CheckoutController extends GetxController {
 
 
   Future<void> startPayment(BuildContext context) async {
-    var response = await MyFatoorah.startPayment(
-      context: context,
-      request: MyfatoorahRequest.test(
-        currencyIso: Country.SaudiArabia,
-        successUrl: 'https://www.facebook.com/',
-        errorUrl: 'https://www.google.com/',
-        invoiceAmount: 100,
-        language: ApiLanguage.Arabic,
-        customerMobile: Constants.userModel?.customer?.mobile,
-        customerEmail: Constants.userModel?.customer?.email,
-        customerName: Constants.userModel?.customer?.name,
-        token:
-        'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
-      ),
-    );
-    print("payment test: "+response.toString());
+    try {
+      PaymentResponse response =  await MyFatoorah.startPayment(
+        context: context,
+        request: MyfatoorahRequest.test(
+          currencyIso: Country.SaudiArabia,
+          successUrl: 'https://rexsacafe.com/payment-status?status=success',
+          errorUrl: 'https://rexsacafe.com/payment-status?status=error',
+          invoiceAmount: 100,
+          language: ApiLanguage.English,
+          customerMobile: Constants.userModel?.customer?.mobile,
+          customerEmail: Constants.userModel?.customer?.email,
+          customerName: Constants.userModel?.customer?.name,
+          // token: Constants.fatoorahToken,
+          token: 'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
+        ),
+      );
+      print("payment test: "+response.toString());
+      if(response.status == PaymentStatus.Success){
+        addOrder(paymentId: response.paymentId,paymentMethod: "card");
+      }else{
+        CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    // var response = await MyFatoorah.startPayment(
+    //   context: context,
+    //   request: MyfatoorahRequest.test(
+    //     currencyIso: Country.SaudiArabia,
+    //     successUrl: 'myapp://transaction/success',
+    //     errorUrl: 'myapp://transaction/failure',
+    //     invoiceAmount: 100,
+    //     language: ApiLanguage.English,
+    //     customerMobile: Constants.userModel?.customer?.mobile,
+    //     customerEmail: Constants.userModel?.customer?.email,
+    //     customerName: Constants.userModel?.customer?.name,
+    //     // token: Constants.fatoorahToken,
+    //     token: 'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
+    //   ),
+    // );
+
   }
 
 }

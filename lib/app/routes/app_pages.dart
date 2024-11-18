@@ -24,6 +24,8 @@ import '../modules/location_selection/bindings/location_selection_binding.dart';
 import '../modules/location_selection/views/location_selection_view.dart';
 import '../modules/main_menu/bindings/main_menu_binding.dart';
 import '../modules/main_menu/views/main_menu_view.dart';
+import '../modules/new_detail/bindings/new_detail_binding.dart';
+import '../modules/new_detail/views/new_detail_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
 import '../modules/order_placed/bindings/order_placed_binding.dart';
@@ -127,6 +129,11 @@ class AppPages {
       name: _Paths.CURRENT_ORDER_DETAIL,
       page: () => const CurrentOrderDetailView(),
       binding: CurrentOrderDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_DETAIL,
+      page: () => const NewDetailView(),
+      binding: NewDetailBinding(),
     ),
   ];
 }

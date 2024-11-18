@@ -59,4 +59,5 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
       Get.offAllNamed(Routes.LANGUAGE_SELECTION);
     });
   }
+
 }

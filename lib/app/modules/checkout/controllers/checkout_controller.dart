@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:my_fatoorah/my_fatoorah.dart';
 import 'package:intl/intl.dart' as intl;
 // import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
+import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 
@@ -11,9 +14,9 @@ import '../../../data/core/app_export.dart';
 
 class CheckoutController extends GetxController {
 
-  final String apiKey = 'your_api_key'; // Replace with your API Key
-  final String baseUrl = 'https://apitest.myfatoorah.com'; // Use the live URL for production
-
+  num? usedPointsBalance;
+  num? usedWalletBalance;
+  AppPreferences appPreferences = AppPreferences();
 
 
   MainMenuController menuController = Get.put(MainMenuController());
@@ -37,6 +40,19 @@ class CheckoutController extends GetxController {
     intl.DateFormat('EEE MMM d').format(DateTime.now().add(Duration(days: 1))),
     intl.DateFormat('EEE MMM d').format(DateTime.now().add(Duration(days: 2))),
   ];
+
+  @override
+  void onInit(){
+    var data = Get.arguments;
+    if(data != null && data["usedWalletBalance"]!= null){
+      usedWalletBalance = data["usedWalletBalance"];
+    }
+    if(data != null && data["usedPointsBalance"]!= null){
+      usedPointsBalance = data["usedPointsBalance"];
+    }
+    super.onInit();
+
+  }
 
   List<int> getHours() {
     if (selectedDayIndex.value == 0) {
@@ -202,6 +218,7 @@ class CheckoutController extends GetxController {
           Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
           menuController.bottomBar.value = false;
+          getUserDetail();
               return true;
             },
             onError: (error) {
@@ -213,6 +230,9 @@ class CheckoutController extends GetxController {
             data: {
               "branch": Constants.selectedBranch?.id,
               "paymentId": paymentId??"",
+              "payableAmount": getFinalPrice(),
+              "usedPointsBalance": "${usedPointsBalance??0}",
+              "usedWalletBallance": "${usedWalletBalance??0}",
               "paymentMethod": paymentMethod,
               "pickupTime": Constants.isDelivery.value ? null : selectedTime.value,
               "totalAmount": menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0),
@@ -228,16 +248,17 @@ class CheckoutController extends GetxController {
   }
 
 
-  Future<void> startPayment(BuildContext context) async {
+  Future<void> startPayment(BuildContext context,{required num amount}) async {
     try {
       PaymentResponse response =  await MyFatoorah.startPayment(
         context: context,
+        // showServiceCharge: true,
         request: MyfatoorahRequest.test(
           currencyIso: Country.SaudiArabia,
           successUrl: 'https://rexsacafe.com/payment-status?status=success',
           errorUrl: 'https://rexsacafe.com/payment-status?status=error',
-          invoiceAmount: 100,
-          language: ApiLanguage.English,
+          invoiceAmount: amount.toDouble(),
+          language: Utils.checkIfArabicLocale() ? ApiLanguage.Arabic : ApiLanguage.English,
           customerMobile: Constants.userModel?.customer?.mobile,
           customerEmail: Constants.userModel?.customer?.email,
           customerName: Constants.userModel?.customer?.name,
@@ -254,22 +275,35 @@ class CheckoutController extends GetxController {
     } catch (e) {
       print('Error: $e');
     }
-    // var response = await MyFatoorah.startPayment(
-    //   context: context,
-    //   request: MyfatoorahRequest.test(
-    //     currencyIso: Country.SaudiArabia,
-    //     successUrl: 'myapp://transaction/success',
-    //     errorUrl: 'myapp://transaction/failure',
-    //     invoiceAmount: 100,
-    //     language: ApiLanguage.English,
-    //     customerMobile: Constants.userModel?.customer?.mobile,
-    //     customerEmail: Constants.userModel?.customer?.email,
-    //     customerName: Constants.userModel?.customer?.name,
-    //     // token: Constants.fatoorahToken,
-    //     token: 'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
-    //   ),
-    // );
 
   }
+
+  Future<dynamic> getUserDetail() async {
+    Utils.check().then((value) async {
+      if (value) {
+
+        await BaseClient.get(ApiUtils.getMyDetail,
+          onSuccess: (response) async {
+            User user = User.fromJson(response.data['customer']);
+            Constants.userModel?.customer = user;
+            await appPreferences.isPreferenceReady;
+            appPreferences.setUserData(data: jsonEncode(response.data['customer']));
+            return true;
+          },
+          onError: (error) {
+            BaseClient.handleApiError(error);
+            return false;
+          },
+          headers: Utils.getHeader(),
+        );
+      }
+    });
+  }
+
+  num getFinalPrice(){
+    num price = menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0);
+    return price -(usedPointsBalance??0) - (usedWalletBalance??0);
+  }
+
 
 }

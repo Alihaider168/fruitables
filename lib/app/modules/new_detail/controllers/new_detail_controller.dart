@@ -1,23 +1,15 @@
 import 'package:get/get.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 
 class NewDetailController extends GetxController {
-  //TODO: Implement NewDetailController
-
-  final count = 0.obs;
+  Orders? order;
   @override
   void onInit() {
+    var data = Get.arguments;
+    if(data != null && data['order']!=null){
+      order = data['order'];
+    }
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

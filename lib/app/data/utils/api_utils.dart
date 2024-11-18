@@ -16,5 +16,6 @@ class ApiUtils {
   static const getOrders = '$baseUrl1/sales';
   static getOrderDetail(String? id) => '$baseUrl1/sales/$id';
   static const getCurrentOrders = '$baseUrl1/sales/in-process';
+  static const getMyDetail = '$baseUrl1/me';
 
 }

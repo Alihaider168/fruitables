@@ -372,4 +372,9 @@ class Utils {
     return input;
   }
 
+
+  static num getNewCheckoutPrice(num totalDiscountedPrice,num tax){
+    return totalDiscountedPrice + tax + (Constants.isDelivery.value ?Constants.DELIVERY_FEES : 0);
+  }
+
 }

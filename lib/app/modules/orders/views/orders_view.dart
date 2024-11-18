@@ -41,32 +41,39 @@ class OrdersView extends GetView<OrdersController> {
         itemBuilder: (context, index) {
           final order = controller.myOrders[index];
           // return OrderCard(order: order);
-          return PastOrderTile(
-            imageUrl: order.branch?.image??"",
-            title: order.branch?.name??"",
-            deliveryDate: order.deliveredAt??"",
-            description: (order.products??[]).map((element)=> element.name.toString()).join(", "),
-            price: "${order.totalAmount??0}",
-            rating: 3,
-            onReorder: (){
-              for(int i=0;i<(order.products??[]).length;i++){
-                final item = (order.products??[])[i];
-
-                Items? foundItem = (controller.menuController.menuModel.value.data?.items??[]).firstWhere(
-                      (test) => test.id == item.id || test.id == item.productId,
-                );
-                if(foundItem != null){
-                  controller.menuController.addItemsToCart(
-                    foundItem,
-                    size: item.size??'bottle',
-                    quantity: item.quantity??1
-                  );
-                  controller.menuController.loadCart();
-                  controller.menuController.bottomBar.value = true;
-                }
-
-              }
+          return GestureDetector(
+            onTap: (){
+              Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
             },
+            child: PastOrderTile(
+              imageUrl: order.branch?.image??"",
+              title: order.branch?.name??"",
+              deliveryDate: order.deliveredAt??"",
+              description: (order.products??[]).map((element)=> element.name.toString()).join(", "),
+              price: "${order.totalAmount??0}",
+              rating: 3,
+              onReorder: (){
+                for(int i=0;i<(order.products??[]).length;i++){
+                  final item = (order.products??[])[i];
+
+                  Items? foundItem = (controller.menuController.menuModel.value.data?.items??[]).firstWhere(
+                        (test) => test.id == item.id || test.id == item.productId,
+                  );
+                  if(foundItem != null){
+                    controller.menuController.addItemsToCart(
+                      foundItem,
+                      size: item.size??'bottle',
+                      quantity: item.quantity??1
+                    );
+                    controller.menuController.loadCart();
+                    controller.menuController.bottomBar.value = true;
+                  }
+
+                }
+                controller.menuController.loadCart();
+                Get.toNamed(Routes.CART);
+              },
+            ),
           );
         },
       )))
@@ -250,6 +257,7 @@ class PastOrderTile extends StatelessWidget {
             if (rating != null) SizedBox(height: getSize(8)),
             if (rating != null)
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyText(
                     title:

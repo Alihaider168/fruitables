@@ -48,7 +48,7 @@ class HelperFunction {
     }
 
     // Check if the value matches email or phone pattern
-    // bool isValidPhone = RegExp(phonePattern).hasMatch(value);
+    bool isValidPhone = RegExp(phonePattern).hasMatch(value??"");
 
     // if (!isValidPhone) {
       // return 'Please enter a valid email or phone number';

@@ -71,11 +71,22 @@ class _CartViewState extends State<CartView> {
           ),
           child: Column(
             children: [
-              _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ?Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+              _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
+                  controller.usePoints.value && controller.usePoints.value
+                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
+                      :controller.usePoints.value
+                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())
+                      :controller.useWallet.value
+                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount())
+                      :
+                  Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
               CustomButton(
                 text: "lbl_proceed_to_checkout".tr,
                 onTap: (){
-                  Get.toNamed(Routes.CHECKOUT);
+                  Get.toNamed(Routes.CHECKOUT,arguments: {
+                    "usedPointsBalance" : controller.usedPointsBalance,
+                    "usedWalletBalance" : controller.usedWalletBalance,
+                  });
                 },
               ),
             ],
@@ -267,11 +278,35 @@ class _CartViewState extends State<CartView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} 0.00",fontSize: 15,),
+              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.balance??0.00).toStringAsFixed(2)}",fontSize: 15,),
               Obx(()=> Switch(
                 value: controller.useWallet.value,
                 onChanged: (value) {
-                  controller.useWallet.value = value;
+                  if((Constants.userModel?.customer?.balance??0) <= 0){
+                    controller.useWallet.value = false;
+                  }else{
+                    controller.useWallet.value = value;
+                  }
+                },
+                activeColor: ColorConstant.primaryPink,
+                inactiveTrackColor: ColorConstant.grayBackground,
+              ),)
+            ],
+          ),
+          SizedBox(height: getSize(5),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MyText(title: "${"lbl_use_points".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.points??0.00).toStringAsFixed(2)}",fontSize: 15,),
+              Obx(()=> Switch(
+                value: controller.usePoints.value,
+                onChanged: (value) {
+                  if((Constants.userModel?.customer?.points??0) <= 0){
+                    controller.usePoints.value = false;
+                  }else{
+                    controller.usePoints.value = value;
+                  }
+
                 },
                 activeColor: ColorConstant.primaryPink,
                 inactiveTrackColor: ColorConstant.grayBackground,
@@ -296,8 +331,24 @@ class _CartViewState extends State<CartView> {
           _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
           _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
+          Obx(()=> controller.useWallet.value ? _buildSummaryRow("from_wallet".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.getWalletAmount()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage()),
+          Obx(()=> controller.usePoints.value ? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.getPointsAmount()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage()),
+          // Utils.checkForWalletAndPoints(
+          //     controller.usePoints.value,
+          //     controller.useWallet.value,
+          //     controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ?Constants.DELIVERY_FEES : 0)
+          // ) ? Offstage() :
+          // _buildSummaryRow("${"lbl_tax".tr}", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           Divider(),
-          _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "} ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ?Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+          Obx(()=> _buildSummaryRow(controller.useWallet.value || controller.usePoints.value ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
+              controller.usePoints.value && controller.usePoints.value
+                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
+                  :controller.usePoints.value
+                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())
+                  :controller.useWallet.value
+                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount())
+                  :
+              Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true)),
         ],
       ),
     );
@@ -315,5 +366,14 @@ class _CartViewState extends State<CartView> {
       ),
     );
   }
+
+
+  // num getWalletAmount(){
+  //   return (Constants.userModel?.customer?.balance??0) < Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())
+  //       ? (Constants.userModel?.customer?.balance??0)
+  //       : Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax());
+  // }
+
+
 
 }

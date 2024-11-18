@@ -37,6 +37,8 @@ class Orders {
   String? type;
   String? address;
   String? completedAt;
+  String? usedPointsBalance;
+  String? usedWalletBallance;
   String? preparingAt;
   String? deliveredAt;
   String? cancelledAt;
@@ -57,6 +59,8 @@ class Orders {
     this.type,
     this.address,
     this.completedAt,
+    this.usedPointsBalance,
+    this.usedWalletBallance,
     this.preparingAt,
     this.deliveredAt,
     this.cancelledAt,
@@ -78,6 +82,8 @@ class Orders {
     type = json['type'] as String?;
     address = json['address'] as String?;
     completedAt = json['completedAt'];
+    usedPointsBalance = json['usedPointsBalance'];
+    usedWalletBallance = json['usedWalletBallance'];
     preparingAt = json['preparingAt'] as String?;
     deliveredAt = json['deliveredAt'];
     cancelledAt = json['cancelledAt'];
@@ -100,6 +106,8 @@ class Orders {
     json['type'] = type;
     json['address'] = address;
     json['completedAt'] = completedAt;
+    json['usedPointsBalance'] = usedPointsBalance;
+    json['usedWalletBallance'] = usedWalletBallance;
     json['preparingAt'] = preparingAt;
     json['deliveredAt'] = deliveredAt;
     json['cancelledAt'] = cancelledAt;

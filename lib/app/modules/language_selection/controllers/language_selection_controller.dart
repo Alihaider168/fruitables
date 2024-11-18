@@ -1,11 +1,11 @@
+import 'dart:convert';
+
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:get/get.dart';
 
 class LanguageSelectionController extends GetxController {
   RxInt selectedPreference = 0.obs;
-
   RxInt selectedLanguage = 0.obs;
-
   bool fromMenu = false;
 
   @override
@@ -16,5 +16,4 @@ class LanguageSelectionController extends GetxController {
     }
     super.onInit();
   }
-
 }

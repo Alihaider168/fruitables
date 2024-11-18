@@ -168,4 +168,10 @@ final Map<String, String> enUs = {
   "pending":"Pending",
   "preparing":"Preparing",
   "ready":"Ready",
+  "lbl_use_points":"Use Points",
+  "from_wallet":"From Wallet",
+  "from_points":"From Points",
+  "payable_amount":"Payable Amount",
+  "delivered_on": "Delivered on",
+  "picked_on": "Picked on",
 };

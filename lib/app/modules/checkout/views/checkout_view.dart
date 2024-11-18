@@ -88,13 +88,16 @@ class CheckoutView extends GetView<CheckoutController> {
                               fontWeight: FontWeight.normal,
                             ),
                             SizedBox(height: getSize(10),),
-                            MyText(
+                            !Constants.isDelivery.value ?
+                            Offstage() :MyText(
                               title: "delivery_address".tr,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(height: getSize(3),),
-                            GestureDetector(
+                            !Constants.isDelivery.value ?
+                            Offstage() :SizedBox(height: getSize(3),),
+                            !Constants.isDelivery.value ?
+                            Offstage() :GestureDetector(
                               onTap: (){
                                 Get.toNamed(Routes.ADDRESSES,arguments: {Constants.paramCheckout : true})!.then((address){
                                   if(address != null){
@@ -140,8 +143,8 @@ class CheckoutView extends GetView<CheckoutController> {
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () async {
-                                   CustomSnackBar.showCustomToast(message: "Will be implemented soon");
-
+                                    // Constants.selectedBranch?.
+                                    // controller
                                   },
                                   child: Container(
                                     padding: getPadding(left: 15,right: 15,top: 5,bottom: 5),
@@ -193,8 +196,8 @@ class CheckoutView extends GetView<CheckoutController> {
                     ),
                   ),
                 ),
-                SizedBox(height: getSize(20),),
-                Card(
+                controller.getFinalPrice() <=0 ? Offstage() : SizedBox(height: getSize(20),),
+                controller.getFinalPrice() <=0 ? Offstage() : Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius
                   ),
@@ -324,7 +327,9 @@ class CheckoutView extends GetView<CheckoutController> {
                         _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
                         Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"): Offstage(),
                         _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-                        _buildSummaryRow("lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+                        controller.usedWalletBalance!= null && controller.usedWalletBalance != 0 ? _buildSummaryRow("from_wallet".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedWalletBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
+                        controller.usedPointsBalance!= null && controller.usedPointsBalance != 0? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedPointsBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
+                        _buildSummaryRow(controller.usedPointsBalance!= null || controller.usedWalletBalance!= null ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.getFinalPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
                       ],
                     ),
@@ -380,14 +385,18 @@ class CheckoutView extends GetView<CheckoutController> {
                 text: "confirm_order".tr,
                 onTap: (){
                   if(!Constants.isDelivery.value||controller.selectedAddress.value.isNotEmpty){
-                    if(!Constants.isDelivery.value || controller.selectedMethod.value.isNotEmpty){
-                      if(controller.selectedMethod.value != "cash_on_delivery".tr){
-                        controller.startPayment(context);
+                    if(controller.getFinalPrice() > 0){
+                      if(controller.selectedMethod.value.isNotEmpty){
+                        if(controller.selectedMethod.value != "cash_on_delivery".tr){
+                          controller.startPayment(context,amount: controller.getFinalPrice());
+                        }else{
+                          controller.addOrder(paymentMethod: "cod");
+                        }
                       }else{
-                        controller.addOrder(paymentMethod: "cod");
+                        CustomSnackBar.showCustomToast(message: "select_payment_method".tr);
                       }
                     }else{
-                      CustomSnackBar.showCustomToast(message: "select_payment_method".tr);
+                      controller.addOrder(paymentMethod: "cod");
                     }
                   }else{
                     CustomSnackBar.showCustomToast(message: "select_delivery_address".tr);
@@ -420,4 +429,5 @@ class CheckoutView extends GetView<CheckoutController> {
       ),
     );
   }
+
 }

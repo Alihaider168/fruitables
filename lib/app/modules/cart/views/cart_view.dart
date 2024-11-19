@@ -72,7 +72,7 @@ class _CartViewState extends State<CartView> {
           child: Column(
             children: [
               _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
-                  controller.usePoints.value && controller.usePoints.value
+                  controller.useWallet.value && controller.usePoints.value
                       ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
                       :controller.usePoints.value
                       ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())
@@ -84,8 +84,8 @@ class _CartViewState extends State<CartView> {
                 text: "lbl_proceed_to_checkout".tr,
                 onTap: (){
                   Get.toNamed(Routes.CHECKOUT,arguments: {
-                    "usedPointsBalance" : controller.usedPointsBalance,
-                    "usedWalletBalance" : controller.usedWalletBalance,
+                    "usedPointsBalance" : controller.usePoints.value ? controller.usedPointsBalance : null,
+                    "usedWalletBalance" : controller.useWallet.value ? controller.usedWalletBalance : null,
                   });
                 },
               ),
@@ -275,7 +275,7 @@ class _CartViewState extends State<CartView> {
       ),
       child: Column(
         children: [
-          Row(
+          !Constants.isLoggedIn.value ? Offstage() : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.balance??0.00).toStringAsFixed(2)}",fontSize: 15,),
@@ -293,8 +293,8 @@ class _CartViewState extends State<CartView> {
               ),)
             ],
           ),
-          SizedBox(height: getSize(5),),
-          Row(
+          !Constants.isLoggedIn.value ? Offstage() : SizedBox(height: getSize(5),),
+          !Constants.isLoggedIn.value ? Offstage() : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               MyText(title: "${"lbl_use_points".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.points??0.00).toStringAsFixed(2)}",fontSize: 15,),
@@ -341,7 +341,7 @@ class _CartViewState extends State<CartView> {
           // _buildSummaryRow("${"lbl_tax".tr}", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           Divider(),
           Obx(()=> _buildSummaryRow(controller.useWallet.value || controller.usePoints.value ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
-              controller.usePoints.value && controller.usePoints.value
+              controller.useWallet.value && controller.usePoints.value
                   ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
                   :controller.usePoints.value
                   ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())

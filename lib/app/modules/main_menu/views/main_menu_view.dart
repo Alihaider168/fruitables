@@ -76,216 +76,213 @@ class _MainMenuViewState extends State<MainMenuView> {
       Obx(()=> controller.isLoading.value ? Center(
         child: CircularProgressIndicator(),
       ):
-      Padding(
-        padding: getPadding(bottom: 16),
-        child: Obx(()=> CustomCollapsableWidget(
-          banners: controller.menuModel.value.data?.banners??[],
-          header: // Horizontal ListView for categories
-          Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
-          Column(
-            children: [
-              SizedBox(height: getSize(15),),
-              GridView.builder(
-                padding: getPadding(right: getSize(8), left: getSize(8)),
-                
-                gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 2,
-                  
-                  crossAxisSpacing: 2.5,
-                   // Number of items per row
-                  childAspectRatio:  .68,// Adjust the aspect ratio as needed
-                ),
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap:true,
-                
-                
-                itemCount: !controller.showAllCategories.value ?
+      Obx(()=> CustomCollapsableWidget(
+        banners: controller.menuModel.value.data?.banners??[],
+        header: // Horizontal ListView for categories
+        Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
+        Column(
+          children: [
+            SizedBox(height: getSize(15),),
+            GridView.builder(
+              padding: getPadding(right: getSize(8), left: getSize(8)),
 
-                (  (controller.menuModel.value.data?.categories?.length??0) >8
-                    ? 8 : (controller.menuModel.value.data?.categories?.length??0)) : (controller.menuModel.value.data?.categories??[]).length,
-                // itemCount: (controller.menuModel.value.data?.categories??[]).length,
-                itemBuilder: (context, index) {
-                  final cat = (controller.menuModel.value.data?.categories??[])[index];
-                  return GestureDetector(
-                    onTap: (){
-                      Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
-                    },
-                    child: Container(
-                      padding: getPadding(left: 3,right: 3,top: 5,bottom:0),
-                      
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+              gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 2,
+
+                crossAxisSpacing: 2.5,
+                 // Number of items per row
+                childAspectRatio:  .68,// Adjust the aspect ratio as needed
+              ),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap:true,
+
+
+              itemCount: !controller.showAllCategories.value ?
+
+              (  (controller.menuModel.value.data?.categories?.length??0) >8
+                  ? 8 : (controller.menuModel.value.data?.categories?.length??0)) : (controller.menuModel.value.data?.categories??[]).length,
+              // itemCount: (controller.menuModel.value.data?.categories??[]).length,
+              itemBuilder: (context, index) {
+                final cat = (controller.menuModel.value.data?.categories??[])[index];
+                return GestureDetector(
+                  onTap: (){
+                    Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                  },
+                  child: Container(
+                    padding: getPadding(left: 3,right: 3,top: 5,bottom:0),
+
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomImageView(
+                          url:Utils.getCompleteUrl( cat.appImage?.key),
+                          radius: 12,
+                          // bgColor: Colors.red,
+                          // url: cat.image,
+                          height: getSize(85),
+                          padding: getPadding(bottom: getSize(8),top: getSize(8), left: getSize(16), right: getSize(16)),
+                          margin: getMargin(bottom: getSize(5)),
+                          width: getSize(80),
+
+                          border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
+                        ),
+                        MyText(
+                          title: Utils.checkIfArabicLocale() ? cat.arabicName??"" : cat.englishName??"",
+                          center: true,
+                          fontSize:Utils.checkIfArabicLocale()?10.5: 12,
+
+                          fontWeight: FontWeight.w600,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            // SizedBox(height: getSize(5),),
+            if((controller.menuModel.value.data?.categories?.length??0  ) > 8)
+            GestureDetector(
+              onTap: (){
+                controller.showAllCategories.value = !controller.showAllCategories.value;
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MyText(
+                    title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
+                    fontSize:Utils.checkIfArabicLocale()?11: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(
+                    width: getSize(5),
+                  ),
+                  Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+
+                ],
+              ),
+            )
+          ],
+        ): Offstage()),
+
+        child:
+        Column(
+          children: [
+
+
+            ListView.separated(
+              itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
+                  ? 5 : (controller.menuModel.value.data?.categories?.length??0),
+              separatorBuilder: (_,__){
+                return SizedBox(height: getSize(20),);
+              },
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final category = controller.menuModel.value.data?.categories![index];
+                final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId).toList();
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Category Header
+                    Container(
+                      padding: getPadding(left: 16, right: 16, bottom: 8, top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomImageView(
-                            url:Utils.getCompleteUrl( cat.appImage?.key),
-                            radius: 12,
-                            // bgColor: Colors.red,
-                            // url: cat.image,
-                            height: getSize(85),
-                            padding: getPadding(bottom: getSize(8),top: getSize(8), left: getSize(16), right: getSize(16)),
-                            margin: getMargin(bottom: getSize(5)),
-                            width: getSize(80),
-                            
-                            border: Border.all(color: ColorConstant.grayBorder.withOpacity(0.3)),
-                          ),
                           MyText(
-                            title: Utils.checkIfArabicLocale() ? cat.arabicName??"" : cat.englishName??"",
-                            center: true,
-                            fontSize:Utils.checkIfArabicLocale()?10.5: 12,
-                            
+                            title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
-                          )
+                          ),
+
+                          Visibility(
+                            visible: items.length>4,
+                            child: GestureDetector(
+                              onTap:(){
+                                Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                              },
+                              child: MyText(
+                                title: 'lbl_view_all'.tr,
+                                fontSize:Utils.checkIfArabicLocale()?11: 14,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.black.withOpacity(.6),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  );
-                },
-              ),
-              // SizedBox(height: getSize(5),),
-              if((controller.menuModel.value.data?.categories?.length??0  ) > 8)
-              GestureDetector(
-                onTap: (){
-                  controller.showAllCategories.value = !controller.showAllCategories.value;
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyText(
-                      title: controller.showAllCategories.value ? "hide_categories".tr : "view_all_categories".tr,
-                      fontSize:Utils.checkIfArabicLocale()?11: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(
-                      width: getSize(5),
-                    ),
-                    Icon(!controller.showAllCategories.value ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
-
-                  ],
-                ),
-              )
-            ],
-          ): Offstage()),
-
-          child:
-          Column(
-            children: [
-
-
-              ListView.separated(
-                itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
-                    ? 5 : (controller.menuModel.value.data?.categories?.length??0),
-                separatorBuilder: (_,__){
-                  return SizedBox(height: getSize(20),);
-                },
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  final category = controller.menuModel.value.data?.categories![index];
-                  final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId).toList();
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category Header
-                      Container(
-                        padding: getPadding(left: 16, right: 16, bottom: 8, top: 8),
+                    Container(
+                      // padding: getPadding(right: 12, left: 12),
+                      height: getSize(195),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            MyText(
-                              title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: (items.length>4 ? 4 : items.length),
+                              itemBuilder: (context, i) {
+                                  return Padding(
+                                    padding: getPadding(
+                                      // right:  2,
+                                      right: i == 0 && Utils.checkIfArabicLocale() ? 14 : 2,
+                                      left: i == 0 && !Utils.checkIfArabicLocale() ? 14 : 2,
+                                    ),
+                                    child: CustomItemCard(item: items[i]),
+                                  );
 
+                              },
+                            ),
+                            SizedBox(width: getSize(10),),
                             Visibility(
-                              visible: items.length>4,
+                              visible:  items.length>4,
                               child: GestureDetector(
-                                onTap:(){
+                                onTap: () {
                                   Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
                                 },
-                                child: MyText(
-                                  title: 'lbl_view_all'.tr,
-                                  fontSize:Utils.checkIfArabicLocale()?11: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorConstant.black.withOpacity(.6),
+                                child: Padding(
+                                  padding:getPadding(all: 16),
+                                  child: Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.arrow_forward, color: ColorConstant.black.withOpacity(.6)),
+                                      SizedBox(height: getSize(10),),
+                                      MyText(
+                                        title: 'lbl_view_all'.tr,
+                                        fontSize:Utils.checkIfArabicLocale()?12: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: ColorConstant.black.withOpacity(.6),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
-                      Container(
-                        // padding: getPadding(right: 12, left: 12),
-                        height: getSize(195),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
-                          child: Row(
-                            children: [
-                              ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: (items.length>4 ? 4 : items.length),
-                                itemBuilder: (context, i) {
-                                    return Padding(
-                                      padding: getPadding(
-                                        // right:  2,
-                                        right: i == 0 && Utils.checkIfArabicLocale() ? 14 : 2,
-                                        left: i == 0 && !Utils.checkIfArabicLocale() ? 14 : 2,
-                                      ),
-                                      child: CustomItemCard(item: items[i]),
-                                    );
-
-                                },
-                              ),
-                              SizedBox(width: getSize(10),),
-                              Visibility(
-                                visible:  items.length>4,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
-                                  },
-                                  child: Padding(
-                                    padding:getPadding(all: 16),
-                                    child: Column(
-                                      // crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Icon(Icons.arrow_forward, color: ColorConstant.black.withOpacity(.6)),
-                                        SizedBox(height: getSize(10),),
-                                        MyText(
-                                          title: 'lbl_view_all'.tr,
-                                          fontSize:Utils.checkIfArabicLocale()?12: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: ColorConstant.black.withOpacity(.6),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Items of the category
-                      // SingleChildScrollView(
-                      //   a,
-                      //   child: Row(
-                      //     children: [...items.map((item) => CustomItemCard(item: item))],
-                      //   ),
-                      // ),
-                      // ...items.map((item) => CustomItemCard(item: item)),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
-        )),
-      ),
+                    ),
+                    // Items of the category
+                    // SingleChildScrollView(
+                    //   a,
+                    //   child: Row(
+                    //     children: [...items.map((item) => CustomItemCard(item: item))],
+                    //   ),
+                    // ),
+                    // ...items.map((item) => CustomItemCard(item: item)),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      )),
       ),
       bottomNavigationBar: Obx(()=>  !controller.bottomBar.value  && !controller.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.orderAdded.value,order: controller.currentOrder.value,ordersLength: controller.ordersLenght.value-1   ,)),
     );

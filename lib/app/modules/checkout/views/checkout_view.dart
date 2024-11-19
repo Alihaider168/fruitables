@@ -12,6 +12,7 @@ class CheckoutView extends GetView<CheckoutController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: (){
+            controller.removeThings();
             Get.back();
           },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
@@ -143,6 +144,7 @@ class CheckoutView extends GetView<CheckoutController> {
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () async {
+                                    Utils.launchURL(Uri.parse(Constants.selectedBranch?.map??""));
                                     // Constants.selectedBranch?.
                                     // controller
                                   },

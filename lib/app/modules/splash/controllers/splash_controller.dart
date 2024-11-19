@@ -49,15 +49,46 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
         appPreferences.getUserData().then((profile) async {
           Constants.userModel  = UserModel.fromJson(jsonDecode(profile!));
           Constants.isLoggedIn.value = true;
+          await Future.delayed(splashDuration.seconds);
+          Get.offAllNamed(Routes.LANGUAGE_SELECTION);
+        }).catchError((err) async {
+          await Future.delayed(splashDuration.seconds);
+          Get.offAllNamed(Routes.LANGUAGE_SELECTION);
         });
 
+      }else{
+        await Future.delayed(splashDuration.seconds);
+        Get.offAllNamed(Routes.LANGUAGE_SELECTION);
       }
-      await Future.delayed(splashDuration.seconds);
-      Get.offAllNamed(Routes.LANGUAGE_SELECTION);
+      // getUserDetail();
+
     }).catchError((err) async {
+      // getUserDetail();
       await Future.delayed(splashDuration.seconds);
       Get.offAllNamed(Routes.LANGUAGE_SELECTION);
     });
   }
 
+
+  Future<dynamic> getUserDetail() async {
+    Utils.check().then((value) async {
+      if (value) {
+
+        await BaseClient.get(ApiUtils.getMyDetail,
+          onSuccess: (response) async {
+            User user = User.fromJson(response.data['customer']);
+            Constants.userModel?.customer = user;
+            await appPreferences.isPreferenceReady;
+            appPreferences.setUserData(data: jsonEncode(response.data['customer']));
+            return true;
+          },
+          onError: (error) {
+            BaseClient.handleApiError(error);
+            return false;
+          },
+          headers: Utils.getHeader(),
+        );
+      }
+    });
+  }
 }

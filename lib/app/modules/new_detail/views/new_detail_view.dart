@@ -35,7 +35,13 @@ class NewDetailView extends GetView<NewDetailController> {
                     Padding(
                       padding: getPadding(left: 16,top: 10),
                       child: GestureDetector(
-                        onTap: ()=> Get.back(),
+                        onTap: (){
+                          if(controller.fromOrder){
+                            Get.offAllNamed(Routes.MAIN_MENU);
+                          }else{
+                            Get.back();
+                          }
+                        },
                         child: CircleAvatar(
                           radius: getSize(17),
                           backgroundColor: ColorConstant.white,

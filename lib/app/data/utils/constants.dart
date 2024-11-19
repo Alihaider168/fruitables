@@ -3,6 +3,7 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/city_model.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/models/user_model.dart';
 
 class Constants {
@@ -35,7 +36,7 @@ class Constants {
   static const debounceDuration = Duration(milliseconds: 1000);
 
   static Cities? selectedCity;
-  static Branches? selectedBranch;
+  static OrderBranch? selectedBranch;
 
 
 

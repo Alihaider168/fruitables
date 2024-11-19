@@ -41,18 +41,29 @@ class CheckoutController extends GetxController {
     intl.DateFormat('EEE MMM d').format(DateTime.now().add(Duration(days: 2))),
   ];
 
+  void removeThings(){
+    usedPointsBalance = null;
+    usedWalletBalance = null;
+  }
+
   @override
   void onInit(){
     var data = Get.arguments;
     if(data != null && data["usedWalletBalance"]!= null){
       usedWalletBalance = data["usedWalletBalance"];
+    }else{
+      usedWalletBalance = null;
     }
     if(data != null && data["usedPointsBalance"]!= null){
       usedPointsBalance = data["usedPointsBalance"];
+    }else{
+      usedPointsBalance = null;
     }
     super.onInit();
 
   }
+
+
 
   List<int> getHours() {
     if (selectedDayIndex.value == 0) {
@@ -215,11 +226,12 @@ class CheckoutController extends GetxController {
               print(response);
               CustomSnackBar.showCustomToast(message: "order_created".tr);
               Get.back();
-          Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data)});
+              getUserDetail();
+          Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data),"from_order": true});
           // Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
           menuController.bottomBar.value = false;
-          getUserDetail();
+
               return true;
             },
             onError: (error) {
@@ -288,7 +300,7 @@ class CheckoutController extends GetxController {
             User user = User.fromJson(response.data['customer']);
             Constants.userModel?.customer = user;
             await appPreferences.isPreferenceReady;
-            appPreferences.setUserData(data: jsonEncode(response.data['customer']));
+            appPreferences.setUserData(data: jsonEncode(Constants.userModel?.toJson()));
             return true;
           },
           onError: (error) {

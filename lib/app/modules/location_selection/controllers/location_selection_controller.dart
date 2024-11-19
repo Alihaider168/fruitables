@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:rexsa_cafe/app/data/models/city_model.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/utils/api_utils.dart';
 import 'package:rexsa_cafe/app/data/utils/utils.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
@@ -23,13 +24,13 @@ class LocationSelectionController extends GetxController {
   final TextEditingController _searchController = TextEditingController();
 
   Cities? selectedCityModel ;
-  Branches? selectedRegionModel ;
+  OrderBranch? selectedRegionModel ;
 
   RxBool isLoading = true.obs;
 
 
   // List to hold filtered search results
-  RxList<Branches> filteredLocations = <Branches>[].obs;
+  RxList<OrderBranch> filteredLocations = <OrderBranch>[].obs;
 
   CityModel? cityModel;
 

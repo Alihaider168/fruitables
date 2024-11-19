@@ -6,11 +6,16 @@ class NewDetailController extends GetxController {
 
   MainMenuController menuController = Get.put(MainMenuController());
   Orders? order;
+  bool fromOrder = false;
+
   @override
   void onInit() {
     var data = Get.arguments;
     if(data != null && data['order']!=null){
       order = data['order'];
+    }
+    if(data != null && data['from_order']!=null){
+      fromOrder = data['from_order'];
     }
     super.onInit();
   }

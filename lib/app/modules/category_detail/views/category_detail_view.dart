@@ -56,93 +56,89 @@ class CategoryDetailView extends GetView<CategoryDetailController> {
           )
         ],
       ),
-      body:Padding(
-        padding: getPadding(bottom: 16),
-        child: Column(
-          children: [
-            Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0)
-              ),
-              color: ColorConstant.white,
-              child: Container(
-                height: getSize(47),
-                padding: getPadding(bottom: 5,left: 5,right: 5),
-                child:ScrollablePositionedList.builder(
-                  itemScrollController: controller.horizontalItemScrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.menuModel.value.data?.categories?.length??0,
-                  itemBuilder: (context, index) {
-                    final item = controller.menuModel.value.data!.categories![index];
-                    return Obx(() => GestureDetector(
-                      onTap: () {
-                        controller.onTapItemChange(index);
-                        // controller.centerSelectedHorizontalItem(index);
-                        // controller.scrollToCategory(index);
-                      },
-                      child: Container(
-                        padding: getPadding(left: 15, right: 15, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          color: controller.selectedCategoryIndex.value == index
-                              ? ColorConstant.primaryPink
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: MyText(
-                            title: Utils.checkIfArabicLocale() ? item.arabicName ?? "" : item.englishName?.toUpperCase() ?? "",
-                            color: controller.selectedCategoryIndex.value == index
-                                ? Colors.white
-                                : ColorConstant.textGrey,
-                                fontSize: 12,
-                            fontWeight:controller.selectedCategoryIndex.value == index? FontWeight.w500:FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ));
-                  },
-                ),
-              ),
-            ) : Offstage()),
-            // const SizedBox(height: 10),
-            Expanded(
-              child: Obx(()=> ScrollablePositionedList.builder(
-                itemCount: controller.menuModel.value.data?.categories?.length??0,
-                itemScrollController: controller.itemScrollController,
-                itemPositionsListener: controller.itemPositionsListener,
-                // reverse: controller.isRTL,
-                itemBuilder: (context, index) {
-                  final category = controller.menuModel.value.data?.categories![index];
-                  final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId);
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category Header
-                      Container(
-                        width: Get.width,
-                       alignment:Utils.checkIfArabicLocale()?Alignment.centerRight:Alignment.centerLeft ,
-                        padding: getPadding(right: 16,left: 16,bottom: 6,top: 24),
-                        child: MyText(
-                          alignRight: Utils.checkIfArabicLocale(),
-                          title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName?.toUpperCase()??"",
-                          // style: const TextStyle(
-                          fontSize:Utils.checkIfArabicLocale() ?22: 22,
-                          fontWeight: FontWeight.w600,
-                          // ),
-                        ),
-                      ),
-                      // Items of the category
-                      ...items.map((item) => ItemWidget(item: item)),
-                    ],
-                  );
-                },
-              )),
+      body:Column(
+        children: [
+          Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0)
             ),
-          ],
-        )
+            color: ColorConstant.white,
+            child: Container(
+              height: getSize(47),
+              padding: getPadding(bottom: 5,left: 5,right: 5),
+              child:ScrollablePositionedList.builder(
+                itemScrollController: controller.horizontalItemScrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.menuModel.value.data?.categories?.length??0,
+                itemBuilder: (context, index) {
+                  final item = controller.menuModel.value.data!.categories![index];
+                  return Obx(() => GestureDetector(
+                    onTap: () {
+                      controller.onTapItemChange(index);
+                      // controller.centerSelectedHorizontalItem(index);
+                      // controller.scrollToCategory(index);
+                    },
+                    child: Container(
+                      padding: getPadding(left: 15, right: 15, top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: controller.selectedCategoryIndex.value == index
+                            ? ColorConstant.primaryPink
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: MyText(
+                          title: Utils.checkIfArabicLocale() ? item.arabicName ?? "" : item.englishName?.toUpperCase() ?? "",
+                          color: controller.selectedCategoryIndex.value == index
+                              ? Colors.white
+                              : ColorConstant.textGrey,
+                              fontSize: 12,
+                          fontWeight:controller.selectedCategoryIndex.value == index? FontWeight.w500:FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ));
+                },
+              ),
+            ),
+          ) : Offstage()),
+          // const SizedBox(height: 10),
+          Expanded(
+            child: Obx(()=> ScrollablePositionedList.builder(
+              itemCount: controller.menuModel.value.data?.categories?.length??0,
+              itemScrollController: controller.itemScrollController,
+              itemPositionsListener: controller.itemPositionsListener,
+              // reverse: controller.isRTL,
+              itemBuilder: (context, index) {
+                final category = controller.menuModel.value.data?.categories![index];
+                final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId);
 
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Category Header
+                    Container(
+                      width: Get.width,
+                     alignment:Utils.checkIfArabicLocale()?Alignment.centerRight:Alignment.centerLeft ,
+                      padding: getPadding(right: 16,left: 16,bottom: 6,top: 24),
+                      child: MyText(
+                        alignRight: Utils.checkIfArabicLocale(),
+                        title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName?.toUpperCase()??"",
+                        // style: const TextStyle(
+                        fontSize:Utils.checkIfArabicLocale() ?22: 22,
+                        fontWeight: FontWeight.w600,
+                        // ),
+                      ),
+                    ),
+                    // Items of the category
+                    ...items.map((item) => ItemWidget(item: item)),
+                  ],
+                );
+              },
+            )),
+          ),
+        ],
       ),
       bottomNavigationBar:Obx(()=> !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value,ordersLength: controller.mainMenuController.ordersLenght.value -1,)),
     );

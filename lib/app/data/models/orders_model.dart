@@ -237,7 +237,7 @@ class OrderBranch {
     phone = json['phone'] as String?;
     city = (json['city'] as Map<String,dynamic>?) != null ? OrderCity.fromJson(json['city'] as Map<String,dynamic>) : null;
     map = json['map'] as String?;
-    image = (json['image'] as Map<String,dynamic>?) != null ? OrderImage.fromJson(json['image'] as Map<String,dynamic>) : null;
+    image = json['image'] is String? ? null : (json['image'] as Map<String,dynamic>?) != null ? OrderImage.fromJson(json['image'] as Map<String,dynamic>) : null;
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
     englishAddress = json['englishAddress'] as String?;

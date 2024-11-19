@@ -49,8 +49,8 @@ class User {
     name = json['name'] as String?;
     mobile = json['mobile'] as String?;
     email = json['email'] as String?;
-    balance = json['balance'] as int?;
-    points = json['points'] as int?;
+    balance = json['balance'] as num?;
+    points = json['points'] as num?;
     favorites = json['favorites'] as List?;
     addresses = json['addresses'] as List?;
     createdAt = json['createdAt'] as String?;

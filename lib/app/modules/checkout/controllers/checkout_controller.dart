@@ -231,6 +231,7 @@ class CheckoutController extends GetxController {
           // Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
           menuController.bottomBar.value = false;
+          menuController.orderAdded.value = true;
 
               return true;
             },

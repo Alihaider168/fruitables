@@ -21,11 +21,12 @@ class CheckoutView extends GetView<CheckoutController> {
         centerTitle: true,
       ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: getPadding(left: 16,right: 16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: getSize(16),),
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(getSize(8)),  // Custom border radius

@@ -13,7 +13,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
           Get.offAllNamed(Routes.MAIN_MENU);
           controller.menuController.bottomBar.value = false;
           controller.menuController.orderAdded.value = true;
-          controller.menuController.getCurrentOrderContinious();
+          controller.menuController.getInitialApisData();
         },
           icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
         ),
@@ -30,7 +30,7 @@ class OrderPlacedView extends GetView<OrderPlacedController> {
               Get.offAllNamed(Routes.MAIN_MENU);
               controller.menuController.bottomBar.value = false;
               controller.menuController.orderAdded.value = true;
-              controller.menuController.getCurrentOrderContinious();
+              controller.menuController.getInitialApisData();
             },
           ),
         ],

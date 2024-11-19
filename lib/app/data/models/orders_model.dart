@@ -29,22 +29,22 @@ class Orders {
   OrderBranch? branch;
   String? instructions;
   List<OrderProducts>? products;
-  double? tax;
-  int? discount;
-  double? totalAmount;
-  double? payableAmount;
-  int? usedPointsBalance;
-  int? usedWalletBallance;
+  num? tax;
+  num? discount;
+  num? totalAmount;
+  num? payableAmount;
+  num? usedPonumsBalance;
+  num? usedWalletBallance;
   String? paymentMethod;
   String? paymentId;
   String? status;
   String? type;
   String? address;
   String? pickupTime;
-  dynamic completedAt;
-  dynamic preparingAt;
-  dynamic deliveredAt;
-  dynamic cancelledAt;
+  String? completedAt;
+  String? preparingAt;
+  String? deliveredAt;
+  String? cancelledAt;
   String? createdAt;
   String? updatedAt;
   String? id;
@@ -59,7 +59,7 @@ class Orders {
     this.discount,
     this.totalAmount,
     this.payableAmount,
-    this.usedPointsBalance,
+    this.usedPonumsBalance,
     this.usedWalletBallance,
     this.paymentMethod,
     this.paymentId,
@@ -82,22 +82,22 @@ class Orders {
     branch = (json['branch'] as Map<String,dynamic>?) != null ? OrderBranch.fromJson(json['branch'] as Map<String,dynamic>) : null;
     instructions = json['instructions'] as String?;
     products = (json['products'] as List?)?.map((dynamic e) => OrderProducts.fromJson(e as Map<String,dynamic>)).toList();
-    tax = json['tax'] as double?;
-    discount = json['discount'] as int?;
-    totalAmount = json['totalAmount'] as double?;
-    payableAmount = json['payableAmount'] as double?;
-    usedPointsBalance = json['usedPointsBalance'] as int?;
-    usedWalletBallance = json['usedWalletBallance'] as int?;
+    tax = json['tax'] as num?;
+    discount = json['discount'] as num?;
+    totalAmount = json['totalAmount'] as num?;
+    payableAmount = json['payableAmount'] as num?;
+    usedPonumsBalance = json['usedPonumsBalance'] as num?;
+    usedWalletBallance = json['usedWalletBallance'] as num?;
     paymentMethod = json['paymentMethod'] as String?;
     paymentId = json['paymentId'] as String?;
     status = json['status'] as String?;
     type = json['type'] as String?;
     address = json['address'] as String?;
     pickupTime = json['pickupTime'] as String?;
-    completedAt = json['completedAt'];
-    preparingAt = json['preparingAt'];
-    deliveredAt = json['deliveredAt'];
-    cancelledAt = json['cancelledAt'];
+    completedAt = json['completedAt'] as String?;
+    preparingAt = json['preparingAt'] as String?;
+    deliveredAt = json['deliveredAt'] as String?;
+    cancelledAt = json['cancelledAt'] as String?;
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
     id = json['id'] as String?;
@@ -114,7 +114,7 @@ class Orders {
     json['discount'] = discount;
     json['totalAmount'] = totalAmount;
     json['payableAmount'] = payableAmount;
-    json['usedPointsBalance'] = usedPointsBalance;
+    json['usedPonumsBalance'] = usedPonumsBalance;
     json['usedWalletBallance'] = usedWalletBallance;
     json['paymentMethod'] = paymentMethod;
     json['paymentId'] = paymentId;
@@ -137,8 +137,8 @@ class OrderCustomer {
   String? name;
   String? mobile;
   String? email;
-  int? balance;
-  int? points;
+  num? balance;
+  num? ponums;
   List<dynamic>? favorites;
   List<dynamic>? addresses;
   String? createdAt;
@@ -150,7 +150,7 @@ class OrderCustomer {
     this.mobile,
     this.email,
     this.balance,
-    this.points,
+    this.ponums,
     this.favorites,
     this.addresses,
     this.createdAt,
@@ -162,8 +162,8 @@ class OrderCustomer {
     name = json['name'] as String?;
     mobile = json['mobile'] as String?;
     email = json['email'] as String?;
-    balance = json['balance'] as int?;
-    points = json['points'] as int?;
+    balance = json['balance'] as num?;
+    ponums = json['ponums'] as num?;
     favorites = json['favorites'] as List?;
     addresses = json['addresses'] as List?;
     createdAt = json['createdAt'] as String?;
@@ -177,7 +177,7 @@ class OrderCustomer {
     json['mobile'] = mobile;
     json['email'] = email;
     json['balance'] = balance;
-    json['points'] = points;
+    json['ponums'] = ponums;
     json['favorites'] = favorites;
     json['addresses'] = addresses;
     json['createdAt'] = createdAt;
@@ -307,7 +307,7 @@ class OrderImage {
   String? name;
   String? key;
   String? type;
-  int? size;
+  num? size;
   bool? private;
   String? createdAt;
   String? updatedAt;
@@ -328,7 +328,7 @@ class OrderImage {
     name = json['name'] as String?;
     key = json['key'] as String?;
     type = json['type'] as String?;
-    size = json['size'] as int?;
+    size = json['size'] as num?;
     private = json['private'] as bool?;
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
@@ -376,8 +376,8 @@ class OrderProducts {
   String? name;
   String? arabicName;
   String? size;
-  int? quantity;
-  int? price;
+  num? quantity;
+  num? price;
   String? id;
 
   OrderProducts({
@@ -395,8 +395,8 @@ class OrderProducts {
     name = json['name'] as String?;
     arabicName = json['arabicName'] as String?;
     size = json['size'] as String?;
-    quantity = json['quantity'] as int?;
-    price = json['price'] as int?;
+    quantity = json['quantity'] as num?;
+    price = json['price'] as num?;
     id = json['_id'] as String?;
   }
 

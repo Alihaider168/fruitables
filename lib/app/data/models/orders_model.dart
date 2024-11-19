@@ -33,7 +33,7 @@ class Orders {
   num? discount;
   num? totalAmount;
   num? payableAmount;
-  num? usedPonumsBalance;
+  num? usedPointsBalance;
   num? usedWalletBallance;
   String? paymentMethod;
   String? paymentId;
@@ -59,7 +59,7 @@ class Orders {
     this.discount,
     this.totalAmount,
     this.payableAmount,
-    this.usedPonumsBalance,
+    this.usedPointsBalance,
     this.usedWalletBallance,
     this.paymentMethod,
     this.paymentId,
@@ -86,7 +86,7 @@ class Orders {
     discount = json['discount'] as num?;
     totalAmount = json['totalAmount'] as num?;
     payableAmount = json['payableAmount'] as num?;
-    usedPonumsBalance = json['usedPonumsBalance'] as num?;
+    usedPointsBalance = json['usedPointsBalance'] as num?;
     usedWalletBallance = json['usedWalletBallance'] as num?;
     paymentMethod = json['paymentMethod'] as String?;
     paymentId = json['paymentId'] as String?;
@@ -114,7 +114,7 @@ class Orders {
     json['discount'] = discount;
     json['totalAmount'] = totalAmount;
     json['payableAmount'] = payableAmount;
-    json['usedPonumsBalance'] = usedPonumsBalance;
+    json['usedPointsBalance'] = usedPointsBalance;
     json['usedWalletBallance'] = usedWalletBallance;
     json['paymentMethod'] = paymentMethod;
     json['paymentId'] = paymentId;

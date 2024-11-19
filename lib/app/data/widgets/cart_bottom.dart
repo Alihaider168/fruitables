@@ -26,9 +26,6 @@ class CartBottom extends StatelessWidget  {
     if(order?.status == "ready"){
       index = 2;
     }
-    if(order?.status == "delivered"){
-      index = 3;
-    }
 
     return Obx(()=> Container(
       width: size.width,
@@ -96,7 +93,7 @@ class CartBottom extends StatelessWidget  {
           
                       InkWell(
                         onTap: (){
-                                        Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {"order": order});
+                          Get.toNamed(Routes.NEW_DETAIL,arguments: {"order": order});
                       
                         },
                         child: MyText(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 
 import '../controllers/new_detail_controller.dart';
 
@@ -73,13 +74,17 @@ class NewDetailView extends GetView<NewDetailController> {
                       title: "${"order_number".tr}${controller.order?.saleId}",
                       fontWeight: FontWeight.bold, fontSize: 16,
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 15),
+                    !((controller.order?.type == "delivery" && controller.order?.deliveredAt != null) ||  (controller.order?.type == "pickup" && controller.order?.completedAt != null)) ?
+                    OrderStatusIndicator(currentIndex: controller.order?.status == "pending" ? 0 : controller.order?.status == "preparing" ? 1 : controller.order?.status == "ready" ? 2 : 0):
                     MyText(
                       title: controller.order?.type == "delivery" && controller.order?.deliveredAt != null? "${"delivered_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}" : controller.order?.type != "delivery" && controller.order?.completedAt != null ?"${"picked_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}":"",
                       color: ColorConstant.textGrey,
                       fontSize: 13,
                     ),
-                    Divider(thickness: 1, height: 32),
+                    SizedBox(height: getSize(10),),
+                    Divider(),
+                    SizedBox(height: getSize(16),),
 
                     // Delivery Information
                     Row(

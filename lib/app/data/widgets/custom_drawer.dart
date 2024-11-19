@@ -129,8 +129,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
 
           // Wallet and Loyalty Points Section
-          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.account_balance_wallet,title: "lbl_my_wallet".tr,showPrice: true,price: Constants.userModel?.customer?.balance??0),
-          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.loyalty,title: "lbl_loyalty_points".tr,showPrice: true,price: Constants.userModel?.customer?.points??0),
+          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.account_balance_wallet,title: "lbl_my_wallet".tr,showPrice: true,price: (Constants.userModel?.customer?.balance??0).toStringAsFixed(2)),
+          !Constants.isLoggedIn.value ? Offstage() : customTile(icon: Icons.loyalty,title: "lbl_loyalty_points".tr,showPrice: true,price: (Constants.userModel?.customer?.points??0).toStringAsFixed(2)),
 
           // customTile(icon: Icons.language,title: "lbl_change_language".tr,showArrow: true),
           !Constants.isLoggedIn.value ? Offstage() :
@@ -206,7 +206,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  Widget customTile({required IconData icon,required String title,bool showPrice = false,num price = 0.00,bool showArrow = false,void Function()? onTap}){
+  Widget customTile({required IconData icon,required String title,bool showPrice = false,String price = "0.00",bool showArrow = false,void Function()? onTap}){
     return GestureDetector(
       onTap: onTap,
       child: Container(

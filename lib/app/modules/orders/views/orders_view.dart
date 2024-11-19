@@ -48,9 +48,10 @@ class OrdersView extends GetView<OrdersController> {
             child: PastOrderTile(
               imageUrl: order.branch?.image?.key??"",
               title: order.branch?.name??"",
-              deliveryDate: order.deliveredAt??"",
+              deliveryDate: order.deliveredAt,
               description: (order.products??[]).map((element)=> element.name.toString()).join(", "),
               price: "${order.totalAmount??0}",
+              completedAt: order.completedAt,
               rating: 3,
               onReorder: (){
                 for(int i=0;i<(order.products??[]).length;i++){
@@ -169,22 +170,26 @@ class OrderCard extends StatelessWidget {
 class PastOrderTile extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String deliveryDate;
+  final String? deliveryDate;
   final String description;
   final String price;
   final double? rating;
+  final String? completedAt;
   final void Function()? onReorder;
 
-  const PastOrderTile({
-    Key? key,
+  PastOrderTile({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.deliveryDate,
     required this.description,
     required this.price,
     this.rating,
+    this.completedAt,
     required this.onReorder,
-  }) : super(key: key);
+  });
+
+  final OrdersController controller = Get.put(OrdersController());
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +223,47 @@ class PastOrderTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                       ),
                       SizedBox(height: getSize(4)),
+                      completedAt == null && deliveryDate == null ?
+                      AnimatedBuilder(
+                        animation: controller.animation,
+                        builder: (context, child) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+
+                                  width: size.width/7,
+                                  height: 5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                Positioned(
+
+                                  left: controller.animation.value,
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+
+                                    width: 50,
+                                    height: 5,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [ColorConstant.primaryPink1.withOpacity(.7), ColorConstant.primaryPink1.withOpacity(.8), ColorConstant.primaryPink1],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ):
                       MyText(title:
                         "${"delivered_on".tr} ${deliveryDate}",
                           fontSize: 12,

@@ -215,7 +215,8 @@ class CheckoutController extends GetxController {
               print(response);
               CustomSnackBar.showCustomToast(message: "order_created".tr);
               Get.back();
-          Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
+          Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data)});
+          // Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
           menuController.bottomBar.value = false;
           getUserDetail();

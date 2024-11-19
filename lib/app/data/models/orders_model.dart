@@ -23,48 +23,51 @@ class OrdersModel {
     return json;
   }
 }
-
 class Orders {
   String? saleId;
-  // OrderCustomer? customer;
+  OrderCustomer? customer;
   OrderBranch? branch;
   String? instructions;
-  List<OrderProduct>? products;
-  num? tax;
-  num? discount;
-  num? totalAmount;
-  String? status;
+  List<OrderProducts>? products;
+  double? tax;
+  int? discount;
+  double? totalAmount;
+  double? payableAmount;
+  int? usedPointsBalance;
+  int? usedWalletBallance;
   String? paymentMethod;
+  String? paymentId;
+  String? status;
   String? type;
   String? address;
-  String? completedAt;
-  num? payableAmount;
-  num? usedPointsBalance;
-  num? usedWalletBallance;
-  String? preparingAt;
-  String? deliveredAt;
-  String? cancelledAt;
+  String? pickupTime;
+  dynamic completedAt;
+  dynamic preparingAt;
+  dynamic deliveredAt;
+  dynamic cancelledAt;
   String? createdAt;
   String? updatedAt;
   String? id;
 
   Orders({
     this.saleId,
-    // this.customer,
+    this.customer,
     this.branch,
     this.instructions,
     this.products,
     this.tax,
-    this.totalAmount,
     this.discount,
-    this.status,
-    this.paymentMethod,
-    this.type,
-    this.address,
-    this.completedAt,
+    this.totalAmount,
     this.payableAmount,
     this.usedPointsBalance,
     this.usedWalletBallance,
+    this.paymentMethod,
+    this.paymentId,
+    this.status,
+    this.type,
+    this.address,
+    this.pickupTime,
+    this.completedAt,
     this.preparingAt,
     this.deliveredAt,
     this.cancelledAt,
@@ -75,47 +78,51 @@ class Orders {
 
   Orders.fromJson(Map<String, dynamic> json) {
     saleId = json['saleId'] as String?;
-    // customer = (json['customer'] as Map<String,dynamic>?) != null ? OrderCustomer.fromJson(json['customer'] as Map<String,dynamic>) : null;
+    customer = (json['customer'] as Map<String,dynamic>?) != null ? OrderCustomer.fromJson(json['customer'] as Map<String,dynamic>) : null;
     branch = (json['branch'] as Map<String,dynamic>?) != null ? OrderBranch.fromJson(json['branch'] as Map<String,dynamic>) : null;
     instructions = json['instructions'] as String?;
-    products = (json['products'] as List?)?.map((dynamic e) => OrderProduct.fromJson(e as Map<String,dynamic>)).toList();
-    tax = json['tax'] as num?;
-    discount = json['discount'] as num?;
-    totalAmount = json['totalAmount'] as num?;
-    status = json['status'] as String?;
+    products = (json['products'] as List?)?.map((dynamic e) => OrderProducts.fromJson(e as Map<String,dynamic>)).toList();
+    tax = json['tax'] as double?;
+    discount = json['discount'] as int?;
+    totalAmount = json['totalAmount'] as double?;
+    payableAmount = json['payableAmount'] as double?;
+    usedPointsBalance = json['usedPointsBalance'] as int?;
+    usedWalletBallance = json['usedWalletBallance'] as int?;
     paymentMethod = json['paymentMethod'] as String?;
+    paymentId = json['paymentId'] as String?;
+    status = json['status'] as String?;
     type = json['type'] as String?;
     address = json['address'] as String?;
+    pickupTime = json['pickupTime'] as String?;
     completedAt = json['completedAt'];
-    payableAmount = json['payableAmount'];
-    usedPointsBalance = json['usedPointsBalance'];
-    usedWalletBallance = json['usedWalletBallance'];
-    preparingAt = json['preparingAt'] as String?;
+    preparingAt = json['preparingAt'];
     deliveredAt = json['deliveredAt'];
     cancelledAt = json['cancelledAt'];
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
-    id = json['id'] ?? json['_id'] as String?;
+    id = json['id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['saleId'] = saleId;
-    // json['customer'] = customer?.toJson();
+    json['customer'] = customer?.toJson();
     json['branch'] = branch?.toJson();
     json['instructions'] = instructions;
     json['products'] = products?.map((e) => e.toJson()).toList();
     json['tax'] = tax;
     json['discount'] = discount;
     json['totalAmount'] = totalAmount;
-    json['status'] = status;
-    json['paymentMethod'] = paymentMethod;
-    json['type'] = type;
-    json['address'] = address;
-    json['completedAt'] = completedAt;
     json['payableAmount'] = payableAmount;
     json['usedPointsBalance'] = usedPointsBalance;
     json['usedWalletBallance'] = usedWalletBallance;
+    json['paymentMethod'] = paymentMethod;
+    json['paymentId'] = paymentId;
+    json['status'] = status;
+    json['type'] = type;
+    json['address'] = address;
+    json['pickupTime'] = pickupTime;
+    json['completedAt'] = completedAt;
     json['preparingAt'] = preparingAt;
     json['deliveredAt'] = deliveredAt;
     json['cancelledAt'] = cancelledAt;
@@ -130,10 +137,10 @@ class OrderCustomer {
   String? name;
   String? mobile;
   String? email;
-  num? balance;
-  num? points;
-  // List<String>? favorites;
-  // List<dynamic>? addresses;
+  int? balance;
+  int? points;
+  List<dynamic>? favorites;
+  List<dynamic>? addresses;
   String? createdAt;
   String? updatedAt;
   String? id;
@@ -144,8 +151,8 @@ class OrderCustomer {
     this.email,
     this.balance,
     this.points,
-    // this.favorites,
-    // this.addresses,
+    this.favorites,
+    this.addresses,
     this.createdAt,
     this.updatedAt,
     this.id,
@@ -155,10 +162,10 @@ class OrderCustomer {
     name = json['name'] as String?;
     mobile = json['mobile'] as String?;
     email = json['email'] as String?;
-    balance = json['balance'] as num?;
-    points = json['points'] as num?;
-    // favorites = (json['favorites'] as List?)?.map((dynamic e) => e as String).toList();
-    // addresses = json['addresses'] as List?;
+    balance = json['balance'] as int?;
+    points = json['points'] as int?;
+    favorites = json['favorites'] as List?;
+    addresses = json['addresses'] as List?;
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
     id = json['id'] as String?;
@@ -171,8 +178,8 @@ class OrderCustomer {
     json['email'] = email;
     json['balance'] = balance;
     json['points'] = points;
-    // json['favorites'] = favorites;
-    // json['addresses'] = addresses;
+    json['favorites'] = favorites;
+    json['addresses'] = addresses;
     json['createdAt'] = createdAt;
     json['updatedAt'] = updatedAt;
     json['id'] = id;
@@ -185,7 +192,7 @@ class OrderBranch {
   String? phone;
   OrderCity? city;
   String? map;
-  String? image;
+  OrderImage? image;
   String? createdAt;
   String? updatedAt;
   String? englishAddress;
@@ -230,7 +237,7 @@ class OrderBranch {
     phone = json['phone'] as String?;
     city = (json['city'] as Map<String,dynamic>?) != null ? OrderCity.fromJson(json['city'] as Map<String,dynamic>) : null;
     map = json['map'] as String?;
-    image = json['image'] as String?;
+    image = (json['image'] as Map<String,dynamic>?) != null ? OrderImage.fromJson(json['image'] as Map<String,dynamic>) : null;
     createdAt = json['createdAt'] as String?;
     updatedAt = json['updatedAt'] as String?;
     englishAddress = json['englishAddress'] as String?;
@@ -254,7 +261,7 @@ class OrderBranch {
     json['phone'] = phone;
     json['city'] = city?.toJson();
     json['map'] = map;
-    json['image'] = image;
+    json['image'] = image?.toJson();
     json['createdAt'] = createdAt;
     json['updatedAt'] = updatedAt;
     json['englishAddress'] = englishAddress;
@@ -296,6 +303,52 @@ class OrderCity {
   }
 }
 
+class OrderImage {
+  String? name;
+  String? key;
+  String? type;
+  int? size;
+  bool? private;
+  String? createdAt;
+  String? updatedAt;
+  String? id;
+
+  OrderImage({
+    this.name,
+    this.key,
+    this.type,
+    this.size,
+    this.private,
+    this.createdAt,
+    this.updatedAt,
+    this.id,
+  });
+
+  OrderImage.fromJson(Map<String, dynamic> json) {
+    name = json['name'] as String?;
+    key = json['key'] as String?;
+    type = json['type'] as String?;
+    size = json['size'] as int?;
+    private = json['private'] as bool?;
+    createdAt = json['createdAt'] as String?;
+    updatedAt = json['updatedAt'] as String?;
+    id = json['id'] as String?;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{};
+    json['name'] = name;
+    json['key'] = key;
+    json['type'] = type;
+    json['size'] = size;
+    json['private'] = private;
+    json['createdAt'] = createdAt;
+    json['updatedAt'] = updatedAt;
+    json['id'] = id;
+    return json;
+  }
+}
+
 class OrderRegion {
   String? name;
   String? englishName;
@@ -318,46 +371,45 @@ class OrderRegion {
   }
 }
 
-class OrderProduct {
+class OrderProducts {
   String? productId;
   String? name;
-    String? arabicName;
-
+  String? arabicName;
   String? size;
-  num? quantity;
-  num? price;
+  int? quantity;
+  int? price;
   String? id;
 
-  OrderProduct({
+  OrderProducts({
     this.productId,
     this.name,
+    this.arabicName,
     this.size,
     this.quantity,
     this.price,
     this.id,
-    this.arabicName
   });
 
-  OrderProduct.fromJson(Map<String, dynamic> json) {
+  OrderProducts.fromJson(Map<String, dynamic> json) {
     productId = json['productId'] as String?;
     name = json['name'] as String?;
+    arabicName = json['arabicName'] as String?;
     size = json['size'] as String?;
-    quantity = json['quantity'] as num?;
-    price = json['price'] as num?;
+    quantity = json['quantity'] as int?;
+    price = json['price'] as int?;
     id = json['_id'] as String?;
-    arabicName= json['arabicName']as String?;
   }
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['productId'] = productId;
     json['name'] = name;
+    json['arabicName'] = arabicName;
     json['size'] = size;
     json['quantity'] = quantity;
     json['price'] = price;
     json['_id'] = id;
-    json['arabicName']= arabicName;
     return json;
   }
 }
+

@@ -22,7 +22,7 @@ class NewDetailView extends GetView<NewDetailController> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: NetworkImage(Utils.getCompleteUrl(controller.order?.branch?.image)), // Replace with your image
+                    image: NetworkImage(Utils.getCompleteUrl(controller.order?.branch?.image?.key)), // Replace with your image
                     fit: BoxFit.cover,
                   ),
                   color: Colors.orange

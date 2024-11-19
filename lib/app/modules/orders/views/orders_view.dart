@@ -46,7 +46,7 @@ class OrdersView extends GetView<OrdersController> {
               Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
             },
             child: PastOrderTile(
-              imageUrl: order.branch?.image??"",
+              imageUrl: order.branch?.image?.key??"",
               title: order.branch?.name??"",
               deliveryDate: order.deliveredAt??"",
               description: (order.products??[]).map((element)=> element.name.toString()).join(", "),

@@ -228,7 +228,6 @@ class CheckoutController extends GetxController {
               Get.back();
               getUserDetail();
           Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data),"from_order": true});
-          // Get.toNamed(Routes.ORDER_PLACED,arguments: {"order":Orders.fromJson(response.data)});
           menuController.cart.clearCart();
           menuController.bottomBar.value = false;
           menuController.orderAdded.value = true;
@@ -266,11 +265,14 @@ class CheckoutController extends GetxController {
     try {
       PaymentResponse response =  await MyFatoorah.startPayment(
         context: context,
+        afterPaymentBehaviour: AfterPaymentBehaviour.AfterCallbackExecution,
         // showServiceCharge: true,
         request: MyfatoorahRequest.test(
           currencyIso: Country.SaudiArabia,
+          // successUrl: '',
           successUrl: 'https://rexsacafe.com/payment-status?status=success',
           errorUrl: 'https://rexsacafe.com/payment-status?status=error',
+          // errorUrl: '',
           invoiceAmount: amount.toDouble(),
           language: Utils.checkIfArabicLocale() ? ApiLanguage.Arabic : ApiLanguage.English,
           customerMobile: Constants.userModel?.customer?.mobile,

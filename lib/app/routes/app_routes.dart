@@ -16,10 +16,7 @@ abstract class Routes {
   static const FAVOURITES = _Paths.FAVOURITES;
   static const ADD_ADDRESS = _Paths.ADD_ADDRESS;
   static const ADD_PAYMENT = _Paths.ADD_PAYMENT;
-  static const ORDER_PLACED = _Paths.ORDER_PLACED;
-  static const ORDER_DETAIL = _Paths.ORDER_DETAIL;
   static const LANGUAGE_SELECTION = _Paths.LANGUAGE_SELECTION;
-  static const CURRENT_ORDER_DETAIL = _Paths.CURRENT_ORDER_DETAIL;
   static const NEW_DETAIL = _Paths.NEW_DETAIL;
 }
 
@@ -38,9 +35,6 @@ abstract class _Paths {
   static const FAVOURITES = '/favourites';
   static const ADD_ADDRESS = '/add-address';
   static const ADD_PAYMENT = '/add-payment';
-  static const ORDER_PLACED = '/order-placed';
-  static const ORDER_DETAIL = '/order-detail';
   static const LANGUAGE_SELECTION = '/language-selection';
-  static const CURRENT_ORDER_DETAIL = '/current-order-detail';
   static const NEW_DETAIL = '/new-detail';
 }

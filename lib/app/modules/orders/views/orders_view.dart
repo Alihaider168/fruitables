@@ -94,11 +94,7 @@ class OrderCard extends StatelessWidget {
       onTap: () {
         print(order.products![0].name);
         print(order.products![0].arabicName);
-        if(order.status == 'delivered' || order.status == 'cancelled'){
-          Get.toNamed(Routes.ORDER_PLACED,arguments: {'order': order});
-        }else{
-          Get.toNamed(Routes.CURRENT_ORDER_DETAIL,arguments: {'order': order});
-        }
+          Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
 
       },
       child: Card(

@@ -12,8 +12,6 @@ import '../modules/category_detail/bindings/category_detail_binding.dart';
 import '../modules/category_detail/views/category_detail_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
-import '../modules/current_order_detail/bindings/current_order_detail_binding.dart';
-import '../modules/current_order_detail/views/current_order_detail_view.dart';
 import '../modules/favourites/bindings/favourites_binding.dart';
 import '../modules/favourites/views/favourites_view.dart';
 import '../modules/get_started/bindings/get_started_binding.dart';
@@ -26,10 +24,6 @@ import '../modules/main_menu/bindings/main_menu_binding.dart';
 import '../modules/main_menu/views/main_menu_view.dart';
 import '../modules/new_detail/bindings/new_detail_binding.dart';
 import '../modules/new_detail/views/new_detail_view.dart';
-import '../modules/order_detail/bindings/order_detail_binding.dart';
-import '../modules/order_detail/views/order_detail_view.dart';
-import '../modules/order_placed/bindings/order_placed_binding.dart';
-import '../modules/order_placed/views/order_placed_view.dart';
 import '../modules/orders/bindings/orders_binding.dart';
 import '../modules/orders/views/orders_view.dart';
 import '../modules/search/bindings/search_binding.dart';
@@ -111,24 +105,9 @@ class AppPages {
       binding: AddPaymentBinding(),
     ),
     GetPage(
-      name: _Paths.ORDER_PLACED,
-      page: () => const OrderPlacedView(),
-      binding: OrderPlacedBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_DETAIL,
-      page: () => const OrderDetailView(),
-      binding: OrderDetailBinding(),
-    ),
-    GetPage(
       name: _Paths.LANGUAGE_SELECTION,
       page: () => const LanguageSelectionView(),
       binding: LanguageSelectionBinding(),
-    ),
-    GetPage(
-      name: _Paths.CURRENT_ORDER_DETAIL,
-      page: () => const CurrentOrderDetailView(),
-      binding: CurrentOrderDetailBinding(),
     ),
     GetPage(
       name: _Paths.NEW_DETAIL,

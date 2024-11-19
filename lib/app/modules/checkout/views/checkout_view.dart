@@ -1,4 +1,5 @@
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/fatoorah_widget.dart';
 
 import '../../../data/core/app_export.dart';
 import '../controllers/checkout_controller.dart';
@@ -391,6 +392,7 @@ class CheckoutView extends GetView<CheckoutController> {
                     if(controller.getFinalPrice() > 0){
                       if(controller.selectedMethod.value.isNotEmpty){
                         if(controller.selectedMethod.value != "cash_on_delivery".tr){
+                          // Get.to(()=> FatoorahWidget(amount: controller.getFinalPrice()));
                           controller.startPayment(context,amount: controller.getFinalPrice());
                         }else{
                           controller.addOrder(paymentMethod: "cod");

@@ -223,7 +223,7 @@ class PastOrderTile extends StatelessWidget {
                       ),
                       SizedBox(height: getSize(4)),
                       MyText(title:
-                        "Delivered on $deliveryDate",
+                        "${"delivered_on".tr} ${deliveryDate}",
                           fontSize: 12,
                           color: Colors.grey,
                       ),
@@ -238,10 +238,10 @@ class PastOrderTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                MyText(
-                  title: "Rs. $price",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                MyText(title:
+                "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}$price${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold ,
                 ),
               ],
             ),
@@ -250,7 +250,7 @@ class PastOrderTile extends StatelessWidget {
               onTap: (){
                 onReorder!();
               },
-              text: "Reorder",
+              text: "reorder".tr,
             ),
             if (rating != null) SizedBox(height: getSize(8)),
             if (rating != null) Divider(),
@@ -261,7 +261,7 @@ class PastOrderTile extends StatelessWidget {
                 children: [
                   MyText(
                     title:
-                    "You rated this ",
+                    "you_rated".tr,
                    fontSize: 12, color: Colors.grey,
                   ),
                   const Icon(Icons.star, color: Colors.orange, size: 16),

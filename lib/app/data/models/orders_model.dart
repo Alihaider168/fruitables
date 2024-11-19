@@ -34,11 +34,13 @@ class Orders {
   num? discount;
   num? totalAmount;
   String? status;
+  String? paymentMethod;
   String? type;
   String? address;
   String? completedAt;
-  String? usedPointsBalance;
-  String? usedWalletBallance;
+  num? payableAmount;
+  num? usedPointsBalance;
+  num? usedWalletBallance;
   String? preparingAt;
   String? deliveredAt;
   String? cancelledAt;
@@ -56,9 +58,11 @@ class Orders {
     this.totalAmount,
     this.discount,
     this.status,
+    this.paymentMethod,
     this.type,
     this.address,
     this.completedAt,
+    this.payableAmount,
     this.usedPointsBalance,
     this.usedWalletBallance,
     this.preparingAt,
@@ -79,9 +83,11 @@ class Orders {
     discount = json['discount'] as num?;
     totalAmount = json['totalAmount'] as num?;
     status = json['status'] as String?;
+    paymentMethod = json['paymentMethod'] as String?;
     type = json['type'] as String?;
     address = json['address'] as String?;
     completedAt = json['completedAt'];
+    payableAmount = json['payableAmount'];
     usedPointsBalance = json['usedPointsBalance'];
     usedWalletBallance = json['usedWalletBallance'];
     preparingAt = json['preparingAt'] as String?;
@@ -103,9 +109,11 @@ class Orders {
     json['discount'] = discount;
     json['totalAmount'] = totalAmount;
     json['status'] = status;
+    json['paymentMethod'] = paymentMethod;
     json['type'] = type;
     json['address'] = address;
     json['completedAt'] = completedAt;
+    json['payableAmount'] = payableAmount;
     json['usedPointsBalance'] = usedPointsBalance;
     json['usedWalletBallance'] = usedWalletBallance;
     json['preparingAt'] = preparingAt;

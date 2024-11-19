@@ -174,4 +174,7 @@ final Map<String, String> enUs = {
   "payable_amount":"Payable Amount",
   "delivered_on": "Delivered on",
   "picked_on": "Picked on",
+  "paid_with": "Paid with",
+  "reorder": "Reorder",
+  "you_rated": "You rated this ",
 };

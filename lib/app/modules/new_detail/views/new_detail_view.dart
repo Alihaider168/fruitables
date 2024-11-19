@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 
 import '../controllers/new_detail_controller.dart';
 
@@ -10,27 +11,6 @@ class NewDetailView extends GetView<NewDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back),
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //   ),
-      //   title: Text(
-      //     "Order Details",
-      //     style: TextStyle(color: Colors.black),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   actions: [
-      //     IconButton(
-      //       icon: Icon(Icons.help_outline, color: Colors.black),
-      //       onPressed: () {},
-      //     ),
-      //   ],
-      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -89,7 +69,7 @@ class NewDetailView extends GetView<NewDetailController> {
                     ),
                     SizedBox(height: 4),
                     MyText(
-                      title: controller.order?.type == "delivery"? "${"delivered_on".tr} 12 Nov 22:57" : "${"picked_on".tr} 12 Nov 22:57",
+                      title: controller.order?.type == "delivery" && controller.order?.deliveredAt != null? "${"delivered_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}" : controller.order?.type != "delivery" && controller.order?.completedAt != null ?"${"picked_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}":"",
                       color: ColorConstant.textGrey,
                       fontSize: 13,
                     ),
@@ -154,8 +134,8 @@ class NewDetailView extends GetView<NewDetailController> {
                         _buildTotalRow("lbl_discount".tr, (controller.order?.discount??0).toDouble()),
                         (controller.order?.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
                         _buildTotalRow("${"lbl_tax".tr} (15.0%)",controller.order?.tax??0),
-                        (controller.order?.usedWalletBallance ??"")!= "" && controller.order?.usedWalletBallance != "0" ? _buildTotalRow("from_wallet".tr, num.parse(controller.order?.usedWalletBallance??"0")) : Offstage(),
-                        (controller.order?.usedPointsBalance ??"")!= "" && controller.order?.usedPointsBalance != "0"? _buildTotalRow("from_points".tr,num.parse(controller.order?.usedPointsBalance??"0")) : Offstage(),
+                        (controller.order?.usedWalletBallance ??"")!= "" && controller.order?.usedWalletBallance != "0" ? _buildTotalRow("from_wallet".tr, controller.order?.usedWalletBallance??0) : Offstage(),
+                        (controller.order?.usedPointsBalance ??"")!= "" && controller.order?.usedPointsBalance != "0"? _buildTotalRow("from_points".tr,controller.order?.usedPointsBalance??0) : Offstage(),
                         Divider(thickness: 1, height: 32),
                         _buildTotalRow("lbl_total".tr,controller.order?.totalAmount??0,isBold: true),
                         Divider(thickness: 1, height: 32),
@@ -165,62 +145,53 @@ class NewDetailView extends GetView<NewDetailController> {
 
 
                     // Payment Method
-                    Text(
-                      "Paid with",
-                      style: TextStyle(color: Colors.grey),
+                    MyText(
+                      title: "paid_with".tr,
+                      color: ColorConstant.textGrey,
+                      fontSize: 12,
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: getSize(8)),
                     Row(
                       children: [
-                        Icon(Icons.money, color: Colors.grey),
-                        SizedBox(width: 8),
-                        Text(
-                          "cash on delivery",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        Icon(Icons.money, color: ColorConstant.textGrey),
+                        SizedBox(width: getSize(8)),
+                        MyText(
+                          title: controller.order?.paymentMethod == 'cod'?  "cash_on_delivery".tr :
+                            "credit_debit_card".tr,
+                          fontWeight: FontWeight.bold, fontSize: 14,
                         ),
                         Spacer(),
-                        Text(
-                          "Rs. 258.99",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        MyText(title:
+                        "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(controller.order?.payableAmount??0).toStringAsFixed(2)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}",
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    Divider(thickness: 1, height: 32),
+                    SizedBox(height: getSize(20)),
+                    CustomButton(
+                      text: "reorder".tr,
+                      onTap: (){
+                        for(int i=0;i<(controller.order?.products??[]).length;i++){
+                          final item = (controller.order?.products??[])[i];
 
-                    // Download Invoice
-                    Row(
-                      children: [
-                        Icon(Icons.file_download, color: Colors.grey),
-                        SizedBox(width: 8),
-                        Text(
-                          "Download invoice",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                          Items? foundItem = (controller.menuController.menuModel.value.data?.items??[]).firstWhere(
+                                (test) => test.id == item.id || test.id == item.productId,
+                          );
+                          if(foundItem != null){
+                            controller.menuController.addItemsToCart(
+                                foundItem,
+                                size: item.size??'bottle',
+                                quantity: item.quantity??1
+                            );
+                            controller.menuController.loadCart();
+                            controller.menuController.bottomBar.value = true;
+                          }
 
-                    SizedBox(height: 32),
-
-                    // Button
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        // primary: Colors.pink, // Adjust the color
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(8),
-                        // ),
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        minimumSize: Size(double.infinity, 48),
-                      ),
-                      child: Text(
-                        "Select items to reorder",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
+                        }
+                        controller.menuController.loadCart();
+                        Get.toNamed(Routes.CART);
+                      },
                     ),
                   ],
                 ),

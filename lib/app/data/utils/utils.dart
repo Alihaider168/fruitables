@@ -13,6 +13,25 @@ class Utils {
     return '${time.hourOfPeriod < 10 ? '0${time.hourOfPeriod}' : time.hourOfPeriod} : ${time.minute < 10 ? '0${time.minute}' : time.minute} ${time.period.name}';
   }
 
+  static String formatTimestamp(String? utcTimestamp) {
+    // Parse the UTC timestamp
+    DateTime utcDateTime;
+
+    if(utcTimestamp == null){
+      utcDateTime = DateTime.now();
+    }else{
+      utcDateTime = DateTime.parse(utcTimestamp);
+    }
+
+    // Convert UTC to local time (adjust according to your timezone if needed)
+    DateTime localDateTime = utcDateTime.toLocal();
+
+    // Format the date and time
+    String formattedDate = DateFormat('d MMM HH:mm').format(localDateTime);
+
+    return formattedDate;
+  }
+
 
   static void hideKeyboard(context) {
     FocusScope.of(context).unfocus();

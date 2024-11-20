@@ -60,7 +60,7 @@ class CheckoutController extends GetxController {
       usedPointsBalance = null;
     }
     super.onInit();
-    MFSDK.init(Constants.fatoorahToken, MFCountry.SAUDIARABIA, MFEnvironment.LIVE);
+
   }
 
 

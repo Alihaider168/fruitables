@@ -32,7 +32,7 @@ class CartBottom extends StatelessWidget  {
 
     return Obx(()=> Container(
       width: size.width,
-      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.21 :size.height*0.13,
+      height: controller.bottomBar.value && showCurrentOrder ? size.height * 0.22 :size.height*0.14,
       padding: getPadding(left: 16,right: 16,bottom: 10,top: 15),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -138,7 +138,7 @@ class CartBottom extends StatelessWidget  {
                   SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      '${  index == 0? 'pending'.tr:  index ==1?"preparing".tr:'ready'.tr}\n${'your_order_being'.tr}${order?.status}',
+                      '${  index == 0? 'pending'.tr:  index ==1?"preparing".tr:'ready'.tr}\n${'your_order_being'.tr}',
                       style: TextStyle( color: Colors.grey[700],
                         height: 1.2,
                         fontSize: 14,),

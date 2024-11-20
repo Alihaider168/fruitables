@@ -25,12 +25,15 @@ class SearchView extends GetView<SearchViewController> {
         child: Column(
           children: [
             SizedBox(height: getSize(5),),
-            CustomTextFormField(
-              labelText: "lbl_search".tr,
-              textInputAction: TextInputAction.done,
-              onChanged: (value){
-                controller.onChanged(value);
-              },
+            Padding(
+        padding: getPadding(right: 16,left: 16),
+              child: CustomTextFormField(
+                labelText: "lbl_search".tr,
+                textInputAction: TextInputAction.done,
+                onChanged: (value){
+                  controller.onChanged(value);
+                },
+              ),
             ),
             SizedBox(height: getSize(15),),
             Expanded(

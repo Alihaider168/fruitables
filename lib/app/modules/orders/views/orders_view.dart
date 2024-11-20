@@ -35,10 +35,16 @@ class OrdersView extends GetView<OrdersController> {
 
       Obx(()=> ListView.builder(
         itemCount: controller.myOrders.length,
-        padding: getPadding(all: 16),
+        padding: getPadding(top: 12, bottom: 12, right: 8, left: 8),
         itemBuilder: (context, index) {
           final order = controller.myOrders[index];
-          return OrderCard(order: order);
+          String day = DateFormat('dd').format(DateTime.parse(order.createdAt.toString()));
+                    String month = DateFormat('MM').format(DateTime.parse(order.createdAt.toString()));
+          String year = DateFormat('yyyy').format(DateTime.parse(order.createdAt.toString()));
+
+print(day);
+
+          return OrderCard(order: order, day: day,month: month,year: year,);
         },
       )))
     );
@@ -47,8 +53,11 @@ class OrdersView extends GetView<OrdersController> {
 
 class OrderCard extends StatelessWidget {
   final Orders order;
+  final String day;
+  final String month;
+  final String year;
 
-  const OrderCard({super.key, required this.order});
+  const OrderCard({super.key, required this.order, required this.day, required this.month, required this.year});
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +75,9 @@ class OrderCard extends StatelessWidget {
       child: Card(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        margin: getMargin(bottom: 16),
+        margin: getMargin(bottom: 12),
         child: Padding(
-          padding: getPadding(all: 16),
+          padding: getPadding(all: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -76,18 +85,36 @@ class OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyText(title:
-                    "${"order".tr} #${order.saleId}",
+                    "#${order.saleId}",
                     fontSize: 14, fontWeight: FontWeight.bold,
                   ),
-                  MyText(title:
-                  DateFormat("d MMM, yy").format(DateTime.parse(order.createdAt??"")),
+                  Row(
+                    children: [
+                      Utils.checkIfArabicLocale()?
+                        MyText(title:
+                      "${"$year-$month-$day"}",
+                                          fontSize: getSize(12),
+
+                        color: ColorConstant.textGrey,
+                      ):
+                      MyText(title:
+                      "${"$day-$month-$year"}",
+                                          fontSize: getSize(12),
+
+                        color: ColorConstant.textGrey,
+                      ),
+                      MyText(title:
+                 " ${ DateFormat("hh:mm a").format(DateTime.parse(order.createdAt??""))} ",
                     color: ColorConstant.textGrey,
+                    fontSize: getSize(12),
+                  ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(height: getSize(8)),
+              // SizedBox(height: getSize(8)),
               MyText(title:
-                "${"status".tr}: ${(order.status??" ").capitalizeFirst}",
+                "${(order.status??" ").capitalizeFirst}",
                   color: order.status == "completed"
                       ? ColorConstant.green
                       : order.status == "cancelled"
@@ -98,24 +125,25 @@ class OrderCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
-              SizedBox(height: getSize(8)),
+              // SizedBox(height: getSize(8)),
               MyText(title:
                 "${"instructions".tr}: ${(order.instructions??"").isNotEmpty ? (order.instructions) :("none".tr)}",
                   color:ColorConstant.primaryPink,
                 fontSize: 12,
               ),
-              SizedBox(height: getSize(8)),
+              // SizedBox(height: getSize(8)),
               MyText(title:
                 "${"items".tr}: ${(order.products??[]).length}",
                   color:ColorConstant.primaryPink,
                 fontSize: 12,
               ),
-              SizedBox(height: getSize(8)),
+              // SizedBox(height: getSize(8)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MyText(title:
                     "lbl_total".tr,
+                    fontSize: getFontSize(12),
                     color: ColorConstant.textGrey,
                   ),
                   MyText(title:

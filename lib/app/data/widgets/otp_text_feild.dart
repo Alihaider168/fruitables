@@ -1,6 +1,6 @@
-import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 
 class OtpTextField extends StatelessWidget {
   final String? semanticsLabel;
@@ -29,12 +29,14 @@ class OtpTextField extends StatelessWidget {
     responsive.setContext(context);
     return Semantics(
       label: semanticsLabel,
+      
       child: PinCodeTextField(
         appContext: context,
         onChanged: (val) {
           onChanged!(val.toString());
         },
         onCompleted: onComplete,
+        
         length: Constants.otpLength,
         autoFocus: false,
         controller: controller,
@@ -48,21 +50,21 @@ class OtpTextField extends StatelessWidget {
         pinTheme: PinTheme(
             shape: PinCodeFieldShape.box,
             borderRadius: BorderRadius.circular(10),
-            fieldHeight: getSize(40),
-            fieldWidth: getSize(40),
-            fieldOuterPadding: EdgeInsets.symmetric(horizontal: getSize(5)),
-            activeFillColor:  ColorConstant.grayBackground,
-            inactiveFillColor: ColorConstant.grayBackground,
-            selectedFillColor: ColorConstant.grayBackground,
-            selectedColor: ColorConstant.black,
-            activeColor:  ColorConstant.grayBackground,
-            inactiveColor: ColorConstant.grayBackground,
+            fieldHeight: getSize(50),
+            fieldWidth: getSize(51),
+            fieldOuterPadding: EdgeInsets.symmetric(horizontal: getSize(3)),
+            activeFillColor:  ColorConstant.white,
+            inactiveFillColor: ColorConstant.white,
+            selectedFillColor: ColorConstant.white,
+            selectedColor: ColorConstant.blue,
+            activeColor:  ColorConstant.black,
+            inactiveColor: ColorConstant.black,
             borderWidth: 1),
         textStyle: GoogleFonts.getFont(
           "Nunito",
           color: ColorConstant.black,
           fontWeight: FontWeight.w500,
-          fontSize: responsive.setTextScale(14),
+          fontSize: responsive.setTextScale(18),
         ),
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         cursorColor: ColorConstant.black,

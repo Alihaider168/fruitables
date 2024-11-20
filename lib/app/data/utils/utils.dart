@@ -1,7 +1,8 @@
 import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:intl/intl.dart';
+import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
@@ -348,7 +349,7 @@ class Utils {
 
   static setUIOverlay(){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.black.withOpacity(0.3), // Semi-transparent black
+      statusBarColor:  ColorConstant.blackShaded, // Semi-transparent black
       statusBarIconBrightness: Brightness.light,     // White icons on status bar
       systemNavigationBarColor: Colors.black,        // Black navigation bar color
       systemNavigationBarIconBrightness: Brightness.light,

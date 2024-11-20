@@ -1,6 +1,6 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
-import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/data/widgets/noData.dart';
 import 'package:rexsa_cafe/app/modules/category_detail/views/category_detail_view.dart';
 
 import '../controllers/search_controller.dart';
@@ -25,16 +25,27 @@ class SearchView extends GetView<SearchViewController> {
         child: Column(
           children: [
             SizedBox(height: getSize(5),),
-            CustomTextFormField(
-              labelText: "lbl_search".tr,
-              textInputAction: TextInputAction.done,
-              onChanged: (value){
-                controller.onChanged(value);
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:12.0),
+              child: CustomTextFormField(
+                labelText: "lbl_search".tr,
+                textInputAction: TextInputAction.done,
+                onChanged: (value){
+                  controller.onChanged(value);
+                },
+              ),
             ),
-            SizedBox(height: getSize(15),),
+            SizedBox(height: getSize(10),),
             Expanded(
-              child: Obx(()=> ListView.builder(
+              child: Obx(()=>controller.searchText.value == ''?NoData(
+                svgPath: 'assets/images/search.svg',
+                name: "search_your_desire".tr,
+                message: "you_can_search_using".tr,
+              ):controller.searchText.value != '' && controller.filteredItems.isEmpty?NoData(
+                svgPath: 'assets/images/no_product.svg',
+                name: "no_product_matched".tr,
+                message: "you_can_search_using".tr,
+              ): ListView.builder(
                 itemCount: controller.filteredItems.length,
                 itemBuilder: (context, index) {
                   final item = controller.filteredItems[index];
@@ -46,7 +57,7 @@ class SearchView extends GetView<SearchViewController> {
           ],
         ),
       ),
-      bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value, ordersLength: controller.mainMenuController.ordersLenght.value -1,)),
+      // bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value, ordersLength: controller.mainMenuController.ordersLenght.value -1,)),
     );
   }
 }

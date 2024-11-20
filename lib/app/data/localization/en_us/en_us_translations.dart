@@ -172,9 +172,18 @@ final Map<String, String> enUs = {
   "from_wallet":"From Wallet",
   "from_points":"From Points",
   "payable_amount":"Payable Amount",
-  "delivered_on": "Delivered on",
+  "delivered_on": "Delivered at",
+    "created_at": "Created at",
+
   "picked_on": "Picked on",
   "paid_with": "Paid with",
-  "reorder": "Reorder",
+  "reorder": "Select items to reorder",
   "you_rated": "You rated this ",
+  "search_your_desire": "Search Your Desire",
+  "you_can_search_using":"You can search using title of the product or description of the product",
+    "no_product_matched":"No Product Matched",
+    "please_double_check":"Please double check your spellings is it correct",
+
+
+
 };

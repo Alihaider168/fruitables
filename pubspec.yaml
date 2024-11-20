@@ -55,6 +55,8 @@ dependencies:
   geocoding: ^3.0.0
   my_fatoorah: ^3.3.0
   flutter_inappwebview: ^6.1.5
+  skeletonizer: ^1.4.2
+  dotted_line: ^3.2.3
 
 dev_dependencies:
   flutter_test:

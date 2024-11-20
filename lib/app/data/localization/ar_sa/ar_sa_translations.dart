@@ -155,6 +155,7 @@ final Map<String, String> arSa = {
   "home": "المنزل",
   "work": "العمل",
   "partner": "الشريك",
+  'reorder':"حدد العناصر لإعادة ترتيبها",
   "other": "أخرى",
   "note_to_rider": "ملاحظة إلى السائق",
   "order_created": "تم إنشاء الطلب بنجاح",
@@ -168,4 +169,12 @@ final Map<String, String> arSa = {
   "pending":"قيد الانتظار",
   "preparing":"التحضير",
   "ready":"مستعد",
+      "created_at": "تم إنشاؤها في",
+        "delivered_on": "تسليمها في",
+
+
+  "search_your_desire":"ابحث عن رغبتك",
+  "you_can_search_using":"يمكنك البحث باستخدام عنوان المنتج أو وصف المنتج",
+  "no_product_matched":"لم يتم تصنيع أي منتج",
+  "please_double_check":"يرجى التحقق مرة أخرى من هجاءك هل هو صحيح",
 };

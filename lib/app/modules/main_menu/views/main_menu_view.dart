@@ -27,6 +27,7 @@ class _MainMenuViewState extends State<MainMenuView> {
     return Scaffold(
       key: controller.scaffoldKey,
       appBar: AppBar(
+        
         leading: Padding(
           padding: Utils.checkIfArabicLocale() ? getPadding(right: 15):getPadding(left: 15),
           child: GestureDetector(

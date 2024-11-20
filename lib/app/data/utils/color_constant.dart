@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class ColorConstant {
   static Color black = fromHex('#000000');
+    static Color blackShaded = fromHex('#131313');
+
   static Color gray5001 = fromHex('#fafafa');
   // static Color primaryPink = fromHex('#FFF28BA0');
   // static Color primaryPink = Color(0xFFEB6F87);

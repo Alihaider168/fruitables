@@ -8,9 +8,9 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
   @override
   Widget build(BuildContext context) {
     Utils.hideKeyboard(context);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,     // White icons on status bar
+    SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+      statusBarColor:  ColorConstant.blackShaded,
+      statusBarIconBrightness: Brightness.light,     // White icons on status bar
       systemNavigationBarColor: Colors.white,        // Black navigation bar color
       systemNavigationBarIconBrightness: Brightness.dark,
     ));

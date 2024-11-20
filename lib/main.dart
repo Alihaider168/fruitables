@@ -62,10 +62,10 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           appBarTheme: AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.white, // Adjust opacity as needed
-              statusBarIconBrightness: Brightness.dark,
+              statusBarColor: ColorConstant.blackShaded, // Adjust opacity as needed
+              statusBarIconBrightness: Brightness.light,
               systemNavigationBarColor: Colors.black,
-              systemNavigationBarIconBrightness: Brightness.light,
+              systemNavigationBarIconBrightness: Brightness.dark,
             ),
             backgroundColor: ColorConstant.primaryPink,
           ),

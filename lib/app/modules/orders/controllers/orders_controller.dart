@@ -22,24 +22,34 @@ class OrdersController extends GetxController with GetSingleTickerProviderStateM
 
   @override
   void onInit() {
-    getOrders();
+    init();
+   // Move left to right
+    super.onInit();
+  }
+  
+
+  init()async{
+     getOrders();
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
     )..repeat(); // Repeats the animation indefinitely
 
-    animation = Tween<double>(begin: -50, end: 50).animate(_controller); // Move left to right
-    super.onInit();
+    animation = Tween<double>(begin: -50, end: 50).animate(_controller); 
   }
 
 
   void getOrders({final void Function(String?)? onSuccess}){
+
     Utils.check().then((value) async {
+      print("line 39");
+      isLoading.value = true;
       if (value) {
         isLoading.value = true;
         await BaseClient.get(ApiUtils.getOrders,
             onSuccess: (response) async {
                       isLoading.value = false;
+      print("line 46");
 
               print(response);
               OrdersModel orderModel = OrdersModel.fromJson(response.data);
@@ -52,6 +62,8 @@ class OrdersController extends GetxController with GetSingleTickerProviderStateM
               return true;
             },
             onError: (error) {
+                    print("line 59");
+
               BaseClient.handleApiError(error);
               return false;
             },

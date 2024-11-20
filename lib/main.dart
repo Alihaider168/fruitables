@@ -1,3 +1,4 @@
+import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/localization/app_localization.dart';
 import 'package:rexsa_cafe/app/data/utils/initial_bindings.dart';
@@ -23,7 +24,7 @@ Future<void> main() async {
 
   final languagePreference = LanguageUtils();
   String? language = await languagePreference.getLanguage();
-
+  await MFSDK.init(Constants.fatoorahToken, MFCountry.SAUDIARABIA, MFEnvironment.LIVE);
 
   runApp(MyApp(language: language));
 }

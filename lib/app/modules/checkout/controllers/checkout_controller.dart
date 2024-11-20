@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:my_fatoorah/my_fatoorah.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
 // import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/models/user_model.dart';
@@ -60,7 +60,7 @@ class CheckoutController extends GetxController {
       usedPointsBalance = null;
     }
     super.onInit();
-
+    MFSDK.init(Constants.fatoorahToken, MFCountry.SAUDIARABIA, MFEnvironment.LIVE);
   }
 
 
@@ -263,31 +263,53 @@ class CheckoutController extends GetxController {
 
   Future<void> startPayment(BuildContext context,{required num amount}) async {
     try {
-      PaymentResponse response =  await MyFatoorah.startPayment(
-        context: context,
-        afterPaymentBehaviour: AfterPaymentBehaviour.AfterCallbackExecution,
-        // showServiceCharge: true,
-        request: MyfatoorahRequest.test(
-          currencyIso: Country.SaudiArabia,
-          // successUrl: '',
-          successUrl: 'https://rexsacafe.com/payment-status?status=success',
-          errorUrl: 'https://rexsacafe.com/payment-status?status=error',
-          // errorUrl: '',
-          invoiceAmount: amount.toDouble(),
-          language: Utils.checkIfArabicLocale() ? ApiLanguage.Arabic : ApiLanguage.English,
-          customerMobile: Constants.userModel?.customer?.mobile,
-          customerEmail: Constants.userModel?.customer?.email,
-          customerName: Constants.userModel?.customer?.name,
-          // token: Constants.fatoorahToken,
-          token: 'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
-        ),
-      );
-      print("payment test: "+response.toString());
-      if(response.status == PaymentStatus.Success){
-        addOrder(paymentId: response.paymentId,paymentMethod: "card");
-      }else{
-        CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
-      }
+      checkoutController.start();
+      MFInitiatePaymentRequest request = MFInitiatePaymentRequest(
+          invoiceAmount: amount, currencyIso: MFCurrencyISO.SAUDIARABIA_SAR);
+      await MFSDK
+          .initiatePayment(request, MFLanguage.ENGLISH)
+          .then((value) {
+        checkoutController.stop();
+        debugPrint(value.toString());
+        showCardsDialog(value.paymentMethods??[],amount: amount);
+
+        // executePayment(value.paymentMethods![0].paymentMethodId);
+      })
+          .catchError((error)  {
+        checkoutController.stop();
+        CustomSnackBar.showCustomErrorToast(message: error.message);
+      });
+      // PaymentResponse response =  await MyFatoorah.startPayment(
+      //   context: context,
+      //   // afterPaymentBehaviour: AfterPaymentBehaviour.AfterCallbackExecution,
+      //   // showServiceCharge: true,
+      //   onResult: (res){
+      //     if(res.isSuccess){
+      //       addOrder(paymentId: res.paymentId,paymentMethod: "card");
+      //     }else{
+      //       CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
+      //     }
+      //   },
+      //   request: MyfatoorahRequest.live(
+      //     currencyIso: Country.SaudiArabia,
+      //     // successUrl: '',
+      //     successUrl: 'https://rexsacafe.com/payment-status?status=success',
+      //     errorUrl: 'https://rexsacafe.com/payment-status?status=error',
+      //     // errorUrl: '',
+      //     invoiceAmount: amount.toDouble(),
+      //     language: Utils.checkIfArabicLocale() ? ApiLanguage.Arabic : ApiLanguage.English,
+      //     customerMobile: Constants.userModel?.customer?.mobile,
+      //     customerEmail: Constants.userModel?.customer?.email,
+      //     customerName: Constants.userModel?.customer?.name,
+      //     token: Constants.fatoorahToken,
+      //     // token: 'rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL',
+      //   ),);
+      // print("payment test: "+response.toString());
+      // if(response.status == PaymentStatus.Success){
+      //   addOrder(paymentId: response.paymentId,paymentMethod: "card");
+      // }else{
+      //   CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
+      // }
     } catch (e) {
       print('Error: $e');
     }
@@ -319,6 +341,81 @@ class CheckoutController extends GetxController {
   num getFinalPrice(){
     num price = menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0);
     return price -(usedPointsBalance??0) - (usedWalletBalance??0);
+  }
+
+
+  showCardsDialog(List<MFPaymentMethod> cards, {required num amount}){
+    Get.dialog(
+      barrierDismissible: false,
+      Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(getSize(10)),
+        ),
+        child: Container(
+          padding: getPadding(top: 15,bottom: 15),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 400, // Set the max height for the dialog
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MyText(title: "$amount",fontSize: 16,fontWeight: FontWeight.bold,),
+                SizedBox(height: getSize(10),),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: cards.length, // Number of items in the list
+                    separatorBuilder: (_,__){
+                      return Divider();
+                    },
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: (){
+                          executePayment(cards[index].paymentMethodId,amount: amount);
+                        },
+                        leading: CustomImageView(
+                          url: cards[index].imageUrl,
+                          height: getSize(30),
+                        ),
+                        title: MyText(title: Utils.checkIfArabicLocale() ? cards[index].paymentMethodAr??"" : cards[index].paymentMethodEn??"",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        trailing: Icon(Icons.arrow_forward_ios,size: 20,),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  executePayment(int? paymentMethodId,{required num amount}) async {
+    MFExecutePaymentRequest request = MFExecutePaymentRequest(invoiceValue: amount);
+    request.paymentMethodId = paymentMethodId;
+
+    await MFSDK
+        .executePayment(request, Utils.checkIfArabicLocale() ? MFLanguage.ARABIC : MFLanguage.ENGLISH, (invoiceId) {
+      debugPrint(invoiceId);
+
+    })
+        .then((value) {
+          debugPrint(value.toString());
+          Get.back();
+          if((value.invoiceStatus??"").toLowerCase() == "paid"){
+            addOrder(paymentId: value.invoiceId.toString(),paymentMethod: "card");
+          }else{
+            CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
+          }
+        })
+        .catchError((error)  {
+          debugPrint(error.message);
+        });
   }
 
 

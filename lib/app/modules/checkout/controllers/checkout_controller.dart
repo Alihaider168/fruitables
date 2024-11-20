@@ -278,7 +278,9 @@ class CheckoutController extends GetxController {
       })
           .catchError((error)  {
         checkoutController.stop();
-        CustomSnackBar.showCustomErrorToast(message: error.message);
+        final MFError er= error;
+        CustomSnackBar.showCustomErrorToast(message: er.toJson().toString());
+        log("fatoorah error $error");
       });
       // PaymentResponse response =  await MyFatoorah.startPayment(
       //   context: context,

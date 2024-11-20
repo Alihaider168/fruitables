@@ -265,9 +265,10 @@ class CheckoutController extends GetxController {
     try {
       checkoutController.start();
       MFInitiatePaymentRequest request = MFInitiatePaymentRequest(
-          invoiceAmount: amount, currencyIso: MFCurrencyISO.SAUDIARABIA_SAR);
+          invoiceAmount: amount, currencyIso: MFCurrencyISO.SAUDIARABIA_SAR,
+      );
       await MFSDK
-          .initiatePayment(request, MFLanguage.ENGLISH)
+          .initiatePayment(request, Utils.checkIfArabicLocale() ? MFLanguage.ARABIC : MFLanguage.ENGLISH)
           .then((value) {
         checkoutController.stop();
         debugPrint(value.toString());
@@ -396,7 +397,11 @@ class CheckoutController extends GetxController {
   }
 
   executePayment(int? paymentMethodId,{required num amount}) async {
-    MFExecutePaymentRequest request = MFExecutePaymentRequest(invoiceValue: amount);
+    MFExecutePaymentRequest request = MFExecutePaymentRequest(invoiceValue: amount,
+      customerName: Constants.userModel?.customer?.name,
+      customerMobile: Constants.userModel?.customer?.mobile,
+      customerEmail: Constants.userModel?.customer?.email,
+    );
     request.paymentMethodId = paymentMethodId;
 
     await MFSDK

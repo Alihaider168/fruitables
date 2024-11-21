@@ -324,10 +324,10 @@ class MainMenuController extends GetxController {
                                       
                                     
                                     Column(children: [
-                                      ((item.smallPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_small'.tr,value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
-                                                                        ((item.mediumPrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_medium'.tr,value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
-                                                                        ((item.largePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_large'.tr,value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
-                                                                        ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: 'lbl_bottle'.tr,value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                      ((item.smallPrice??0) == 0)? Offstage() :getCheckbox(title: " ${'lbl_small'.tr} ",value: 'small',price: item.smallPrice??0,discountedPrice: item.mobileSmall??0),
+                                                                        ((item.mediumPrice??0) == 0)? Offstage() :getCheckbox(title: " ${'lbl_medium'.tr} ",value: 'medium',price: item.mediumPrice??0,discountedPrice: item.mobileMedium??0),
+                                                                        ((item.largePrice??0) == 0)? Offstage() :getCheckbox(title: " ${'lbl_large'.tr} ",value: 'large',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
+                                                                        ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: " ${'lbl_bottle'.tr} ",value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
                                                                      
                                     ],) ],
                                 ): Offstage()

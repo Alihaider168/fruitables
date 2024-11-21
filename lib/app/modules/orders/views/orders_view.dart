@@ -62,7 +62,8 @@ class OrdersView extends GetView<OrdersController> {
               // return OrderCard(order: order);
               return GestureDetector(
                 onTap: (){
-                  Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
+                  controller.myOrders[index].branch;
+                  // Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
                 },
                 child: PastOrderTile(
                   imageUrl: order.branch?.image?.key??"",

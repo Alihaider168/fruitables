@@ -49,9 +49,8 @@ class OrdersController extends GetxController with GetSingleTickerProviderStateM
         await BaseClient.get(ApiUtils.getOrders,
             onSuccess: (response) async {
                       isLoading.value = false;
-      print("line 46");
 
-              print(response);
+              print("ordersss ${response.data}");
               OrdersModel orderModel = OrdersModel.fromJson(response.data);
               myOrders.value.clear();
               myOrders.value.addAll(orderModel.orders??[]);

@@ -189,7 +189,7 @@ class NewDetailView extends GetView<NewDetailController> {
                   children: [
                     MyText(
                       title:
-                      "you_rated".tr,
+                    controller.order?.reviews?['rating'] == null?  "add_review".tr:"you_rated".tr,
                       fontWeight: FontWeight.w700,
                      fontSize: 11,                            
                       color: Colors.grey.shade700.withOpacity(0.8),
@@ -199,8 +199,9 @@ class NewDetailView extends GetView<NewDetailController> {
                       padding: getPadding(right: 0, left: 3),
                       child: const Icon(Icons.star, color: Colors.orange, size: 16),
                     ),
+                    if( controller.order?.reviews?['rating'] != null)
                     MyText(title:
-                      " 3 ",
+                     " ${controller.order?.reviews?['rating']} " ,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),

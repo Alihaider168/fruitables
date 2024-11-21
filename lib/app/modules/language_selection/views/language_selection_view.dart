@@ -4,8 +4,40 @@ import 'package:video_player/video_player.dart';
 
 import '../controllers/language_selection_controller.dart';
 
-class LanguageSelectionView extends GetView<LanguageSelectionController> {
+class LanguageSelectionView extends StatefulWidget {
   const LanguageSelectionView({super.key});
+
+  @override
+  State<LanguageSelectionView> createState() => _LanguageSelectionViewState();
+}
+
+class _LanguageSelectionViewState extends State<LanguageSelectionView> {
+      LanguageSelectionController controller = Get.put(LanguageSelectionController());
+        late VideoPlayerController videoController;
+
+    
+  @override
+  void initState() {
+    super.initState();  
+     videoController = VideoPlayerController.network(
+      'https://video-previews.elements.envatousercontent.com/5cb483f5-5bb9-4837-9c2b-2d5608be41f4/watermarked_preview/watermarked_preview.mp4', // Replace with your video URL
+    )
+      ..initialize().then((_) {
+        // Ensure the video is looped and starts playing
+        videoController.setLooping(true);
+        videoController.play();
+        setState(() {
+          
+        });
+        
+       // Refresh the UI once the video is initialized
+      });
+    var data = Get.arguments;
+    if(data!= null && data["from_menu"] != null){
+      controller.fromMenu = data['from_menu'];
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     Utils.hideKeyboard(context);
@@ -29,8 +61,8 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
                     color: controller.isLoading.value ?Colors.black:Colors.black,
                                width: double.infinity,
                                height: double.infinity,
-                               child: controller.videoController.value.isInitialized
-                    ? VideoPlayer(controller.videoController)
+                               child: videoController.value.isInitialized
+                    ? VideoPlayer(videoController)
                     : Center(child: CircularProgressIndicator()),
                              ),
                 ),

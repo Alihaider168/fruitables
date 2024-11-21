@@ -50,7 +50,6 @@ class OrdersController extends GetxController with GetSingleTickerProviderStateM
             onSuccess: (response) async {
                       isLoading.value = false;
 
-              print("ordersss ${response.data}");
               OrdersModel orderModel = OrdersModel.fromJson(response.data);
               myOrders.value.clear();
               myOrders.value.addAll(orderModel.orders??[]);

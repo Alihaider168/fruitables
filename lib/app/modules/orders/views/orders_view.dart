@@ -4,6 +4,7 @@ import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/widgets/noData.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/orders_controller.dart';
 
@@ -48,7 +49,8 @@ class OrdersView extends GetView<OrdersController> {
                 description: "testing description this is testing abcdef ghijkl sjb sncjhab",
                 price: "00000",
                 completedAt: DateTime.now().toString(),
-                rating: 3,
+                rating: '3',
+                id: '',
                 onReorder: (){
                   
                 },
@@ -62,8 +64,8 @@ class OrdersView extends GetView<OrdersController> {
               // return OrderCard(order: order);
               return GestureDetector(
                 onTap: (){
-                  controller.myOrders[index].branch;
-                  // Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
+                 print( controller.myOrders[index].reviews);
+                  Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
                 },
                 child: PastOrderTile(
                   imageUrl: order.branch?.image?.key??"",
@@ -72,7 +74,8 @@ class OrdersView extends GetView<OrdersController> {
                   description:Utils.checkIfArabicLocale()?(order.products??[]).map((element)=> element.arabicName.toString()).join(", "): (order.products??[]).map((element)=> element.name.toString()).join(", "),
                   price: "${order.totalAmount??0}",
                   completedAt: order.completedAt,
-                  rating: 3,
+                  rating: order.reviews?['rating'],
+                  id: order.id??'',
                   onReorder: (){
                     for(int i=0;i<(order.products??[]).length;i++){
                       final item = (order.products??[])[i];
@@ -195,7 +198,9 @@ class PastOrderTile extends StatelessWidget {
   final String? deliveryDate;
   final String description;
   final String price;
-  final double? rating;
+  final String? rating;
+    final String id;
+
   final String? completedAt;
   final void Function()? onReorder;
 
@@ -209,6 +214,7 @@ class PastOrderTile extends StatelessWidget {
     required this.price,
     this.rating,
     this.completedAt,
+    required this.id,
     required this.onReorder,
   });
 
@@ -372,40 +378,46 @@ if(deliveryDate != null){
               
             ),
           ),
-           Container(
-
-            padding: getPadding(top: 13, bottom: 13),
-            decoration: BoxDecoration(
-                                color: Colors.white,
-
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
-              border: Border(bottom: BorderSide(color: Colors.grey.shade300, width: 1.5),right: BorderSide(color: Colors.grey.shade300, width: 1.5),left: BorderSide(color: Colors.grey.shade300, width: 2))
-            ),
-          
-            child:  Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyText(
-                    
-                    title:
-                    "you_rated".tr,
-                    fontWeight: FontWeight.w700,
-                   fontSize: 11,                            color: Colors.grey.shade700.withOpacity(0.8)
-            
-            ,
-            
-                  ),
-                  Padding(
-                    padding: getPadding(right: 0, left: 3),
-                    child: const Icon(Icons.star, color: Colors.orange, size: 16),
-                  ),
-                  MyText(title:
-                    " $rating ",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ],
+           InkWell(
+            onTap:(){
+              _launchReviewsURL(id);
+            },
+             child: Container(
+             
+              padding: getPadding(top: 13, bottom: 13),
+              decoration: BoxDecoration(
+                                  color: Colors.white,
+             
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
+                border: Border(bottom: BorderSide(color: Colors.grey.shade300, width: 1.5),right: BorderSide(color: Colors.grey.shade300, width: 1.5),left: BorderSide(color: Colors.grey.shade300, width: 2))
               ),
+                       
+              child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyText(
+                      
+                      title:
+                     rating == null? "add_review".tr:"you_rated".tr,
+                      fontWeight: FontWeight.w700,
+                     fontSize: 11,                            color: Colors.grey.shade700.withOpacity(0.8)
+              
+              ,
+              
+                    ),
+                    Padding(
+                      padding: getPadding(right: 0, left: 3),
+                      child: const Icon(Icons.star, color: Colors.orange, size: 16),
+                    ),
+                    if(rating != null )
+                    MyText(title:
+                      " $rating ",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+             ),
            )
         ],
       ),
@@ -413,3 +425,11 @@ if(deliveryDate != null){
   }
 }
 
+  void _launchReviewsURL(String orderId) async {
+    var url = 'https://rexsacafe.com/reviews?order=$orderId';  // Replace with your desired URL
+    if (await canLaunch(url)) {
+      await launch(url);  // Open the URL
+    } else {
+      throw 'Could not launch $url';  // Error handling
+    }
+  }

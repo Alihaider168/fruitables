@@ -48,6 +48,8 @@ class Orders {
   String? createdAt;
   String? updatedAt;
   String? id;
+    Map<String, dynamic>? reviews;
+
 
   Orders({
     this.saleId,
@@ -74,6 +76,7 @@ class Orders {
     this.createdAt,
     this.updatedAt,
     this.id,
+    this.reviews
   });
 
   Orders.fromJson(Map<String, dynamic> json) {
@@ -99,6 +102,8 @@ class Orders {
     deliveredAt = json['deliveredAt'] as String?;
     cancelledAt = json['cancelledAt'] as String?;
     createdAt = json['createdAt'] as String?;
+    reviews = json['reviews'] as Map<String, dynamic>?;
+
     updatedAt = json['updatedAt'] as String?;
     id = json['id'] as String?;
   }
@@ -129,6 +134,7 @@ class Orders {
     json['createdAt'] = createdAt;
     json['updatedAt'] = updatedAt;
     json['id'] = id;
+    json['reviews']=reviews;
     return json;
   }
 }

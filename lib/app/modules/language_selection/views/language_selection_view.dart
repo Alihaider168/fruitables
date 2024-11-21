@@ -26,7 +26,7 @@ class LanguageSelectionView extends GetView<LanguageSelectionController> {
             children: [
                 Obx(
                   ()=> Container(
-                    color: controller.isLoading.value ?Colors.transparent:Colors.transparent,
+                    color: controller.isLoading.value ?Colors.black:Colors.black,
                                width: double.infinity,
                                height: double.infinity,
                                child: controller.videoController.value.isInitialized

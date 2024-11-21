@@ -1,9 +1,13 @@
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../controllers/new_detail_controller.dart';
+
+
 
 class NewDetailView extends GetView<NewDetailController> {
   const NewDetailView({super.key});
@@ -12,7 +16,29 @@ class NewDetailView extends GetView<NewDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    RxBool loading = true.obs;
+   
+  Future.delayed(Duration(seconds: 3
+
+  ),(){
+    loading.value = false;
+    
+  });
+      Locale? currentLocale = Get.locale;
+
+
           final NewDetailController controller = Get.put(NewDetailController());
+            String timeD =controller.order!.deliveredAt != null? DateFormat(Utils.checkIfArabicLocale()?'HH:mm ':'HH:mm a').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
+          String yearD= controller.order!.deliveredAt != null?DateFormat('yyyy').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
+          String monthD=controller.order!.deliveredAt != null?DateFormat('MMM').format(DateTime.parse(controller.order!.deliveredAt.toString())):"";
+          String dayD= controller.order!.deliveredAt != null?DateFormat('dd').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
+          String timeC = DateFormat(Utils.checkIfArabicLocale()?'HH:mm ':'HH:mm a').format(DateTime.parse(controller.order!.createdAt.toString()));
+          String yearC=DateFormat('yyyy').format(DateTime.parse(controller.order!.createdAt.toString()));
+          String monthC=DateFormat('MMM').format(DateTime.parse(controller.order!.createdAt.toString()));
+          String dayC=DateFormat('dd').format(DateTime.parse(controller.order!.createdAt.toString()));
+
+
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -30,50 +56,65 @@ class NewDetailView extends GetView<NewDetailController> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Order Image
-                      Container(
-                        height: getSize(200),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(Utils.getCompleteUrl(controller.order?.branch?.image?.key)), // Replace with your image
-                            fit: BoxFit.cover,
-                          ),
-                          color: Colors.orange
-                        ),
-                        alignment: Alignment.topCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                
-                            Padding(
-                              padding: getPadding(left: 16,top: 10),
-                              child: GestureDetector(
-                                onTap: (){
-                                  if(controller.fromOrder){
-                                    Get.offAllNamed(Routes.MAIN_MENU);
-                                  }else{
-                                    Get.back();
-                                  }
-                                    Get.delete<NewDetailController>();
-                                },
-                                child: CircleAvatar(
-                                  radius: getSize(17),
-                                  backgroundColor: ColorConstant.white,
-                                  child: Icon(Icons.arrow_back),
-                                ),
+                      Obx(
+                        ()=> Skeletonizer(
+                          enabled: loading.value,
+                          child: Container(
+                            height: getSize(200),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: 
+                                NetworkImage(Utils.getCompleteUrl(controller.order?.branch?.image?.key),
+                                
+                                
+                                ), // Replace with your image
+                                fit: BoxFit.cover,
                               ),
+                              color: Colors.grey.shade200
                             ),
-                
-                            Container(
-                              margin: getMargin(right: 16,top: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: ColorConstant.textGrey),
-                                borderRadius: BorderRadius.circular(getSize(10))
-                              ),
-                              padding: getPadding(top: 7,bottom: 7,left: 12,right: 12),
-                              child: MyText(title: "help".tr),
-                            )
-                          ],
+                            alignment: Alignment.topCenter,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                          
+                                Padding(
+                                  padding: getPadding(left: 16,top: 10),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      if(controller.fromOrder){
+                                        Get.offAllNamed(Routes.MAIN_MENU);
+                                      }else{
+                                        Get.back();
+                                      }
+                                        Get.delete<NewDetailController>();
+                                    },
+                                    child: CircleAvatar(
+                                      radius: getSize(17),
+                                      backgroundColor: ColorConstant.white,
+                                      child: Icon(Icons.arrow_back),
+                                    ),
+                                  ),
+                                ),
+                                          
+                                InkWell(
+                                  onTap: (){
+                                 showSupportCenterBottomSheet(context);
+
+                                  },
+                                  child: Container(
+                                    margin: getMargin(right: 16,top: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: ColorConstant.textGrey),
+                                      borderRadius: BorderRadius.circular(getSize(10))
+                                    ),
+                                    padding: getPadding(top: 7,bottom: 7,left: 12,right: 12),
+                                    child: MyText(title: "help".tr),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       Column(
@@ -90,12 +131,18 @@ class NewDetailView extends GetView<NewDetailController> {
                                     title: "${"order_number".tr}${controller.order?.saleId}",
                                     fontWeight: FontWeight.bold, fontSize: 16,
                                   ),
-                                   SizedBox(height: 15),
+                                   SizedBox(height: getSize(10)),
                               !((controller.order?.status == "delivered" )) ?
                                Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                  children: [
-                                  
+                                        MyText(
+                                title: "${'your_order_being'.tr}${controller.order?.status}",
+                                color: ColorConstant.textGrey,
+                                fontSize: 12,
+                              ),
+                                                                    SizedBox(height: getSize(5),),
+
                                    AnimatedBuilder(
                                           animation: controller.animation,
                                           builder: (context, child) {
@@ -114,11 +161,9 @@ class NewDetailView extends GetView<NewDetailController> {
                                                     ),
                                                   ),
                                                   Positioned(
-                                                   
                                                     left: controller.animation.value,
                                                     child: Container(
                                                       margin: EdgeInsets.symmetric(horizontal: 5),
-                                                   
                                                       width: getSize(80),
                                                       height: 5,
                                                       decoration: BoxDecoration(
@@ -136,25 +181,18 @@ class NewDetailView extends GetView<NewDetailController> {
                                             );
                                           },
                                         ),
-                                        SizedBox(height: getSize(4),),
-                                        MyText(
-                                title: controller.order!.status.toString(),
-                                color: ColorConstant.textGrey,
-                                fontSize: 12,
-                              ),
+                                        
                                  ],
                                ):
                                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MyText(
-                      
                       title:
                       "you_rated".tr,
                       fontWeight: FontWeight.w700,
-                     fontSize: 11,                            color: Colors.grey.shade700.withOpacity(0.8)
-              
-              ,
+                     fontSize: 11,                            
+                      color: Colors.grey.shade700.withOpacity(0.8),
               
                     ),
                     Padding(
@@ -233,10 +271,11 @@ class NewDetailView extends GetView<NewDetailController> {
                                         fontSize: 11, color: Colors.grey.shade600.withOpacity(0.9),
                                       ),
                                       MyText(
-                                        title:'${DateFormat('dd MMM yyyy').format(DateTime.parse(controller.order!.createdAt.toString()))} ${DateFormat('HH:mm a').format(DateTime.parse(controller.order!.createdAt.toString()))}',
-                                     fontSize: 12,
-                                     fontWeight: FontWeight.w600,
-                                  ),],),
+                                        title:Utils.checkIfArabicLocale()?"$timeC" "$yearC $dayC $monthC":"$dayC $monthC $yearC $timeC"
+                                      ,   
+                                      alignRight: Utils.checkIfArabicLocale(),                                                                            fontSize: 12,
+                                                                           fontWeight: FontWeight.w600,
+                                                                        ),],),
                                   if(controller.order?.status == "delivered" )
                                 SizedBox(height: getSize(19),),
                                                                 if(controller.order?.status == "delivered" )
@@ -250,8 +289,8 @@ class NewDetailView extends GetView<NewDetailController> {
                                         fontSize: 11, color: Colors.grey.shade600.withOpacity(0.9),
                                       ),
                                       MyText(
-                                        title:'${DateFormat('dd MMM yyyy').format(DateTime.parse(controller.order!.deliveredAt.toString()))} ${DateFormat('HH:mm a').format(DateTime.parse(controller.order!.deliveredAt.toString()))}',
-                                     fontSize: 12,
+                                        title:Utils.checkIfArabicLocale()?"$timeD" "$yearD $dayD $monthD":"$dayD $monthD $yearD $timeD"
+,                                     fontSize: 12,
                                      fontWeight: FontWeight.w600,
                                   ),],)
                                      
@@ -265,7 +304,7 @@ class NewDetailView extends GetView<NewDetailController> {
                             ),
                           ),
                          
-                                              
+                                            
                                            
                           
                       
@@ -280,19 +319,21 @@ class NewDetailView extends GetView<NewDetailController> {
                               final product = (controller.order?.products??[])[index];
                               return Row(
                                 children: [
+                                  // MyText(
+                                  //   title:  Utils.checkIfArabicLocale()?"x${(product.quantity??0)}":"${(product.quantity??0)}x",
+                                  //   fontWeight: FontWeight.bold,
+                                  //   alignRight: Utils.checkIfArabicLocale(),
+                                  //   fontSize: 14,
+                                  // ),
+                                  // SizedBox(width: 8),
                                   MyText(
-                                    title: "${(product.quantity??0)}x",
-                                    fontWeight: FontWeight.bold,
+                                    title: "${Utils.checkIfArabicLocale()?"x${(product.quantity??0)}":"${(product.quantity??0)}x"} ${Utils.checkIfArabicLocale() ? product.arabicName :product.name}",
                                     fontSize: 14,
+                                    alignRight:false,
+                                  
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: MyText(
-                                      title: "${Utils.checkIfArabicLocale() ? product.arabicName :product.name}",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  Spacer(),
                                   MyText(
                                     title: '${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${(product.price??0) * (product.quantity??0)}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}',
                                     fontSize: 14,
@@ -489,4 +530,68 @@ class NewDetailView extends GetView<NewDetailController> {
       ),
     );
   }
+  
 }
+  void showSupportCenterBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(20))),
+      ),
+      isScrollControlled: true,
+      backgroundColor: ColorConstant.white,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: getPadding(left: 20,right: 20, top: 30,bottom: MediaQuery.of(context).viewInsets.bottom + 50),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                 ImageConstant.mail,
+                height: getSize(150),
+              ),
+              SizedBox(height: getSize(15)),
+              MyText(
+                title: "lbl_support_center".tr,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Utils.checkIfArabicLocale()?16:18,
+              ),
+              SizedBox(height: getSize(10)),
+              MyText(
+                title:'lbl_for_queries'.tr,
+                  color: ColorConstant.textGrey,
+                  alignRight: Utils.checkIfArabicLocale(),
+                  fontSize: Utils.checkIfArabicLocale()?12:14,
+                center: true,
+              ),
+              SizedBox(height: getSize(20)),
+              CustomButton(
+                text: "customercare@rexsa.com",
+                prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
+                onTap: (){
+                  final Uri emailUri = Uri(
+                      scheme: 'mailto',
+                      path: 'customercare@rexsa.com',
+                      queryParameters: {
+                        'subject': 'Support Request'
+                      }
+                  );
+                  Utils.launchURL(emailUri);
+                },
+              ),
+              SizedBox(height: getSize(10)),
+              CustomButton(
+                text: "021111636363",
+                prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.call, color: Colors.black)),
+                variant: ButtonVariant.OutlineGrey,
+                fontStyle: ButtonFontStyle.Grey18,
+                onTap: (){
+                  Utils.launchURL(Uri.parse("tel: 021111636363"));
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }

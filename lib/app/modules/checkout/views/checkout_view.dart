@@ -226,7 +226,11 @@ class CheckoutView extends GetView<CheckoutController> {
                         SizedBox(height: getSize(15),),
                         Row(
                           children: [
-                            Icon(Icons.payment,color: ColorConstant.primaryPink,),
+                            Obx(
+                              ()=> Icon(
+                                controller.selectedMethod.value=='Cash on Delivery'?Icons.delivery_dining:
+                                Icons.payment,color: ColorConstant.primaryPink,),
+                            ),
                             SizedBox(width: getSize(10),),
                             Obx(()=> MyText(
                               title: controller.selectedMethod.value.isNotEmpty? controller.selectedMethod.value: "choose_payment_method".tr,
@@ -239,6 +243,7 @@ class CheckoutView extends GetView<CheckoutController> {
                                 Get.toNamed(Routes.ADD_PAYMENT)!.then((payment){
                                   if(payment!= null){
                                     controller.selectedMethod.value = payment;
+                                    print(payment);
                                   }
                                 });
 

@@ -647,11 +647,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ],
                 ),
                 MyText(
-                  title: "${"we_sent_otp_to_email".tr} ${phoneController.text}",
-                  fontSize:Utils.checkIfArabicLocale()?12: 14,
+                  title: "${"we_sent_otp_to_email".tr}",
+                  fontSize:Utils.checkIfArabicLocale()?13: 14,
                   alignRight: Utils.checkIfArabicLocale(),
                   color: ColorConstant.textGrey,
                 ),
+                MyText(
+                      title: "${phoneController.text}",
+                      fontSize:Utils.checkIfArabicLocale()?13: 14,
+                      alignRight: Utils.checkIfArabicLocale(),
+                      color: ColorConstant.textGrey,
+                    ),
                 SizedBox(height: getSize(20)),
                 Directionality(
                   textDirection: TextDirection.ltr,
@@ -676,9 +682,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                 ),
-                SizedBox(height: getSize(10)),
+                SizedBox(height: getSize(5)),
                 Padding(
-                    padding: getPadding(top: 10, bottom: 10),
+                    padding: getPadding(top: 0, bottom: 10),
                     child: Obx(() =>
                     sec.value != 0 ?
                         Obx(()=> RichText(

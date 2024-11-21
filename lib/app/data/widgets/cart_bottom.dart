@@ -125,34 +125,45 @@ class CartBottom extends StatelessWidget  {
               SizedBox(height: getSize(6)),
               Row(
                 children: [
-                  OrderStatusIndicator(currentIndex: index),
+                  InkWell(
+                    onTap: (){
+                                  Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
+              
+                    },
+                    child: OrderStatusIndicator(currentIndex: index)),
                 ],
               ),
               SizedBox(height: getSize(9)),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      '${  index == 0? 'pending'.tr:  index ==1?"preparing".tr:'ready'.tr}\n${'your_order_being'.tr}${order?.status}',
-                      style: TextStyle( color: Colors.grey[700],
-                        height: 1.2,
-                        fontSize: 14,),
-          
-                      softWrap: true,
-          
+              InkWell(
+                onTap: (){
+                                    Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
+
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        '${'your_order_being'.tr}${order?.status}',
+                        style: TextStyle( color: Colors.grey[700],
+                          height: 1.2,
+                          fontSize: 14,),
+                          
+                        softWrap: true,
+                          
+                      ),
                     ),
-                  ),
-                  MyText(
-                    title: 'view_details'.tr,
-                    fontWeight: FontWeight.w600,
-          
-                    fontSize: 13,
-                  ),
-                ],
+                    MyText(
+                      title: 'view_details'.tr,
+                      fontWeight: FontWeight.w600,
+                              
+                      fontSize: 13,
+                    ),
+                  ],
+                ),
               ),
-                              SizedBox(height: getSize(5)),
+                              SizedBox(height: getSize(10)),
           
             ],
           ): Spacer(),

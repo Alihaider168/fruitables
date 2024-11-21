@@ -62,14 +62,13 @@ class OrdersView extends GetView<OrdersController> {
               // return OrderCard(order: order);
               return GestureDetector(
                 onTap: (){
-                  print(order.status);
                   Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
                 },
                 child: PastOrderTile(
                   imageUrl: order.branch?.image?.key??"",
                   title: order.branch?.name??"",
                   deliveryDate: order.deliveredAt,
-                  description: (order.products??[]).map((element)=> element.name.toString()).join(", "),
+                  description:Utils.checkIfArabicLocale()?(order.products??[]).map((element)=> element.arabicName.toString()).join(", "): (order.products??[]).map((element)=> element.name.toString()).join(", "),
                   price: "${order.totalAmount??0}",
                   completedAt: order.completedAt,
                   rating: 3,
@@ -217,6 +216,7 @@ class PastOrderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      Locale? currentLocale = Get.locale;
       String month ='';
    String date='';
       String time='';

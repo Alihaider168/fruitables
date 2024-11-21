@@ -171,6 +171,7 @@ final Map<String, String> arSa = {
   "ready":"مستعد",
       "created_at": "تم إنشاؤها في",
         "delivered_on": "تسليمها في",
+  "you_rated":" لقد قيمت هذا",
 
 
   "search_your_desire":"ابحث عن رغبتك",

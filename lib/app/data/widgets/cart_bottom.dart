@@ -111,7 +111,7 @@ class CartBottom extends StatelessWidget  {
 
                               },
                               child: MyText(
-                                                      title: " +$ordersLength",
+                                                      title:Utils.checkIfArabicLocale()?"$ordersLength+ " :" +$ordersLength",
                                                       fontWeight: FontWeight.w600,
                                                       color: ColorConstant.blue,
                                                       fontSize: getFontSize(16),
@@ -145,7 +145,7 @@ class CartBottom extends StatelessWidget  {
                     SizedBox(width: 4),
                     Expanded(
                       child: Text(
-                        '${'your_order_being'.tr}${order?.status}',
+                        '${'your_order_being'.tr}${order?.status == 'pending'?'pending'.tr :order?.status == 'preparing' ?'preparing'.tr:'ready'.tr}',
                         style: TextStyle( color: Colors.grey[700],
                           height: 1.2,
                           fontSize: 14,),

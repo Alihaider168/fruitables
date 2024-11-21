@@ -351,15 +351,17 @@ if(deliveryDate != null){
                     onReorder!();
                 
                   },
-                  child: Container(
-                    height: getSize(32),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: ColorConstant.black,
-                      borderRadius: BorderRadius.circular(8)
+                  child: Obx(
+                    ()=> Container(
+                      height: getSize(32),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color:controller.isLoading.value ?Colors.grey.shade300: ColorConstant.black,
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      alignment: Alignment.center,
+                    child: Text("reorder".tr,style: TextStyle(color: Colors.white, fontSize: getFontSize(14), fontWeight: FontWeight.bold), ),
                     ),
-                    alignment: Alignment.center,
-                  child: Text("reorder".tr,style: TextStyle(color: Colors.white, fontSize: getFontSize(14), fontWeight: FontWeight.bold), ),
                   ),
                 ),
               

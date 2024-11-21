@@ -28,11 +28,11 @@ class NewDetailView extends GetView<NewDetailController> {
 
 
           final NewDetailController controller = Get.put(NewDetailController());
-            String timeD =controller.order!.deliveredAt != null? DateFormat(Utils.checkIfArabicLocale()?'HH:mm ':'HH:mm a').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
+            String timeD =controller.order!.deliveredAt != null? DateFormat('HH:mm a').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
           String yearD= controller.order!.deliveredAt != null?DateFormat('yyyy').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
           String monthD=controller.order!.deliveredAt != null?DateFormat('MMM').format(DateTime.parse(controller.order!.deliveredAt.toString())):"";
           String dayD= controller.order!.deliveredAt != null?DateFormat('dd').format(DateTime.parse(controller.order!.deliveredAt.toString())):'';
-          String timeC = DateFormat(Utils.checkIfArabicLocale()?'HH:mm ':'HH:mm a').format(DateTime.parse(controller.order!.createdAt.toString()));
+          String timeC = DateFormat('HH:mm a').format(DateTime.parse(controller.order!.createdAt.toString()));
           String yearC=DateFormat('yyyy').format(DateTime.parse(controller.order!.createdAt.toString()));
           String monthC=DateFormat('MMM').format(DateTime.parse(controller.order!.createdAt.toString()));
           String dayC=DateFormat('dd').format(DateTime.parse(controller.order!.createdAt.toString()));
@@ -78,7 +78,7 @@ class NewDetailView extends GetView<NewDetailController> {
                               children: [
                                           
                                 Padding(
-                                  padding: getPadding(left: 16,top: 10),
+                                  padding: getPadding(left: 16,top: 10, right: 16,),
                                   child: GestureDetector(
                                     onTap: (){
                                       if(controller.fromOrder){
@@ -102,14 +102,14 @@ class NewDetailView extends GetView<NewDetailController> {
 
                                   },
                                   child: Container(
-                                    margin: getMargin(right: 16,top: 10),
+                                    margin: getMargin(right: 16,top: 10, left: 16),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       border: Border.all(color: ColorConstant.textGrey),
                                       borderRadius: BorderRadius.circular(getSize(10))
                                     ),
-                                    padding: getPadding(top: 7,bottom: 7,left: 12,right: 12),
-                                    child: MyText(title: "help".tr),
+                                    padding: getPadding(top: 4,bottom: 4,left: 8,right: 8),
+                                    child: MyText(title: "help".tr, fontSize: getFontSize(12),),
                                   ),
                                 )
                               ],
@@ -137,7 +137,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                  children: [
                                         MyText(
-                                title: "${'your_order_being'.tr}${controller.order?.status}",
+                                title: "${'your_order_being'.tr}${controller.order?.status == 'pending'?'pending'.tr : controller.order?.status == 'preparing'?'preparing'.tr:'ready'.tr}",
                                 color: ColorConstant.textGrey,
                                 fontSize: 12,
                               ),
@@ -326,12 +326,31 @@ class NewDetailView extends GetView<NewDetailController> {
                                   //   fontSize: 14,
                                   // ),
                                   // SizedBox(width: 8),
-                                  MyText(
-                                    title: "${Utils.checkIfArabicLocale()?"x${(product.quantity??0)}":"${(product.quantity??0)}x"} ${Utils.checkIfArabicLocale() ? product.arabicName :product.name}",
-                                    fontSize: 14,
-                                    alignRight:false,
-                                  
-                                    fontWeight: FontWeight.w600,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                    Text(
+                                         "${Utils.checkIfArabicLocale()?"x${(product.quantity??0)}":"${(product.quantity??0)}x"} ${Utils.checkIfArabicLocale() ? product.arabicName :product.name}",
+                                        
+                                        style: TextStyle(
+                                          fontSize: getFontSize(14),
+                                        
+                                      
+                                        fontWeight: FontWeight.w600,
+                                        ),
+                                        
+                                      ),
+                                      if(product.size != null && product.size !='')
+                                      Text(
+                                         "${"lbl_size".tr} : ${product.size =='large'?"lbl_large".tr:product.size =='medium'?"lbl_medium".tr:"lbl_small".tr}",
+                                    style: TextStyle(
+                                          fontSize: 14,
+                                        color: ColorConstant.textGrey,
+                                      
+                                        fontWeight: FontWeight.w400,
+                                    ),
+                                      ),
+                                    ],
                                   ),
                                   Spacer(),
                                   MyText(
@@ -369,29 +388,31 @@ class NewDetailView extends GetView<NewDetailController> {
                       
                       
                           // Payment Method
-                          Padding(
-                            padding: getPadding(right: 16, left: 16),
-                            child: SizedBox(
-                              width: double.infinity,
-                              
+                          // ignore: avoid_unnecessary_containers
+                          Container(
+                            alignment: Utils.checkIfArabicLocale()?Alignment.centerRight:Alignment.centerLeft,
+                              padding: getPadding(right: 16, left: 16),
                               child: MyText(
                                 title: "paid_with".tr,
                                 color: ColorConstant.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
-                            ),
+                            
                           ),
                           SizedBox(height: getSize(8)),
                           Padding(
                             padding: getPadding(right: 16, left: 16),
                             child: Column(
                               children: [
+                                if(controller.order?.payableAmount != 0)
                                 Padding(
                                       padding:getPadding(top: 8, bottom: 8),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.delivery_dining, color: ColorConstant.textGrey),
+                                      Icon(
+                                        controller.order?.paymentMethod == 'cod'?
+                                        Icons.delivery_dining:Icons.credit_card, color: ColorConstant.textGrey),
                                       SizedBox(width: getSize(8)),
                                       MyText(
                                         title: controller.order?.paymentMethod == 'cod'?  "cash_on_delivery".tr :
@@ -413,7 +434,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                       padding:getPadding(top: 8, bottom: 8),
                                       child: Row(
                                                                         children: [
-                                      Icon(Icons.credit_card, color: ColorConstant.textGrey),
+                                      Icon(Icons.account_balance_wallet, color: ColorConstant.textGrey),
                                       SizedBox(width: getSize(8)),
                                       MyText(
                                         title: 
@@ -421,7 +442,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                        fontSize: 14,
                                       ),
                                       Spacer(),
-                                      MyText(title:"${controller.order?.usedWalletBallance??0}",
+                                      MyText(title:"${(controller.order?.usedWalletBallance??0).toStringAsFixed(2)}",
                                         fontSize: 14,
                                        
                                       ),
@@ -434,7 +455,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                       padding:getPadding(top: 8, bottom: 8),
                                         child: Row(
                                                                           children: [
-                                                                            Icon(Icons.money, color: ColorConstant.textGrey),
+                                                                            Icon(Icons.loyalty, color: ColorConstant.textGrey),
                                                                             SizedBox(width: getSize(8)),
                                                                             MyText(
                                         title: 
@@ -442,7 +463,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                                                        fontSize: 14,
                                                                             ),
                                                                             Spacer(),
-                                                                            MyText(title:"${controller.order?.usedPointsBalance??0}",
+                                                                            MyText(title:"${(controller.order?.usedPointsBalance??0).toStringAsFixed(2)}",
                                         fontSize: 14,
                                                                      
                                                                             ),

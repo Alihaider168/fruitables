@@ -170,23 +170,14 @@ class AddressesView extends GetView<AddressesController> {
                                // ),),
                                       Container(
                                         width: double.infinity,
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                                         children: [
-                                                                           Text( "${'address'.tr} ",style: TextStyle( 
-                                                                             fontWeight: FontWeight.w400,fontSize: getFontSize(12),
-                                                                             color: ColorConstant.textGrey,
-                                                                             height: 1.2)),
-                                                                         Container(
-                                                                          width:getSize(250),
-                                                                           child: Text(address.address.toString(),style: TextStyle( 
-                                                                           fontWeight: FontWeight.w400,fontSize: getFontSize(12),
-                                                                           color: ColorConstant.black,
-                                                                           height: 1.2,                                                   
-                                                                                                                                                  ),),
-                                                                         )
-                                                                         ],
-                                                                       ),
+                                        child: Container(
+                                         width:getSize(250),
+                                          child: Text(address.address.toString(),style: TextStyle( 
+                                          fontWeight: FontWeight.w400,fontSize: getFontSize(12),
+                                          color: ColorConstant.black,
+                                          height: 1.2,                                                   
+                                                                                                                 ),),
+                                        ),
                                       ),
                               
                                if(

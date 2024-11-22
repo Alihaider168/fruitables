@@ -306,8 +306,43 @@ class MainMenuController extends GetxController {
                                   color: ColorConstant.black,
                                   alignRight: Utils.checkIfArabicLocale() ? true : null,
                                 ),
+                                   if(item.calories != 0)
+                                  //                               Column(
+                                  //                                 children: [
+                                                                    SizedBox(height: getSize(10),),
+                                  //                                   Divider(),
+                                  //                                SizedBox(height: getSize(7),),
+
+                                  //                                 ],
+                                  //                               ),
+                                    if(item.calories != 0)
+                           
+ Row(
+  crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              
+                                             CustomImageView(imagePath: ImageConstant.fire, height: getSize(20),),
+                                             SizedBox(width: getSize(5)),
+
+                                                                                              Padding(
+                                              padding: getPadding(top: 5),
+                                                                                                child: MyText(title: "calories".tr, fontSize: 14,
+                                  color: ColorConstant.black,),
+                                                                                              ),
+                                                                                                                                           SizedBox(width: getSize(5)),
+
+       Padding(
+                                              padding: getPadding(top: 5),
+         child: MyText(title: item.calories.toString(), fontSize: 14,
+                                  color: ColorConstant.black,),
+       ),
+
+                                
+                                            ],
+                                          ),
                                 SizedBox(height: getSize(15),),
                                 Divider(),
+                                if( checkForMultipleValues(item) )
                                 SizedBox(height: getSize(15),),
                                 checkForMultipleValues(item) ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,7 +365,9 @@ class MainMenuController extends GetxController {
                                                                         ((item.bottlePrice??0) == 0)? Offstage() :getCheckbox(title: " ${'lbl_bottle'.tr} ",value: 'bottle',price: item.largePrice??0,discountedPrice: item.mobileLarge??0),
                                                                      
                                     ],) ],
-                                ): Offstage()
+                                ): Offstage(),
+                            
+
                               ],
                             ),
                           ),

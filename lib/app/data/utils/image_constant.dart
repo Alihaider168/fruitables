@@ -10,6 +10,8 @@ class ImageConstant {
   static String terms = '$_imagePath/terms.svg';
   static String mail = '$_imagePath/mail.svg';
 
+  static String fire = '$_imagePath/firePng.png';
+
   static String sp = '$_imagePath/sp.jpg';
   static String logo2 = '$_imagePath/logo3.png';
   static String delivery = '$_imagePath/delivery.svg';

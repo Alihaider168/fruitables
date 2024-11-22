@@ -177,6 +177,7 @@ final Map<String, String> arSa = {
 
   "paid_with": "دفعت مع",
   "add_review": "اكتب مراجعة",
+    "calories":"سعرات حرارية",
 
 
   "search_your_desire":"ابحث عن رغبتك",

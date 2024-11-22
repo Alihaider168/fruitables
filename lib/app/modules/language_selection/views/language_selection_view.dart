@@ -63,7 +63,7 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
                                height: double.infinity,
                                child: videoController.value.isInitialized
                     ? VideoPlayer(videoController)
-                    : Center(child: CircularProgressIndicator()),
+                    : Center(),
                              ),
                 ),
                
@@ -74,7 +74,7 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: getSize(60),),
+                      SizedBox(height: getSize(30),),
                       
                       CircleAvatar(
                         backgroundColor: Colors.white,
@@ -152,12 +152,12 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
                       Obx(()=> mainWidget(
                         context: context,
                         image: ImageConstant.pickup,
-                          isSelected: controller.selectedPreference.value == 1,
+                          isSelected: controller.selectedPreference.value == 0,
                           title: "Pickup - استلام من الفرع",
-                          index: 1,
+                          index: 0,
                           groupValue: controller.selectedPreference.value,
                           onTap: (){
-                            controller.selectedPreference.value = 1;
+                            controller.selectedPreference.value = 0;
                           }
                       )),
                                             SizedBox(height: getSize(10),),
@@ -166,12 +166,12 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
                                                 context: context,
 
                         image: ImageConstant.delivery,
-                          isSelected: controller.selectedPreference.value == 0,
+                          isSelected: controller.selectedPreference.value == 1,
                           title: "Delivery - توصيل",
-                          index: 0,
+                          index: 1,
                           groupValue: controller.selectedPreference.value,
                           onTap: (){
-                            controller.selectedPreference.value = 0;
+                            controller.selectedPreference.value = 1;
                           }
                       )),
                       Spacer(),

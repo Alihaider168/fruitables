@@ -216,6 +216,8 @@ class Items {
   num? mobileLarge;
   num? mobileBottle;
   String? categoryId;
+    int? calories;
+
 
   Items({
     this.id,
@@ -235,6 +237,7 @@ class Items {
     this.mobileMedium,
     this.mobileLarge,
     this.mobileBottle,
+    this.calories,
     this.categoryId,
   });
 
@@ -257,6 +260,7 @@ class Items {
     mobileLarge = json['mobileLarge'];
     mobileBottle = json['mobileBottle'];
     categoryId = json['categoryId'] as String?;
+    calories= json['calories'];
   }
 
   Map<String, dynamic> toJson() {
@@ -279,6 +283,7 @@ class Items {
     json['mobileLarge'] = mobileLarge;
     json['mobileBottle'] = mobileBottle;
     json['categoryId'] = categoryId;
+    json['calories']= calories;
     return json;
   }
 }

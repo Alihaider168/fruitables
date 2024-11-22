@@ -185,6 +185,7 @@ final Map<String, String> enUs = {
   "you_can_search_using":"You can search using title of the product or description of the product",
     "no_product_matched":"No Product Matched",
     "please_double_check":"Please double check your spellings is it correct",
+    "calories":"Calories"
 
 
 

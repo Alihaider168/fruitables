@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
@@ -13,10 +14,16 @@ import 'package:rexsa_cafe/app/data/utils/fav_utils/fav_utils.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
-
+import 'package:rexsa_cafe/app/modules/orders/views/orders_view.dart';
 import '../../../data/utils/helper_functions.dart';
 
 class MainMenuController extends GetxController {
+
+  Orders? currentOrderForReview;
+
+  bool sheetShown = false;
+
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Rx<MenuModel> menuModel = MenuModel().obs;
   RxBool bottomBar = false.obs;
@@ -43,7 +50,8 @@ class MainMenuController extends GetxController {
   void onInit() {
     super.onInit();
     getInitialApisData();
-
+    loadOrders();
+    // _scheduleBackgroundTask();
     getMenu();
   }
 
@@ -52,11 +60,13 @@ class MainMenuController extends GetxController {
     appPreferences.getIsLoggedIn().then((value) async {
       if(value==true){
         getOrderStatus();
+        getUserDetail();
         favUtils.getFavourites();
       }else{
         bottomBar.value = false;
       }
       loadCart();
+
     }).catchError((err) async {
       bottomBar.value = false;
       loadCart();
@@ -203,8 +213,8 @@ class MainMenuController extends GetxController {
             maxChildSize: 0.9,
             builder: (context, scrollController) {
               return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: ColorConstant.white,
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
@@ -562,6 +572,30 @@ class MainMenuController extends GetxController {
     }
   }
 
+
+  Future<dynamic> getUserDetail() async {
+    Utils.check().then((value) async {
+      if (value) {
+
+        await BaseClient.get(ApiUtils.getMyDetail,
+          onSuccess: (response) async {
+            User user = User.fromJson(response.data['customer']);
+            Constants.userModel?.customer = user;
+            await appPreferences.isPreferenceReady;
+            appPreferences.setUserData(data: jsonEncode(Constants.userModel?.toJson()));
+            appPreferences.setIsLoggedIn(loggedIn: true);
+            return true;
+          },
+          onError: (error) {
+            BaseClient.handleApiError(error);
+            return false;
+          },
+          headers: Utils.getHeader(),
+        );
+      }
+    });
+  }
+
   Future<void> getCurrentOrderContinious() async {
     Utils.check().then((value) async {
       if (value) {
@@ -569,11 +603,24 @@ class MainMenuController extends GetxController {
             onSuccess: (response) async {
               if(((response.data as List?)??[]).isNotEmpty){
                 ordersLenght.value = response.data.length;
+
                 
                 Orders? order = Orders.fromJson(response.data[ordersLenght.value -1]);
-                
                 currentOrder.value = order;
                 orderAdded.value = true;
+
+
+
+                List<Orders> po = [];
+                for(var item in response.data){
+                  po.add(Orders.fromJson(item));
+                }
+                if(Utils.checkIfAnyOrderCompleted(po, currentOrderForReview) && !sheetShown){
+                  sheetShown = true;
+                  removeOrder();
+                  _showReviewBottomSheet();
+                }
+
                 await Future.delayed(Duration(seconds: 10));
                 getCurrentOrderContinious();
               }else{
@@ -703,7 +750,7 @@ class MainMenuController extends GetxController {
 
                   text: "lbl_login".tr,
                   controller: loginController,
-                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
+                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: ColorConstant.white)),
                   onTap: () async {
                     if(_formKey.currentState!.validate()){
 
@@ -809,7 +856,7 @@ class MainMenuController extends GetxController {
                 CustomButton(
                   text: "signup".tr,
                   controller: signupController,
-                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: Colors.white)),
+                  // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: ColorConstant.white)),
                   onTap: () async {
                     if(_formKey2.currentState!.validate()){
                       signupController.start();
@@ -966,4 +1013,125 @@ class MainMenuController extends GetxController {
         }
     );
   }
+
+
+
+  Future<void> loadOrders() async {
+    currentOrderForReview = Orders.fromJson(jsonDecode(await appPreferences.getCurrentOrder()??""));
+  }
+
+  Future<void> removeOrder() async {
+    // Save lists to SharedPreferences
+    appPreferences.removeValue(AppPreferences.prefCurrentOrder);
+
+  }
+
+  void _showReviewBottomSheet() {
+    num _rating = 0.0;
+    Get.bottomSheet(
+        StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // App Details with User Profile
+                    Row(
+                      children: [
+                        CustomImageView(
+                          radius: getSize(15),
+                          height: getSize(25),
+                          width: getSize(25),
+                          url: Utils.getCompleteUrl(currentOrderForReview?.branch?.image?.key),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: MyText(
+                            title: Utils.checkIfArabicLocale() ? currentOrderForReview?.branch?.name??"" : currentOrderForReview?.branch?.englishName??"",
+                            color: ColorConstant.white, fontSize: 16,
+                          ),
+                        ),
+                        IconButton(onPressed: (){}, icon: Icon(Icons.close))
+                      ],
+                    ),
+                    SizedBox(height: getSize(20)),
+                    // Rating Bar
+                    Text(
+                      "Rate your experience:",
+                      style: TextStyle(color: ColorConstant.white, fontSize: 16),
+                    ),
+                    SizedBox(height: 8),
+                    RatingBar.builder(
+                      initialRating: _rating.toDouble(),
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          _rating = rating;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    // Action Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            child:
+                            CustomButton(
+                              onTap: ()=> Get.back(),
+                              variant: ButtonVariant.OutlineGrey,
+                              text: "not_now".tr,
+                            )
+                        ),
+                        SizedBox(width: getSize(15),),
+                        Expanded(
+                            child:
+                            CustomButton(
+                              onTap: (){
+                                Get.back();
+                                _launchReviewsURL(currentOrderForReview?.id??"", _rating);
+                              },
+                              variant: ButtonVariant.FillWhite,
+                              text: "submit".tr,
+                            )
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      isScrollControlled: true, // To allow full-screen BottomSheets
+      backgroundColor: ColorConstant.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(16))),
+      ),
+    );
+  }
+
+  void _launchReviewsURL(String orderId,num rating) async {
+    var url = 'https://rexsacafe.com/reviews?order=$orderId&rating=$rating';
+    await Get.to(()=> WebViewPage(url: url));
+    getInitialApisData();
+  }
+
 }

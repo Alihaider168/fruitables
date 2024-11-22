@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
+import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
@@ -31,6 +32,65 @@ class Utils {
     String formattedDate = DateFormat('d MMM HH:mm').format(localDateTime);
 
     return formattedDate;
+  }
+
+
+  static bool checkIfMoreThanHour(String? utcTimestamp) {
+    // Parse the UTC timestamp
+    DateTime utcDateTime;
+
+    if(utcTimestamp == null){
+      utcDateTime = DateTime.now();
+    }else{
+      utcDateTime = DateTime.parse(utcTimestamp);
+    }
+
+    // Convert UTC to local time (adjust according to your timezone if needed)
+    DateTime localDateTime = utcDateTime.toLocal();
+    DateTime nowTime = DateTime.now();
+
+    if (nowTime.difference(localDateTime) >= Duration(minutes: 1)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static List<Orders> removeDuplicates(List<Orders> items) {
+    List<Orders> result = [];
+
+    for (int i = 0; i < items.length; i++) {
+      bool isDuplicate = false;
+
+      // Check if the current item's ID is already in the result list
+      for (int j = 0; j < result.length; j++) {
+        if (result[j].id == items[i].id) {
+          isDuplicate = true;
+          break;
+        }
+      }
+
+      // If not a duplicate, add it to the result list
+      if (!isDuplicate) {
+        result.add(items[i]);
+      }
+    }
+
+    return result;
+  }
+
+  static bool checkIfAnyOrderCompleted(List<Orders> pending,Orders? currentOrder,) {
+    if(currentOrder == null){
+      return false;
+    }else{
+      bool isExist = false;
+      for(var item in pending){
+        if(item.id == currentOrder.id){
+          isExist = true;
+        }
+      }
+      return !isExist;
+    }
   }
 
 

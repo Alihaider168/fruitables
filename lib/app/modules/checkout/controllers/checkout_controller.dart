@@ -223,15 +223,17 @@ class CheckoutController extends GetxController {
 
         await BaseClient.post(ApiUtils.addOrder,
             onSuccess: (response) async {
-          checkoutController.stop();
+              checkoutController.stop();
               print(response);
               CustomSnackBar.showCustomToast(message: "order_created".tr);
               Get.back();
-              getUserDetail();
-          Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data),"from_order": true});
-          menuController.cart.clearCart();
-          menuController.bottomBar.value = false;
-          menuController.orderAdded.value = true;
+              menuController.currentOrderForReview = Orders.fromJson(response.data);
+              appPreferences.setCurrentOrder(data: jsonEncode(response.data));// menuController.pendingOrders.add(Orders.fromJson(response.data));
+              // menuController.saveOrders();
+              Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': Orders.fromJson(response.data),"from_order": true});
+              menuController.cart.clearCart();
+              menuController.bottomBar.value = false;
+              menuController.orderAdded.value = true;
 
               return true;
             },
@@ -266,7 +268,7 @@ class CheckoutController extends GetxController {
     try {
       checkoutController.start();
       MFInitiatePaymentRequest request = MFInitiatePaymentRequest(
-          invoiceAmount: amount, currencyIso: MFCurrencyISO.SAUDIARABIA_SAR,
+        invoiceAmount: amount, currencyIso: MFCurrencyISO.SAUDIARABIA_SAR,
       );
       await MFSDK
           .initiatePayment(request, Utils.checkIfArabicLocale() ? MFLanguage.ARABIC : MFLanguage.ENGLISH)
@@ -320,27 +322,6 @@ class CheckoutController extends GetxController {
 
   }
 
-  Future<dynamic> getUserDetail() async {
-    Utils.check().then((value) async {
-      if (value) {
-
-        await BaseClient.get(ApiUtils.getMyDetail,
-          onSuccess: (response) async {
-            User user = User.fromJson(response.data['customer']);
-            Constants.userModel?.customer = user;
-            await appPreferences.isPreferenceReady;
-            appPreferences.setUserData(data: jsonEncode(Constants.userModel?.toJson()));
-            return true;
-          },
-          onError: (error) {
-            BaseClient.handleApiError(error);
-            return false;
-          },
-          headers: Utils.getHeader(),
-        );
-      }
-    });
-  }
 
   num getFinalPrice(){
     num price = menuController.cart.getTotalDiscountedPrice() + menuController.cart.getTax() + (Constants.isDelivery.value ? Constants.DELIVERY_FEES : 0);
@@ -413,18 +394,19 @@ class CheckoutController extends GetxController {
 
     })
         .then((value) {
-          debugPrint(value.toString());
-          Get.back();
-          if((value.invoiceStatus??"").toLowerCase() == "paid"){
-            addOrder(paymentId: value.invoiceId.toString(),paymentMethod: "card");
-          }else{
-            CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
-          }
-        })
+      debugPrint(value.toString());
+      Get.back();
+      if((value.invoiceStatus??"").toLowerCase() == "paid"){
+        addOrder(paymentId: value.invoiceId.toString(),paymentMethod: "card");
+      }else{
+        CustomSnackBar.showCustomErrorToast(message: "Something went wrong");
+      }
+    })
         .catchError((error)  {
-          debugPrint(error.message);
-        });
+      debugPrint(error.message);
+    });
   }
+
 
 
 }

@@ -7,6 +7,7 @@ class AppPreferences {
   static const String prefTypeInteger = "INTEGER";
   static const String prefTypeDouble = "DOUBLE";
   static const String prefTypeString = "STRING";
+  static const String prefTypeList = "LIST";
 
   late Future _isPreferenceInstanceReady;
   late SharedPreferences _preferences;
@@ -15,6 +16,7 @@ class AppPreferences {
   static const String prefUserToken = "USER_TOKEN";
   static const String prefUserData = "USER_DATA";
   static const String prefLoggedIn = "LOGGED_IN";
+  static const String prefCurrentOrder = "CURRENT_ORDER";
 
 
   //-------------------------------------------------------------------- Singleton ----------------------------------------------------------------------
@@ -42,7 +44,7 @@ class AppPreferences {
   Future get isPreferenceReady => _isPreferenceInstanceReady;
 
   //--------------------------------------------------- Public Preference Methods -------------------------------------------------------------
-  void _removeValue(String key) {
+  void removeValue(String key) {
     //Remove String
     _preferences.remove(key);
   }
@@ -54,12 +56,12 @@ class AppPreferences {
         prefName: prefUserData,
       ); // Check value for NULL. If NULL provide default value as FALSE.
 
-  void setToken({required String data}) => _setPreference(
-      prefName: prefUserToken, prefValue: data, prefType: prefTypeString);
+  void setCurrentOrder({required String data}) => _setPreference(
+      prefName: prefCurrentOrder, prefValue: data, prefType: prefTypeString);
 
-  Future<String?> getToken() async => await _getPreference(
-        prefName: prefUserToken,
-      ); // Check value for NULL. If NULL provide default value as FALSE.
+  Future<String?> getCurrentOrder() async => await _getPreference(
+        prefName: prefCurrentOrder,
+      );
 
   void setIsLoggedIn({required bool loggedIn}) => _setPreference(
       prefName: prefLoggedIn, prefValue: loggedIn, prefType: prefTypeBool);
@@ -67,7 +69,6 @@ class AppPreferences {
   Future<bool?> getIsLoggedIn() async {
     return await _getPreference(prefName: prefLoggedIn);
   }
-
 
   //--------------------------------------------------- Private Preference Methods ----------------------------------------------------
   /// @usage -> This is a generalized method to set preferences with required Preference-Name(Key) with Preference-Value(Value) and Preference-Value's data-type.
@@ -95,6 +96,11 @@ class AppPreferences {
       case prefTypeString:
         {
           _preferences.setString(prefName, prefValue);
+          break;
+        }
+      case prefTypeList:
+        {
+          _preferences.setStringList(prefName, prefValue);
           break;
         }
     }

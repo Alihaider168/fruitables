@@ -41,14 +41,19 @@ class NewDetailView extends GetView<NewDetailController> {
 
 
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: WillPopScope(
-        onWillPop: ()async{
-           Get.delete<NewDetailController>();
-        return true; 
-        },
-        child: SafeArea(
+    return WillPopScope(
+      onWillPop: () async {
+        if(controller.fromOrder){
+          Get.offAllNamed(Routes.MAIN_MENU);
+        }else{
+          Get.back();
+        }
+        Get.delete<NewDetailController>();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
           child: Column(
             children: [
               Expanded(
@@ -64,10 +69,10 @@ class NewDetailView extends GetView<NewDetailController> {
                             height: getSize(200),
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: 
+                                image:
                                 NetworkImage(Utils.getCompleteUrl(controller.order?.branch?.image?.key),
-                                
-                                
+
+
                                 ), // Replace with your image
                                 fit: BoxFit.cover,
                               ),
@@ -77,7 +82,7 @@ class NewDetailView extends GetView<NewDetailController> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                          
+
                                 Padding(
                                   padding: getPadding(left: 16,top: 10, right: 16,),
                                   child: GestureDetector(
@@ -96,7 +101,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                     ),
                                   ),
                                 ),
-                                          
+
                                 InkWell(
                                   onTap: (){
                                  showSupportCenterBottomSheet(context);
@@ -120,7 +125,7 @@ class NewDetailView extends GetView<NewDetailController> {
                       ),
                       Column(
                         children: [
-                      
+
                           // Order Information
                           Container(
                             color: Colors.grey.shade100,
@@ -153,7 +158,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.symmetric(horizontal: 5),
-                                                   
+
                                                     width: getSize(110),
                                                     height: 5,
                                                     decoration: BoxDecoration(
@@ -182,18 +187,18 @@ class NewDetailView extends GetView<NewDetailController> {
                                             );
                                           },
                                         ),
-                                        
+
                                  ],
                                ):
                                InkWell(
                                 onTap: ()async{
                                    if(controller.order?.reviews?['rating'] == null){
-                                     var url = 'https://rexsacafe.com/reviews?order=${controller.order?.id}';  
-    if (await canLaunch(url)) {
-      await launch(url); 
-    } else {
-      throw 'Could not launch $url';  
-    }
+                                     var url = 'https://rexsacafe.com/reviews?order=${controller.order?.id}';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
                                    }
                                 },
                                  child: Row(
@@ -203,9 +208,9 @@ class NewDetailView extends GetView<NewDetailController> {
                                                        title:
                                                      controller.order?.reviews?['rating'] == null?  "add_review".tr:"you_rated".tr,
                                                        fontWeight: FontWeight.w700,
-                                                      fontSize: 11,                            
+                                                      fontSize: 11,
                                                        color:controller.order?.reviews?['rating'] == null ?ColorConstant.blue :Colors.grey.shade700.withOpacity(0.8),
-                                               
+
                                                      ),
                                                        if( controller.order?.reviews?['rating'] != null)
                                                      Padding(
@@ -214,7 +219,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                                      ),
                                                      if( controller.order?.reviews?['rating'] != null)
                                                      MyText(title:
-                                                     
+
                                                       "${controller.order?.reviews?['rating']}" ,
                                                        fontSize: 12,
                                                        fontWeight: FontWeight.w700,
@@ -222,8 +227,8 @@ class NewDetailView extends GetView<NewDetailController> {
                                                    ],
                                                  ),
                                ),
-        
-        
+
+
                               // MyText(
                               //   title: controller.order?.type == "delivery" && controller.order?.deliveredAt != null? "${"delivered_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}" : controller.order?.type != "delivery" && controller.order?.completedAt != null ?"${"picked_on".tr} ${Utils.formatTimestamp(controller.order?.completedAt)}":"",
                               //   color: ColorConstant.textGrey,
@@ -242,22 +247,22 @@ class NewDetailView extends GetView<NewDetailController> {
                                                 lineThickness: 2,
                                                 dashLength: 5,
                                                 dashColor: Colors.grey,
-                                              ), 
+                                              ),
                                                                                Icon(Icons.watch_later_outlined, color: Colors.black),
 
                                                                        if(controller.order?.status == "delivered" )
-        
+
                                          DottedLine(
                                                 direction: Axis.vertical,
                                                 lineLength: getSize(40),
                                                 lineThickness: 2,
                                                 dashLength: 5,
                                                 dashColor: Colors.grey,
-                                              ), 
+                                              ),
                                                                               if(controller.order?.status == "delivered" )
-        
+
                                         Icon(Icons.delivery_dining, color: Colors.black),
-                                
+
                                      ],
                                    ),
                                                             SizedBox(width: 8),
@@ -267,7 +272,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                     children: [
                                       Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
-        
+
                                         children: [ MyText(
                                         title:"lbl_order_from".tr,
                                         fontSize: 11, color: Colors.grey.shade600.withOpacity(0.9),
@@ -281,49 +286,49 @@ class NewDetailView extends GetView<NewDetailController> {
 
                                        Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
-        
+
                                         children: [ MyText(
                                         title:"created_at".tr,
                                         fontSize: 11, color: Colors.grey.shade600.withOpacity(0.9),
                                       ),
                                       MyText(
                                         title:Utils.checkIfArabicLocale()?"$timeC" "$yearC $dayC $monthC":"$dayC $monthC $yearC $timeC"
-                                      ,   
+                                      ,
                                       alignRight: Utils.checkIfArabicLocale(),                                                                            fontSize: 12,
                                                                            fontWeight: FontWeight.w600,
                                                                         ),],),
                                   if(controller.order?.status == "delivered" )
                                 SizedBox(height: getSize(19),),
                                                                 if(controller.order?.status == "delivered" )
-        
+
                                     Column(
                                                                         crossAxisAlignment: CrossAxisAlignment.start,
-        
-                                      
+
+
                                       children: [ MyText(
                                         title:"delivered_on".tr,
                                         fontSize: 11, color: Colors.grey.shade600.withOpacity(0.9),
                                       ),
                                       MyText(
                                         title:Utils.checkIfArabicLocale()?"$timeD" "$yearD $dayD $monthD":"$dayD $monthD $yearD $timeD"
-,                                     fontSize: 12,
+              ,                                     fontSize: 12,
                                      fontWeight: FontWeight.w600,
                                   ),],)
-                                     
+
                                     ],
                                   ),
                                 ],
-                                
+
                                                             ),
                                 ],
                               ),
                             ),
                           ),
-                         
-                                            
-                                           
-                          
-                      
+
+
+
+
+
                           // Delivery Information
                         SizedBox(height: getSize(18)),
                           ListView.builder(
@@ -347,14 +352,14 @@ class NewDetailView extends GetView<NewDetailController> {
                                     children: [
                                     Text(
                                          "${Utils.checkIfArabicLocale()?"x${(product.quantity??0)}":"${(product.quantity??0)}x"} ${Utils.checkIfArabicLocale() ? product.arabicName :product.name}",
-                                        
+
                                         style: TextStyle(
                                           fontSize: getFontSize(14),
-                                        
-                                      
+
+
                                         fontWeight: FontWeight.w600,
                                         ),
-                                        
+
                                       ),
                                       if(product.size != null && product.size !='')
                                       Text(
@@ -362,7 +367,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                     style: TextStyle(
                                           fontSize: 14,
                                         color: ColorConstant.textGrey,
-                                      
+
                                         fontWeight: FontWeight.w400,
                                     ),
                                       ),
@@ -378,9 +383,9 @@ class NewDetailView extends GetView<NewDetailController> {
                             },
                           ),
                           // Item List
-                      
-                        
-                      
+
+
+
                           // Pricing Details
                           Padding(
                                    padding: getPadding(left: 16,right: 16),
@@ -393,16 +398,16 @@ class NewDetailView extends GetView<NewDetailController> {
                                 _buildTotalRow("lbl_discount".tr, (controller.order?.discount??0).toDouble(), isDiscount: true),
                                 (controller.order?.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
                                 _buildTotalRow("${"lbl_tax".tr} (15.0%)",controller.order?.tax??0),
-                                
+
                                 SizedBox(height: getSize(12)),
                                 _buildTotalRow("lbl_total".tr,controller.order?.totalAmount??0,isBold: true, color: Colors.black, fontSize: 15),
                                             Divider(color: Colors.grey.shade300,height: 30,),
-                
+
                               ],
                             ),
                           ),
-                      
-                      
+
+
                           // Payment Method
                           // ignore: avoid_unnecessary_containers
                           Container(
@@ -414,7 +419,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
-                            
+
                           ),
                           SizedBox(height: getSize(8)),
                           Padding(
@@ -443,8 +448,8 @@ class NewDetailView extends GetView<NewDetailController> {
                                     ],
                                   ),
                                 ),
-                               
-                                 (  (controller.order?.usedWalletBallance ??"")!= "" && controller.order?.usedWalletBallance != 0 )? 
+
+                                 (  (controller.order?.usedWalletBallance ??"")!= "" && controller.order?.usedWalletBallance != 0 )?
                                     Padding(
 
                                       padding:getPadding(top: 8, bottom: 8),
@@ -453,20 +458,20 @@ class NewDetailView extends GetView<NewDetailController> {
                                       Icon(Icons.account_balance_wallet, color: ColorConstant.textGrey),
                                       SizedBox(width: getSize(8)),
                                       MyText(
-                                        title: 
+                                        title:
                                           "from_wallet".tr,
                                        fontSize: 14,
                                       ),
                                       Spacer(),
                                       MyText(title:"${(controller.order?.usedWalletBallance??0).toStringAsFixed(2)}",
                                         fontSize: 14,
-                                       
+
                                       ),
                                                                         ],
                                                                       ),
                                     ) : Offstage(),
                                 ((controller.order?.usedPointsBalance ??"")!= "" && controller.order?.usedPointsBalance != 0)?
-                                
+
                                       Padding(
                                       padding:getPadding(top: 8, bottom: 8),
                                         child: Row(
@@ -474,32 +479,32 @@ class NewDetailView extends GetView<NewDetailController> {
                                                                             Icon(Icons.loyalty, color: ColorConstant.textGrey),
                                                                             SizedBox(width: getSize(8)),
                                                                             MyText(
-                                        title: 
+                                        title:
                                           "from_points".tr,
                                                                        fontSize: 14,
                                                                             ),
                                                                             Spacer(),
                                                                             MyText(title:"${(controller.order?.usedPointsBalance??0).toStringAsFixed(2)}",
                                         fontSize: 14,
-                                                                     
+
                                                                             ),
                                                                           ],
                                                                         ),
-                                      ) 
+                                      )
                                  : Offstage(),
-                           
-                           
+
+
                                 SizedBox(height: getSize(10)),
                                 Divider(color: Colors.grey.shade300),
                                   ],
                             ),
                           ),
                           SizedBox(height: getSize(20)),
-                          
+
                         ],
                       ),
-                    
-                
+
+
                     ],
                   ),
                 ),
@@ -511,7 +516,7 @@ class NewDetailView extends GetView<NewDetailController> {
                         onTap: (){
                           for(int i=0;i<(controller.order?.products??[]).length;i++){
                             final item = (controller.order?.products??[])[i];
-                  
+
                             Items? foundItem = (controller.menuController.menuModel.value.data?.items??[]).firstWhere(
                                   (test) => test.id == item.id || test.id == item.productId,
                             );
@@ -524,7 +529,7 @@ class NewDetailView extends GetView<NewDetailController> {
                               controller.menuController.loadCart();
                               controller.menuController.bottomBar.value = true;
                             }
-                  
+
                           }
                           controller.menuController.loadCart();
                           Get.toNamed(Routes.CART);

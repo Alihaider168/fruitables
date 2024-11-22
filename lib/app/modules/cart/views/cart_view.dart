@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
-import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
+
 import '../controllers/cart_controller.dart';
 
 class CartView extends StatefulWidget {
@@ -275,58 +274,100 @@ class _CartViewState extends State<CartView> {
       ),
       child: Column(
         children: [
-          !Constants.isLoggedIn.value ? Offstage() : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.balance??0.00).toStringAsFixed(2)}",fontSize: 15,),
-              Obx(()=> Switch(
-                value: controller.useWallet.value,
-                onChanged: (value) {
-                  if((Constants.userModel?.customer?.balance??0) <= 0){
-                    controller.useWallet.value = false;
-                  }else{
-                    controller.useWallet.value = value;
-                  }
-                },
-                activeColor: ColorConstant.primaryPink,
-                inactiveTrackColor: ColorConstant.grayBackground,
-              ),)
-            ],
+          !Constants.isLoggedIn.value ? Offstage() : Container(
+            height: getSize(25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.balance??0.00).toStringAsFixed(2)}",fontSize:Utils.checkIfArabicLocale()?12: 12,),
+                Obx(()=> Transform.scale(
+                    scale: 0.7,
+                  child: Switch(
+                    value: controller.useWallet.value,
+                    onChanged: (value) {
+                      if((Constants.userModel?.customer?.balance??0) <= 0){
+                        controller.useWallet.value = false;
+                      }else{
+                        controller.useWallet.value = value;
+                      }
+                    },
+                    activeColor: ColorConstant.primaryPink,
+                    inactiveTrackColor: ColorConstant.grayBackground,
+                  ),
+                ),)
+              ],
+            ),
           ),
           !Constants.isLoggedIn.value ? Offstage() : SizedBox(height: getSize(5),),
-          !Constants.isLoggedIn.value ? Offstage() : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyText(title: "${"lbl_use_points".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.points??0.00).toStringAsFixed(2)}",fontSize: 15,),
-              Obx(()=> Switch(
-                value: controller.usePoints.value,
-                onChanged: (value) {
-                  if((Constants.userModel?.customer?.points??0) <= 0){
-                    controller.usePoints.value = false;
-                  }else{
-                    controller.usePoints.value = value;
-                  }
-
-                },
-                activeColor: ColorConstant.primaryPink,
-                inactiveTrackColor: ColorConstant.grayBackground,
-              ),)
-            ],
-          ),
-          CustomButton(
-            text: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
-            prefixWidget: Container(
-              padding: getPadding(right: 10),
-              child: Icon(Icons.add,color: ColorConstant.white,
-              ),
+          !Constants.isLoggedIn.value ? Offstage() : Container(
+            height: getSize(25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MyText(title: "${"lbl_use_points".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.points??0.00).toStringAsFixed(2)}",fontSize: Utils.checkIfArabicLocale()?12: 12,),
+                Obx(() => Transform.scale(
+                  scale: 0.7, 
+                  child: Switch(
+                    value: controller.usePoints.value,
+                    onChanged: (value) {
+            if ((Constants.userModel?.customer?.points ?? 0) <= 0) {
+              controller.usePoints.value = false;
+            } else {
+              controller.usePoints.value = value;
+            }
+                    },
+                    activeColor: ColorConstant.primaryPink,
+                    inactiveTrackColor: ColorConstant.grayBackground,
+                  ),
+                )),
+            
+              ],
             ),
+          ),
+          InkWell(
             onTap: (){
               if(!Constants.isLoggedIn.value){
                 controller.menuController.showLoginSheet(context);
               }
             },
+            child: Container(
+              decoration: BoxDecoration(color:Colors.grey.shade200, borderRadius: BorderRadius.circular(8)),
+              height: getSize(40),
+                          margin: getMargin(top: 22, bottom: 12),
+            
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                CircleAvatar(
+                  radius: getSize(12),
+                  backgroundColor: Colors.black,
+                                 child: Icon(Icons.add,color: ColorConstant.white,size: 20,)
+            
+                ),
+                SizedBox(width: getSize(10)),
+                MyText(title: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,)
+              ],),
+            ),
           ),
-          SizedBox(height: getSize(16)),
+          // CustomButton(
+          //   margin: getMargin(top: 10),
+          //   text: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
+          //   prefixWidget: Container(
+          //     padding: getPadding(right: 10),
+          //     child: Icon(Icons.add,color: ColorConstant.white,
+          //     ),
+          //   ),
+          //   onTap: (){
+          //     if(!Constants.isLoggedIn.value){
+          //       controller.menuController.showLoginSheet(context);
+          //     }
+          //   },
+          // ),
+          Divider(),
+          SizedBox(height: getSize(0)),
           _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
@@ -360,8 +401,8 @@ class _CartViewState extends State<CartView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
-          MyText(title: Utils.formatNumberWithText(amount), fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 15,),
+          MyText(title: label, fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize:Utils.checkIfArabicLocale()?12 :12,),
+          MyText(title: Utils.formatNumberWithText(amount), fontWeight: isBold ? FontWeight.bold : FontWeight.normal,fontSize: 12,),
         ],
       ),
     );

@@ -179,6 +179,7 @@ final Map<String, String> arSa = {
   "add_review": "اكتب مراجعة",
     "calories":"سعرات حرارية",
 
+  "lbl_use_points":"استخدام النقاط",
 
   "search_your_desire":"ابحث عن رغبتك",
   "you_can_search_using":"يمكنك البحث باستخدام عنوان المنتج أو وصف المنتج",

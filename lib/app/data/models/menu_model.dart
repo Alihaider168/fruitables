@@ -24,17 +24,20 @@ class Data {
   List<Categories>? categories;
   List<Items>? items;
   List<Banners>? banners;
+  List<Banners>? popups;
 
   Data({
     this.categories,
     this.items,
     this.banners,
+    this.popups,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
     categories = (json['categories'] as List?)?.map((dynamic e) => Categories.fromJson(e as Map<String,dynamic>)).toList();
     items = (json['items'] as List?)?.map((dynamic e) => Items.fromJson(e as Map<String,dynamic>)).toList();
     banners = (json['banners'] as List?)?.map((dynamic e) => Banners.fromJson(e as Map<String,dynamic>)).toList();
+    popups = (json['popUps'] as List?)?.map((dynamic e) => Banners.fromJson(e as Map<String,dynamic>)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +45,7 @@ class Data {
     json['categories'] = categories?.map((e) => e.toJson()).toList();
     json['items'] = items?.map((e) => e.toJson()).toList();
     json['banners'] = banners?.map((e) => e.toJson()).toList();
+    json['popUps'] = popups?.map((e) => e.toJson()).toList();
     return json;
   }
 }

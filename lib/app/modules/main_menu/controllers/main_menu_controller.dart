@@ -94,6 +94,9 @@ class MainMenuController extends GetxController {
         await BaseClient.get(ApiUtils.getMenu,
           onSuccess: (response) async {
             menuModel.value = MenuModel.fromJson(response.data);
+            if((menuModel.value.data?.popups??[]).isNotEmpty){
+              showStartingImages(menuModel.value.data?.popups??[]);
+            }
             Constants.menuItems = [];
             Constants.menuItems.addAll(menuModel.value.data?.items??[]);
             isLoading.value = false;
@@ -1132,6 +1135,68 @@ class MainMenuController extends GetxController {
     var url = 'https://rexsacafe.com/reviews?order=$orderId&rating=$rating';
     await Get.to(()=> WebViewPage(url: url));
     getInitialApisData();
+  }
+
+
+  showStartingImages(List<Banners> list){
+    // Show the dialog
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.white, // No padding/margins
+        insetPadding: EdgeInsets.zero, // Remove default padding
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(getSize(15))
+        ),
+        child: SizedBox(
+          height: getSize(400),
+          width: size.width-50,
+          child: Stack(
+            children: [
+              SizedBox.expand(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: list.length, // Number of images
+                        itemBuilder: (context, index) {
+                          return CustomImageView(
+                            url: Utils.getCompleteUrl(list[index].image?.key??""),
+                            fit: BoxFit.cover,
+                            height: getSize(250),
+                            width: size.width-60, // Full width
+                            radius: getSize(15),
+                            margin: getMargin(bottom: 10),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: getSize(16),
+                right: getSize(16),
+                child: GestureDetector(
+                  onTap: () => Get.back(), // Close the dialog
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ColorConstant.black.withOpacity(0.6),
+                    ),
+                    padding: getPadding(all: 8),
+                    child: Icon(
+                      Icons.close,
+                      color: ColorConstant.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true, // Dismiss when tapping outside
+    );
   }
 
 }

@@ -64,7 +64,9 @@ class OrdersView extends GetView<OrdersController> {
               // return OrderCard(order: order);
               return GestureDetector(
                 onTap: (){
-                 print( controller.myOrders[index].reviews);
+                 print( controller.myOrders[index].id);
+                print( controller.myOrders[index].reviews);
+
                   Get.toNamed(Routes.NEW_DETAIL,arguments: {'order': order});
                 },
                 child: PastOrderTile(
@@ -74,7 +76,7 @@ class OrdersView extends GetView<OrdersController> {
                   description:Utils.checkIfArabicLocale()?(order.products??[]).map((element)=> element.arabicName.toString()).join(", "): (order.products??[]).map((element)=> element.name.toString()).join(", "),
                   price: "${order.totalAmount??0}",
                   completedAt: order.completedAt,
-                  rating: order.reviews?['rating'],
+                  rating: order.reviews?['rating'].toString(),
                   id: order.id??'',
                   onReorder: (){
                     for(int i=0;i<(order.products??[]).length;i++){
@@ -223,6 +225,7 @@ class PastOrderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Utils.checkIfArabicLocale());
       Locale? currentLocale = Get.locale;
       String month ='';
    String date='';
@@ -288,6 +291,7 @@ if(deliveryDate != null){
                           MyText(title:
                             description,
                               fontSize: 12,
+                              alignRight: Utils.checkIfArabicLocale() ?true:null,
                               color: Colors.grey.shade700.withOpacity(.8),
                             line: 2,
                             overflow: TextOverflow.ellipsis,
@@ -380,7 +384,8 @@ if(deliveryDate != null){
           ),
            InkWell(
             onTap:(){
-              _launchReviewsURL(id);
+              rating == null?
+              _launchReviewsURL(id):null;
             },
              child: Container(
              
@@ -400,18 +405,19 @@ if(deliveryDate != null){
                       title:
                      rating == null? "add_review".tr:"you_rated".tr,
                       fontWeight: FontWeight.w700,
-                     fontSize: 11,                            color: Colors.grey.shade700.withOpacity(0.8)
+                     fontSize: 11,                            color:rating == null?ColorConstant.blue: Colors.grey.shade700.withOpacity(0.8)
               
               ,
               
                     ),
+if(rating != null)
                     Padding(
-                      padding: getPadding(right: 0, left: 3),
+                      padding: getPadding(right: 2, left: 2),
                       child: const Icon(Icons.star, color: Colors.orange, size: 16),
                     ),
                     if(rating != null )
                     MyText(title:
-                      " $rating ",
+                      "$rating",
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),

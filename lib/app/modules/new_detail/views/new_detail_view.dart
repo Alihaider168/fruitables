@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/new_detail_controller.dart';
 
@@ -184,29 +185,43 @@ class NewDetailView extends GetView<NewDetailController> {
                                         
                                  ],
                                ):
-                               Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyText(
-                      title:
-                    controller.order?.reviews?['rating'] == null?  "add_review".tr:"you_rated".tr,
-                      fontWeight: FontWeight.w700,
-                     fontSize: 11,                            
-                      color: Colors.grey.shade700.withOpacity(0.8),
-              
-                    ),
-                    Padding(
-                      padding: getPadding(right: 0, left: 3),
-                      child: const Icon(Icons.star, color: Colors.orange, size: 16),
-                    ),
-                    if( controller.order?.reviews?['rating'] != null)
-                    MyText(title:
-                     " ${controller.order?.reviews?['rating']} " ,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ],
-                ),
+                               InkWell(
+                                onTap: ()async{
+                                   if(controller.order?.reviews?['rating'] == null){
+                                     var url = 'https://rexsacafe.com/reviews?order=${controller.order?.id}';  
+    if (await canLaunch(url)) {
+      await launch(url); 
+    } else {
+      throw 'Could not launch $url';  
+    }
+                                   }
+                                },
+                                 child: Row(
+                                                   mainAxisAlignment: MainAxisAlignment.center,
+                                                   children: [
+                                                     MyText(
+                                                       title:
+                                                     controller.order?.reviews?['rating'] == null?  "add_review".tr:"you_rated".tr,
+                                                       fontWeight: FontWeight.w700,
+                                                      fontSize: 11,                            
+                                                       color:controller.order?.reviews?['rating'] == null ?ColorConstant.blue :Colors.grey.shade700.withOpacity(0.8),
+                                               
+                                                     ),
+                                                       if( controller.order?.reviews?['rating'] != null)
+                                                     Padding(
+                                                       padding: getPadding(right: 2, left: 2),
+                                                       child: const Icon(Icons.star, color: Colors.orange, size: 16),
+                                                     ),
+                                                     if( controller.order?.reviews?['rating'] != null)
+                                                     MyText(title:
+                                                     
+                                                      "${controller.order?.reviews?['rating']}" ,
+                                                       fontSize: 12,
+                                                       fontWeight: FontWeight.w700,
+                                                     ),
+                                                   ],
+                                                 ),
+                               ),
         
         
                               // MyText(

@@ -178,9 +178,9 @@ final Map<String, String> enUs = {
   "picked_on": "Picked on",
   "paid_with": "Paid with",
   "reorder": "Select items to reorder",
-    "add_review":"Add a review",
+    "add_review":"Write a review",
 
-  "you_rated": "You rated this ",
+  "you_rated": "You rated this",
   "search_your_desire": "Search Your Desire",
   "you_can_search_using":"You can search using title of the product or description of the product",
     "no_product_matched":"No Product Matched",

@@ -49,10 +49,12 @@ class OrdersController extends GetxController with GetSingleTickerProviderStateM
         await BaseClient.get(ApiUtils.getOrders,
             onSuccess: (response) async {
                       isLoading.value = false;
+                      print("datttaaaa ${response.data}");
 
               OrdersModel orderModel = OrdersModel.fromJson(response.data);
               myOrders.value.clear();
               myOrders.value.addAll(orderModel.orders??[]);
+
               if(onSuccess!= null && myOrders.isNotEmpty && (myOrders[0].status != "delivered" || myOrders[0].status != "cancelled")){
                 onSuccess(myOrders[0].id);
               }

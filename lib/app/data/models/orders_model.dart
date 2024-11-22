@@ -48,7 +48,7 @@ class Orders {
   String? createdAt;
   String? updatedAt;
   String? id;
-    Map<String, dynamic>? reviews;
+    dynamic reviews;
 
 
   Orders({
@@ -102,7 +102,7 @@ class Orders {
     deliveredAt = json['deliveredAt'] as String?;
     cancelledAt = json['cancelledAt'] as String?;
     createdAt = json['createdAt'] as String?;
-    reviews = json['reviews'] as Map<String, dynamic>?;
+    reviews = json['reviews'] ;
 
     updatedAt = json['updatedAt'] as String?;
     id = json['id'] as String?;

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,6 +16,8 @@ import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
 import 'package:rexsa_cafe/app/modules/orders/views/orders_view.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import '../../../data/utils/helper_functions.dart';
 
 class MainMenuController extends GetxController {
@@ -1136,67 +1139,140 @@ class MainMenuController extends GetxController {
     await Get.to(()=> WebViewPage(url: url));
     getInitialApisData();
   }
+int getRandomNumber(int max) {
+  if (max < 0) {
+    throw ArgumentError("The maximum number must be non-negative.");
+  }
+  final random = Random();
+  return random.nextInt(max + 1);
+}
 
 
-  showStartingImages(List<Banners> list){
-    // Show the dialog
-    Get.dialog(
-      Dialog(
-        backgroundColor: Colors.white, // No padding/margins
-        insetPadding: EdgeInsets.zero, // Remove default padding
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(getSize(15))
-        ),
-        child: SizedBox(
-          height: getSize(400),
-          width: size.width-50,
-          child: Stack(
-            children: [
-              SizedBox.expand(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: list.length, // Number of images
-                        itemBuilder: (context, index) {
-                          return CustomImageView(
-                            url: Utils.getCompleteUrl(list[index].image?.key??""),
-                            fit: BoxFit.cover,
-                            height: getSize(250),
-                            width: size.width-60, // Full width
-                            radius: getSize(15),
-                            margin: getMargin(bottom: 10),
-                          );
-                        },
+showStartingImages(List<Banners> list) {
+  final PageController pageController = PageController();
+  Get.dialog(
+    Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.zero,
+      
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(getSize(15)),
+      ),
+      child: SizedBox(
+        height: getSize(450),
+        width: size.width - getSize(70),
+        child: Column(
+          children: [
+            // Banner images with left-right scrolling
+            Expanded(
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    
+                    controller: pageController,
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                        child: CustomImageView(
+                          url: Utils.getCompleteUrl(
+                              list[index].image?.key ?? ""),
+                          fit: BoxFit.fill,
+                          height: getSize(300),
+                          width: size.width - 60,
+                          radius: getSize(15),
+                          margin: getMargin(bottom: 10),
+                        ),
+                      );
+                    },
+                  ),
+                 
+                  Positioned(
+                    top: getSize(12),
+                    right: getSize(12),
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorConstant.black.withOpacity(0.6),
+                        ),
+                        padding: getPadding(all: 4),
+                        child: Icon(
+                          Icons.close,
+                          color: ColorConstant.white,
+                          size: 16,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Positioned(
-                top: getSize(16),
-                right: getSize(16),
-                child: GestureDetector(
-                  onTap: () => Get.back(), // Close the dialog
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorConstant.black.withOpacity(0.6),
+            ),
+            // Dot Indicator
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        if (pageController.hasClients) {
+                          pageController.previousPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: Icon(
+                        Icons.chevron_left_outlined,
+                        color: ColorConstant.white,
+                        size: 24,
+                        weight: 5,
+                        
+                      ),
                     ),
-                    padding: getPadding(all: 8),
-                    child: Icon(
-                      Icons.close,
-                      color: ColorConstant.white,
+                                      SizedBox(width: getSize(10)),
+
+                  SmoothPageIndicator(
+                    controller: pageController,
+                    count: list.length,
+                    
+                    effect: WormEffect(
+                      paintStyle: PaintingStyle.stroke,
+                      dotColor: Colors.white,
+                      strokeWidth: 1.5,
+                      activeDotColor: Colors.white,
+                      dotHeight: 12,
+                      dotWidth: 12,
                     ),
                   ),
-                ),
+                  SizedBox(width: getSize(10)),
+                  GestureDetector(
+                      onTap: () {
+                        if (pageController.hasClients) {
+                          pageController.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: Icon(
+                        Icons.chevron_right_outlined,
+                        color: ColorConstant.white,
+                        size: 24,
+                                                weight: 5,
+
+                      ),
+                    ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-      barrierDismissible: true, // Dismiss when tapping outside
-    );
-  }
-
+    ),
+    barrierDismissible: true,
+  );
+}
 }

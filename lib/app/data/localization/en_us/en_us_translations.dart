@@ -32,6 +32,15 @@ final Map<String, String> enUs = {
   'lbl_my_addresses':'My Addresses',
   'lbl_my_orders':'My Orders',
   'lbl_my_favourites':'My Favourites',
+    'lbl_reviews': 'Reviews',
+    'whats_your_rate':"What's Your Rate",
+        'write_your_review':"Write Your Review",
+  'rating_required':"Rating is Required",
+  'would_you_like_to_write':'Would you like to write anything about us',
+  "how_was_your_last_order?":"How was your last order?",
+  'review_submitted':'Review Submitted',
+
+
   'lbl_support_center':'Support Center',
   'lbl_logout':'Logout',
   'lbl_req_account_deletion':'Req Account Deletion',

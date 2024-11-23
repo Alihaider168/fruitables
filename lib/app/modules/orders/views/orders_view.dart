@@ -1,11 +1,9 @@
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
-import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/widgets/noData.dart';
+import 'package:rexsa_cafe/app/modules/reviews/views/reviews.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/orders_controller.dart';
 
@@ -55,6 +53,8 @@ class OrdersView extends GetView<OrdersController> {
                   onReorder: (){
 
                   },
+                  reviewFunction: (){
+                  },
                 );
               },
             ) :ListView.builder(
@@ -79,6 +79,9 @@ class OrdersView extends GetView<OrdersController> {
                     completedAt: order.completedAt,
                     rating: order.reviews?['rating'].toString(),
                     id: order.id??'',
+                    reviewFunction: (){
+                    Get.to(()=>ReviewsScreen(order: order));
+                  },
                     onReorder: (){
                       for(int i=0;i<(order.products??[]).length;i++){
                         final item = (order.products??[])[i];
@@ -206,6 +209,8 @@ class PastOrderTile extends StatelessWidget {
 
   final String? completedAt;
   final void Function()? onReorder;
+    final void Function()? reviewFunction;
+
 
 
   PastOrderTile({
@@ -219,6 +224,7 @@ class PastOrderTile extends StatelessWidget {
     this.completedAt,
     required this.id,
     required this.onReorder,
+    required this.reviewFunction,
   });
 
   final OrdersController controller = Get.put(OrdersController());
@@ -386,7 +392,7 @@ class PastOrderTile extends StatelessWidget {
           InkWell(
             onTap:(){
               rating == null?
-              _launchReviewsURL(id):null;
+              reviewFunction!():null;
             },
             child: Container(
 
@@ -430,47 +436,7 @@ class PastOrderTile extends StatelessWidget {
     );
   }
 
-  void _launchReviewsURL(String orderId) async {
-    var url = 'https://rexsacafe.com/reviews?order=$orderId';
-    await Get.to(()=> WebViewPage(url: url));
 
-    // This will execute after the user closes the WebView
-    controller.init();
-  }
 }
 
-// void _launchReviewsURL(String orderId) async {
-//   var url = 'https://rexsacafe.com/reviews?order=$orderId';  // Replace with your desired URL
-//   if (await canLaunchUrl(Uri.parse(url))) {
-//     await launchUrl(Uri.parse(url));  // Open the URL
-//     print("something is here");
-//   } else {
-//     throw 'Could not launch $url';  // Error handling
-//   }
-// }
 
-
-// A separate page for WebView
-class WebViewPage extends StatelessWidget {
-  final String url;
-  const WebViewPage({required this.url});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: MyText(title: "add_review".tr,color: ColorConstant.white,),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: ColorConstant.white,),
-          onPressed: () {
-            Navigator.pop(context); // Close the WebView
-          },
-        ),
-      ),
-      body: InAppWebView(
-        initialUrlRequest: URLRequest(url: WebUri(url)),
-      ),
-    );
-  }
-}

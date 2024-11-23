@@ -18,6 +18,8 @@ class CustomButton extends StatelessWidget {
       this.height,
       this.text,
       this.prefixWidget,
+      this.loading = false,
+      
       this.suffixWidget,
       this.controller});
 
@@ -38,6 +40,8 @@ class CustomButton extends StatelessWidget {
   final double? width;
 
   final double? height;
+    final bool? loading;
+
 
   final String? text;
 
@@ -101,6 +105,7 @@ class CustomButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           prefixWidget ?? const SizedBox(),
+          if(loading == true)
           Text(
             text ?? "",
             textAlign: TextAlign.center,

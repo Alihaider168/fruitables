@@ -32,8 +32,20 @@ final Map<String, String> arSa = {
   'lbl_my_addresses': 'عناويني',
   'lbl_my_orders': 'طلباتي',
   'lbl_my_favourites': 'مفضلتي',
+  'lbl_reviews': 'التعليقات',
+  'whats_your_rate':"ما هو معدلك",
+  'write_your_review':"اكتب رأيك",
+  'review_submitted':'تم تقديم المراجعة',
+
+  'rating_required':"التقييم مطلوب",
+  'would_you_like_to_write':'هل ترغب في كتابة أي شيء عنا',
+
+
+
   'lbl_support_center': 'مركز الدعم',
   'lbl_logout': 'تسجيل الخروج',
+    "how_was_your_last_order?":"ما هو طلبك الأخير؟",
+
   'lbl_req_account_deletion': 'طلب حذف الحساب',
   'lbl_change_language': 'تغيير اللغة',
   'lbl_add_to_cart': 'أضف إلى السلة',

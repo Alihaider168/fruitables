@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
+import 'package:rexsa_cafe/app/modules/reviews/views/reviews.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/new_detail_controller.dart';
 
@@ -193,12 +193,8 @@ class NewDetailView extends GetView<NewDetailController> {
                                InkWell(
                                 onTap: ()async{
                                    if(controller.order?.reviews?['rating'] == null){
-                                     var url = 'https://rexsacafe.com/reviews?order=${controller.order?.id}';
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw 'Could not launch $url';
-              }
+                                                        Get.to(()=>ReviewsScreen(order: controller.order!));
+
                                    }
                                 },
                                  child: Row(

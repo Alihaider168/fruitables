@@ -6,6 +6,8 @@ class ApiUtils {
   static const getRegions = '$baseUrl/mobile-app/getAllBranches?companyId=rexsacafe';
   static const getMenu = '$baseUrl/mobile-app/getBranchMenu/64209654e91634fed32dbd1e';
   static const register = '$baseUrl1/register';
+    static const submitReview = '$baseUrl/reviews';
+
   static const login = '$baseUrl1/login';
   static const addresses = '$baseUrl1/addresses';
   static deleteAddress(String? id) => '$baseUrl1/addresses/$id';

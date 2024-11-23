@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
@@ -15,7 +13,7 @@ import 'package:rexsa_cafe/app/data/utils/fav_utils/fav_utils.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
-import 'package:rexsa_cafe/app/modules/orders/views/orders_view.dart';
+import 'package:rexsa_cafe/app/modules/reviews/views/reviews.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../data/utils/helper_functions.dart';
@@ -622,9 +620,14 @@ class MainMenuController extends GetxController {
                   po.add(Orders.fromJson(item));
                 }
                 if(Utils.checkIfAnyOrderCompleted(po, currentOrderForReview) && !sheetShown){
-                  sheetShown = true;
+                  // sheetShown = true;
                   removeOrder();
-                  _showReviewBottomSheet();
+                if(currentOrderForReview !=null){
+                                    Get.to(()=>ReviewsScreen(order: currentOrderForReview!));
+
+                }else{
+                  print("currentOrderForReview is null");
+                }
                 }
 
                 await Future.delayed(Duration(seconds: 10));
@@ -1032,120 +1035,7 @@ class MainMenuController extends GetxController {
 
   }
 
-  void _showReviewBottomSheet() {
-    num _rating = 0.0;
-    Get.bottomSheet(
-        StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // App Details with User Profile
-                    Row(
-                      children: [
-                        CustomImageView(
-                          radius: getSize(15),
-                          height: getSize(25),
-                          width: getSize(25),
-                          url: Utils.getCompleteUrl(currentOrderForReview?.branch?.image?.key),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: MyText(
-                            title: Utils.checkIfArabicLocale() ? currentOrderForReview?.branch?.name??"" : currentOrderForReview?.branch?.englishName??"",
-                            color: ColorConstant.white, fontSize: 16,
-                          ),
-                        ),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.close))
-                      ],
-                    ),
-                    SizedBox(height: getSize(20)),
-                    // Rating Bar
-                    Text(
-                      "Rate your experience:",
-                      style: TextStyle(color: ColorConstant.white, fontSize: 16),
-                    ),
-                    SizedBox(height: 8),
-                    RatingBar.builder(
-                      initialRating: _rating.toDouble(),
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        setState(() {
-                          _rating = rating;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 16),
-                    // Action Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            child:
-                            CustomButton(
-                              onTap: ()=> Get.back(),
-                              variant: ButtonVariant.OutlineGrey,
-                              text: "not_now".tr,
-                            )
-                        ),
-                        SizedBox(width: getSize(15),),
-                        Expanded(
-                            child:
-                            CustomButton(
-                              onTap: (){
-                                Get.back();
-                                _launchReviewsURL(currentOrderForReview?.id??"", _rating);
-                              },
-                              variant: ButtonVariant.FillWhite,
-                              text: "submit".tr,
-                            )
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      isScrollControlled: true, // To allow full-screen BottomSheets
-      backgroundColor: ColorConstant.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(getSize(16))),
-      ),
-    );
-  }
 
-  void _launchReviewsURL(String orderId,num rating) async {
-    var url = 'https://rexsacafe.com/reviews?order=$orderId&rating=$rating';
-    await Get.to(()=> WebViewPage(url: url));
-    getInitialApisData();
-  }
-int getRandomNumber(int max) {
-  if (max < 0) {
-    throw ArgumentError("The maximum number must be non-negative.");
-  }
-  final random = Random();
-  return random.nextInt(max + 1);
-}
 
 
 showStartingImages(List<Banners> list) {

@@ -16,6 +16,10 @@ class ApiUtils {
   static const sendOTP1 = '$baseUrl1/send-otp';
   static const addOrder = '$baseUrl1/sales';
   static const getOrders = '$baseUrl1/sales';
+    static const getVouchers = '$baseUrl1/vouchers';
+        static const getUsedVouchers = '$baseUrl1/used-vouchers';
+
+
   static getOrderDetail(String? id) => '$baseUrl1/sales/$id';
   static const getCurrentOrders = '$baseUrl1/sales/in-process';
   static const getMyDetail = '$baseUrl1/me';

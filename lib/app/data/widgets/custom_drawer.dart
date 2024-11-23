@@ -13,6 +13,7 @@ import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/data/widgets/otp_text_feild.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
+import 'package:rexsa_cafe/app/modules/vouchers/view/vouchers.dart';
 
 class
 CustomDrawer extends StatefulWidget {
@@ -159,6 +160,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onTap: (){
                 Get.back();
                 Get.toNamed(Routes.ORDERS);
+              }
+          ),
+          !Constants.isLoggedIn.value ? Offstage() : customTile(
+            icon: Icons.card_giftcard,
+            title: "vouchers".tr,
+            showArrow: true,
+              onTap: (){
+                Get.back();
+                Get.to(()=>VoucherScreen());
+                // Get.back();
+                // Get.toNamed(Routes.FAVOURITES)!.then((val){
+                //   favUtils.getFavourites();
+                // });
               }
           ),
           !Constants.isLoggedIn.value ? Offstage() : customTile(
@@ -476,8 +490,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           countDown();
                           showSignupSheet(context);
                         }else{
-                                                    countDown();
-
+                          countDown();
                           showOtpSheet(context);
                         }
 

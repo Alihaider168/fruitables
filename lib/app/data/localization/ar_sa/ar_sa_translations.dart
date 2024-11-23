@@ -37,6 +37,11 @@ final Map<String, String> arSa = {
   'write_your_review':"اكتب رأيك",
   'review_submitted':'تم تقديم المراجعة',
 
+'vouchers':'قسائم',
+'minimum':'الحد الأدنى',
+'valid_until':'صالحة حتى',
+
+
   'rating_required':"التقييم مطلوب",
   'would_you_like_to_write':'هل ترغب في كتابة أي شيء عنا',
 

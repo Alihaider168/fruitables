@@ -39,7 +39,9 @@ final Map<String, String> enUs = {
   'would_you_like_to_write':'Would you like to write anything about us',
   "how_was_your_last_order?":"How was your last order?",
   'review_submitted':'Review Submitted',
-
+  'vouchers':'Vouchers',
+'minimum':"minimum",
+'valid_until':'Valid until',
 
   'lbl_support_center':'Support Center',
   'lbl_logout':'Logout',

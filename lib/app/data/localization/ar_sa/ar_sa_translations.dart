@@ -44,6 +44,8 @@ final Map<String, String> arSa = {
     'past':"ماضي",
       "no_voucher_Subheading":"لا تتوفر قسائم في الوقت الحالي، ولكن ترقبوا العروض المثيرة!",
       "no_voucher_found":"لم يتم العثور على قسيمة",
+      'code_copied':'تم نسخ رمز القسيمة إلى الحافظة',
+
 
   'rating_required':"التقييم مطلوب",
   'would_you_like_to_write':'هل ترغب في كتابة أي شيء عنا',

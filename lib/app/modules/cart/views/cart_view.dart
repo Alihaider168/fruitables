@@ -335,7 +335,11 @@ class _CartViewState extends State<CartView> {
                   :controller.useWallet.value
                   ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount()))
                   :
-              getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()))),
+              getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())), (){
+                setState(() {
+                  print("heheeheh");
+                });
+              }),
           ):
           
           InkWell(

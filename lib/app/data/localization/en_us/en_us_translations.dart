@@ -16,6 +16,7 @@ final Map<String, String> enUs = {
     'current':"Current",
     'past':"Past",
       'remove':"Remove",
+      'code_copied':'Voucher code copied to clipboard',
       "no_voucher_Subheading":"No vouchers available at the moment, but stay tuned for exciting offers!",
       "no_voucher_found":"No Voucher Found",
 

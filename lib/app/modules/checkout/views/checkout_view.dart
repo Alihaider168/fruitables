@@ -4,8 +4,15 @@ import 'package:rexsa_cafe/app/modules/vouchers/view/vouchers.dart';
 import '../../../data/core/app_export.dart';
 import '../controllers/checkout_controller.dart';
 
-class CheckoutView extends GetView<CheckoutController> {
+class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
+
+  @override
+  State<CheckoutView> createState() => _CheckoutViewState();
+}
+
+class _CheckoutViewState extends State<CheckoutView> {
+  final CheckoutController controller = Get.put(CheckoutController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -338,10 +345,17 @@ class CheckoutView extends GetView<CheckoutController> {
                         _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
                         controller.usedWalletBalance!= null && controller.usedWalletBalance != 0 ? _buildSummaryRow("from_wallet".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedWalletBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
                         controller.usedPointsBalance!= null && controller.usedPointsBalance != 0? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedPointsBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
+                       Obx(()=>controller.menuController.selectedVoucher.value != null?
                         Padding(
                           padding: getPadding(top:8.0,bottom: 8),
-                          child: showVoucherCard(controller.menuController.selectedVoucher.value!,getFinalPriceWithVoucher(controller.getFinalPrice())),
-                        ),
+                          child: showVoucherCard(controller.menuController.selectedVoucher.value,getFinalPriceWithVoucher(controller.getFinalPrice()),(){
+                            setState((){
+                              print('called');
+                            });
+                          }),
+                        )
+                       :SizedBox()),
+                       
                         _buildSummaryRow(controller.usedPointsBalance!= null || controller.usedWalletBalance!= null ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${getFinalPriceWithVoucher(controller.getFinalPrice())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
                       ],
@@ -444,7 +458,6 @@ class CheckoutView extends GetView<CheckoutController> {
     );
   }
 
-
   num getFinalPriceWithVoucher(num amt){
     if(controller.menuController.selectedVoucher.value != null){
       if(controller.menuController.selectedVoucher.value!.type != 'percentage'){
@@ -457,5 +470,4 @@ class CheckoutView extends GetView<CheckoutController> {
       return amt;
     }
   }
-
 }

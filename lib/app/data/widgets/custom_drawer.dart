@@ -144,15 +144,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Get.toNamed(Routes.LANGUAGE_SELECTION,arguments: {"from_menu" : true});
               }
           ),
-          !Constants.isLoggedIn.value ? Offstage() :  customTile(
-            icon: Icons.location_on_outlined,
-            title: "lbl_my_addresses".tr,
-            showArrow: true,
-            onTap: (){
-              Get.back();
-              Get.toNamed(Routes.ADDRESSES);
-            }
-          ),
+          // !Constants.isLoggedIn.value ? Offstage() :  customTile(
+          //   icon: Icons.location_on_outlined,
+          //   title: "lbl_my_addresses".tr,
+          //   showArrow: true,
+          //   onTap: (){
+          //     Get.back();
+          //     Get.toNamed(Routes.ADDRESSES);
+          //   }
+          // ),
           !Constants.isLoggedIn.value ? Offstage() :  customTile(
             icon: Icons.receipt_long,
             title: "lbl_my_orders".tr,

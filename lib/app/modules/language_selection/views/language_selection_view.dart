@@ -167,11 +167,11 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
 
                         image: ImageConstant.delivery,
                           isSelected: controller.selectedPreference.value == 1,
-                          title: "Delivery - توصيل",
+                          title: "Delivery - ( قريباً )" ,
                           index: 1,
                           groupValue: controller.selectedPreference.value,
                           onTap: (){
-                            controller.selectedPreference.value = 1;
+                            // controller.selectedPreference.value = 1;
                           }
                       )),
                       Spacer(),

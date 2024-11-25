@@ -161,6 +161,7 @@ class ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        
         controller.showAddToCartItemSheet(context,item,fromFav: fromFav,onFavTap: onFavTap);
       },
       child: Container(
@@ -307,6 +308,7 @@ class ItemWidget extends StatelessWidget {
                     bottom: 0,
                     child: GestureDetector(
                       onTap: (){
+                        print("line 311");
                         if(!controller.checkForMultipleValues(item)){
                           String selectedSize = "small";
                           if((item.largePrice??0) != 0 ){

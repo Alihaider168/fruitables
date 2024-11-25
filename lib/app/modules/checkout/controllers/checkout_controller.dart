@@ -427,9 +427,10 @@ Rxn<VoucherModel> voucher = Rxn<VoucherModel>();
 
 
 }
-double calculateVoucherAmount(VoucherModel voucher,num totalAmount){
+double calculateVoucherAmount(VoucherModel? voucher,num totalAmount){
   double? amount =0.0;
-    if(voucher.type == 'percentage'){
+   if(voucher != null){
+     if(voucher.type == 'percentage'){
       amount = (totalAmount *voucher.discount! ) /100;
 
 
@@ -438,6 +439,7 @@ double calculateVoucherAmount(VoucherModel voucher,num totalAmount){
 
 
   }
+   }
   return amount;
 
 

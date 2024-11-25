@@ -6,7 +6,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:myfatoorah_flutter/myfatoorah_flutter.dart';
 // import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
-import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/models/vouchersMode.dart';
 import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_round_button.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
@@ -17,6 +17,8 @@ class CheckoutController extends GetxController {
 
   num? usedPointsBalance;
   num? usedWalletBalance;
+    String? voucherCode;
+  num? voucherAmount;
   AppPreferences appPreferences = AppPreferences();
 
 
@@ -35,6 +37,8 @@ class CheckoutController extends GetxController {
   RxInt selectedDayIndex = 0.obs;
   RxInt selectedHourIndex = 0.obs;
   RxInt selectedMinuteIndex = 0.obs;
+Rxn<VoucherModel> voucher = Rxn<VoucherModel>();
+ 
 
   List<String> days = [
     "today".tr,
@@ -60,6 +64,13 @@ class CheckoutController extends GetxController {
     }else{
       usedPointsBalance = null;
     }
+     if(data != null && data["voucher"]!= null){
+      voucher.value = data["voucherCode"];
+    }else{
+      voucher.value = null;
+    }
+     
+
     super.onInit();
 
   }
@@ -257,7 +268,11 @@ class CheckoutController extends GetxController {
               "address": selectedAddress.value,
               "instructions" : instructionsController.text,
               "discount": menuController.cart.getTotalDiscountForCart(),
-              "products": products
+              "products": products,
+              'voucherId':voucher.value?.code,
+              'voucherAmount':voucher.value != null? calculateVoucherAmount(voucher.value!, getFinalPrice()):null,
+
+
             });
       }
     });
@@ -406,6 +421,22 @@ class CheckoutController extends GetxController {
       debugPrint(error.message);
     });
   }
+
+
+
+}
+double calculateVoucherAmount(VoucherModel voucher,num totalAmount){
+  double? amount =0.0;
+    if(voucher.type == 'percentage'){
+      amount = (totalAmount *voucher.discount! ) /100;
+
+
+  }else{
+          amount =voucher.discount!;
+
+
+  }
+  return amount;
 
 
 

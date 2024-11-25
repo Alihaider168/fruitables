@@ -12,6 +12,7 @@ final Map<String, String> enUs = {
   "enter_username": "Full Name",
   "enter_phone_number": "Phone #",
   'lbl_done':'Done',
+    'voucherCode':"Add Voucher Code",
   'lbl_search':'Search',
   'lbl_close':'Close',
   'lbl_no_results':'No results found',

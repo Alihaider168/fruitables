@@ -197,6 +197,8 @@ final Map<String, String> arSa = {
     "calories":"سعرات حرارية",
 
   "lbl_use_points":"استخدام النقاط",
+      'voucherCode': "أضف رمز القسيمة",
+
 
   "search_your_desire":"ابحث عن رغبتك",
   "you_can_search_using":"يمكنك البحث باستخدام عنوان المنتج أو وصف المنتج",

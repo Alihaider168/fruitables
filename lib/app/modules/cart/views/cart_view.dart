@@ -1,5 +1,6 @@
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
+import 'package:rexsa_cafe/app/modules/vouchers/view/vouchers.dart';
 
 import '../controllers/cart_controller.dart';
 
@@ -85,6 +86,8 @@ class _CartViewState extends State<CartView> {
                   Get.toNamed(Routes.CHECKOUT,arguments: {
                     "usedPointsBalance" : controller.usePoints.value ? controller.usedPointsBalance : null,
                     "usedWalletBalance" : controller.useWallet.value ? controller.usedWalletBalance : null,
+                    "voucher":controller.selectedVoucher.value
+
                   });
                 },
               ),
@@ -270,7 +273,7 @@ class _CartViewState extends State<CartView> {
       decoration: BoxDecoration(
         border: Border.all(color: ColorConstant.grayBorder.withOpacity(.5),width: 0.5),
         borderRadius: BorderRadius.circular(getSize(5)),
-        color: ColorConstant.opacBlackColor.withOpacity(.03)
+        color: ColorConstant.opacBlackColor.withOpacity(.05)
       ),
       child: Column(
         children: [
@@ -324,11 +327,16 @@ class _CartViewState extends State<CartView> {
               ],
             ),
           ),
+          Obx(()=>controller.selectedVoucher.value !=null?
+          Padding(
+            padding: getPadding(top:8.0,bottom: 8),
+            child: showVoucherCard(controller,controller.selectedVoucher.value!),
+          ):
+          
           InkWell(
             onTap: (){
-              if(!Constants.isLoggedIn.value){
-                controller.menuController.showLoginSheet(context);
-              }
+                              controller.showVouchersSheet(context);
+
             },
             child: Container(
               decoration: BoxDecoration(color:Colors.grey.shade200, borderRadius: BorderRadius.circular(8)),
@@ -351,7 +359,7 @@ class _CartViewState extends State<CartView> {
                 fontWeight: FontWeight.w500,)
               ],),
             ),
-          ),
+          ),),
           // CustomButton(
           //   margin: getMargin(top: 10),
           //   text: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,

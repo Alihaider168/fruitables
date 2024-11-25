@@ -12,6 +12,8 @@ class ApiUtils {
   static const addresses = '$baseUrl1/addresses';
   static deleteAddress(String? id) => '$baseUrl1/addresses/$id';
   static const favorites = '$baseUrl1/favorites';
+    static const checkVoucher = '$baseUrl1/vouchers';
+
   static const sendOTP = '$baseUrl1/send-otp';
   static const sendOTP1 = '$baseUrl1/send-otp';
   static const addOrder = '$baseUrl1/sales';

@@ -654,11 +654,13 @@ class MainMenuController extends GetxController {
   final AppPreferences _appPreferences = AppPreferences();
   final TextEditingController otpController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
+
   RoundedLoadingButtonController loginController = RoundedLoadingButtonController();
   RoundedLoadingButtonController otpBtnController = RoundedLoadingButtonController();
   RoundedLoadingButtonController signupController = RoundedLoadingButtonController();
@@ -1165,4 +1167,5 @@ showStartingImages(List<Banners> list) {
     barrierDismissible: true,
   );
 }
+
 }

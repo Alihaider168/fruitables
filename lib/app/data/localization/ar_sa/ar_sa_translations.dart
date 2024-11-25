@@ -40,7 +40,10 @@ final Map<String, String> arSa = {
 'vouchers':'قسائم',
 'minimum':'الحد الأدنى',
 'valid_until':'صالحة حتى',
-
+    'current':"حاضِر",
+    'past':"ماضي",
+      "no_voucher_Subheading":"لا تتوفر قسائم في الوقت الحالي، ولكن ترقبوا العروض المثيرة!",
+      "no_voucher_found":"لم يتم العثور على قسيمة",
 
   'rating_required':"التقييم مطلوب",
   'would_you_like_to_write':'هل ترغب في كتابة أي شيء عنا',

@@ -38,7 +38,8 @@ initState(){
         centerTitle: true,
       ),
       body: Obx(
-        ()=>
+        ()=> 
+        
         Skeletonizer(
           enabled: controller.isLoading.value,
           child: controller.isLoading.value?
@@ -65,7 +66,49 @@ initState(){
             Obx(
               ()=> Expanded(
               
-                child:controller.currentTab.value ==0? _buildVoucherList(controller.vouchers):_buildVoucherList(controller.usedVouchers),
+                child:
+                !controller.isLoading.value && (controller.currentTab.value ==0? controller.vouchers.isEmpty:controller.usedVouchers.isEmpty)?
+        
+        Container(
+          color: Colors.white,
+          padding: getPadding(all: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.card_giftcard_outlined, size: getSize(120),),
+               SizedBox(
+                height: getSize(20)),
+            MyText(
+              title: 
+              'no_voucher_found'.tr,
+              fontWeight: FontWeight.bold,
+              // textAlign: TextAlign.center,
+              
+                    fontSize:
+                      getSize(20),
+                 ),
+            
+            SizedBox(
+                height:  getSize(5)),
+            Container(
+              width:  getSize(600),
+              alignment: Alignment.center,
+              child: Text(
+                "no_voucher_Subheading".tr,
+                maxLines: 3,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: ColorConstant.textGrey,
+                    fontSize: getSize(16)),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: getSize(100)),
+          
+          
+          ],),
+        ):
+                controller.currentTab.value ==0? _buildVoucherList(controller.vouchers):_buildVoucherList(controller.usedVouchers),
               ),
             ),
           ],

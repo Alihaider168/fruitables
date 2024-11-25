@@ -44,13 +44,10 @@ final Map<String, String> arSa = {
 
   'rating_required':"التقييم مطلوب",
   'would_you_like_to_write':'هل ترغب في كتابة أي شيء عنا',
-
-
-
+  'remove':"يزيل",
   'lbl_support_center': 'مركز الدعم',
   'lbl_logout': 'تسجيل الخروج',
-    "how_was_your_last_order?":"ما هو طلبك الأخير؟",
-
+  "how_was_your_last_order?":"ما هو طلبك الأخير؟",
   'lbl_req_account_deletion': 'طلب حذف الحساب',
   'lbl_change_language': 'تغيير اللغة',
   'lbl_add_to_cart': 'أضف إلى السلة',

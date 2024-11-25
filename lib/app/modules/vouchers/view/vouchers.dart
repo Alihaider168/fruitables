@@ -3,7 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/vouchersMode.dart';
-import 'package:rexsa_cafe/app/modules/cart/controllers/cart_controller.dart';
+import 'package:rexsa_cafe/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:rexsa_cafe/app/modules/vouchers/controller/vouchersController.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -202,25 +202,24 @@ initState(){
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(),
-                  // Row(
-                  //   children: [
-                  //      Text(
-                  //       'SAR',
-                  //       style: TextStyle(
-                  //         color:  ColorConstant.black,
-                  //         fontSize: 14,
-                  //       ),
-                  //     ),
-                      // Text(
-                      //   ' ${voucher.minimumAmount?.toStringAsFixed(2)} ${"minimum".tr} ',
-                      //   style: TextStyle(
-                      //     color:  ColorConstant.textGrey,
-                      //     fontSize: 14,
-                      //   ),
-                      // ),
-                  //   ],
-                  // ),
+                  Row(
+                    children: [
+                       Text(
+                        'SAR',
+                        style: TextStyle(
+                          color:  ColorConstant.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        ' ${voucher.minimumAmount?.toStringAsFixed(2)} ${"minimum".tr} ',
+                        style: TextStyle(
+                          color:  ColorConstant.textGrey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
                   InkWell(
                     onTap: (){
                       copyToClipboard(voucher.code!);
@@ -281,12 +280,11 @@ initState(){
 }
 
 
-Widget showVoucherCard(VoucherModel voucher) {
+Widget showVoucherCard(VoucherModel voucher,num totalAmount) {
   MainMenuController menuController = MainMenuController();
     return Container(
       margin: getMargin(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(8)
       ),
       child: Padding(
@@ -294,16 +292,7 @@ Widget showVoucherCard(VoucherModel voucher) {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
         
-          children: [
-             Container(
-          height: 15,
-          width: 10,
-          decoration: BoxDecoration(
-          color: ColorConstant.opacBlackColor.withOpacity(.05),
-          borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30))
-        ),),
-                          SizedBox(width: 10),
-        
+          children: [        
             Icon(Icons.card_giftcard),
             SizedBox(width: 10),
             Expanded(
@@ -313,10 +302,10 @@ Widget showVoucherCard(VoucherModel voucher) {
                   "${voucher.code}",
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     overflow: TextOverflow.ellipsis,
 
-                    fontWeight: FontWeight.w500,
+                    
                   ),
                 ),
               ),
@@ -325,10 +314,9 @@ Widget showVoucherCard(VoucherModel voucher) {
             InkWell(
               onTap: (){
                 menuController.selectedVoucher.value =null;
-                
               },
               child: Text(
-              "Remove",               
+              "remove".tr,               
                 style: TextStyle(
                 
                   fontSize: 12,
@@ -340,7 +328,6 @@ Widget showVoucherCard(VoucherModel voucher) {
               ),
             ),
             SizedBox(width: getSize(10),),
-
             Container(
               constraints: BoxConstraints(maxWidth: getSize(100)),
                padding: getPadding(left: 8, right: 8,top: 3, bottom: 3),
@@ -350,13 +337,13 @@ Widget showVoucherCard(VoucherModel voucher) {
             color: ColorConstant.blue.withOpacity(0.2)
           ),
               child: Text(
-                '${voucher.type != 'percentage' ?'SAR':''} -${voucher.discount?.toStringAsFixed(2)} ${voucher.type == 'percentage' ?'%':''}',
+                '${'SAR'} -${calculateVoucherAmount(voucher, totalAmount).toStringAsFixed(2)}',
                
                maxLines: 1,
                 style: TextStyle(
                 
                   fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  // fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
                   
                   color: ColorConstant.blue
@@ -368,14 +355,7 @@ Widget showVoucherCard(VoucherModel voucher) {
             //     copyToClipboard(voucher.code!);
             //   },
             //   child: Icon(Icons.copy,color: ColorConstant.blue,size: 23,)),
-              SizedBox(width: getSize(10),),
-                    Container(
-          height: 15,
-          width: 10,
-          decoration: BoxDecoration(
-          color: ColorConstant.opacBlackColor.withOpacity(.05),
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), bottomLeft: Radius.circular(30))
-        ),),
+                    
           ],
         ),
       ),

@@ -329,7 +329,13 @@ class _CartViewState extends State<CartView> {
           Obx(()=>controller.menuController.selectedVoucher.value !=null?
           Padding(
             padding: getPadding(top:8.0,bottom: 8),
-            child: showVoucherCard(controller.menuController.selectedVoucher.value!),
+            child: showVoucherCard(controller.menuController.selectedVoucher.value!,         controller.useWallet.value && controller.usePoints.value? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount()))
+                  :controller.usePoints.value
+                  ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()))
+                  :controller.useWallet.value
+                  ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount()))
+                  :
+              getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()))),
           ):
           
           InkWell(

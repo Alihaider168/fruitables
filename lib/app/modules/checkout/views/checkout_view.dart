@@ -340,7 +340,7 @@ class CheckoutView extends GetView<CheckoutController> {
                         controller.usedPointsBalance!= null && controller.usedPointsBalance != 0? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedPointsBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
                         Padding(
                           padding: getPadding(top:8.0,bottom: 8),
-                          child: showVoucherCard(controller.menuController.selectedVoucher.value!),
+                          child: showVoucherCard(controller.menuController.selectedVoucher.value!,getFinalPriceWithVoucher(controller.getFinalPrice())),
                         ),
                         _buildSummaryRow(controller.usedPointsBalance!= null || controller.usedWalletBalance!= null ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${getFinalPriceWithVoucher(controller.getFinalPrice())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),

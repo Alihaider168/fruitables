@@ -13,7 +13,7 @@ class CartController extends GetxController {
 
   num? usedPointsBalance;
   num? usedWalletBalance;
-Rxn<VoucherModel> selectedVoucher = Rxn<VoucherModel>();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
       final TextEditingController voucherCodeController = TextEditingController();
         RoundedLoadingButtonController btnController = RoundedLoadingButtonController();
@@ -121,40 +121,38 @@ Rxn<VoucherModel> selectedVoucher = Rxn<VoucherModel>();
                   // prefixWidget: Padding(padding: getPadding(right: 5),child: Icon(Icons.email, color: ColorConstant.white)),
                   onTap: () async {
                     if(formKey.currentState!.validate()){
-                    btnController.start();
+                      btnController.start();
 
                       Utils.check().then((value) async {
-      if (value) {
-        await BaseClient.get("${ApiUtils.checkVoucher}/code/${voucherCodeController.text}",
-            onSuccess: (response) async {
+                        if (value) {
+                          await BaseClient.get("${ApiUtils.checkVoucher}/code/${voucherCodeController.text}",
+                              onSuccess: (response) async {
+                                btnController.stop();
+                                if(response.data.toString().isNotEmpty){
+                                  menuController.selectedVoucher.value = VoucherModel.fromMap(response.data);
+                                  Get.back();
+                                  voucherCodeController.clear();
+                                  update();
+                                }else{
+                                  Get.back();
+                                  CustomSnackBar.showCustomErrorToast(message: "please_type_correct_voucher".tr);
+                                }
 
-              btnController.stop();
+                                return true;
+                              },
+                              onError: (error) {
+                                voucherCodeController.clear();
+                                Get.back();
 
-              selectedVoucher.value = VoucherModel.fromMap(response.data);
-              Get.back();
-              voucherCodeController.clear();
-              update();
-            
+                                btnController.stop();
 
-
-             
-
-              return true;
-            },
-            onError: (error) {
-                            voucherCodeController.clear();
-              Get.back();
-
-                                  btnController.stop();
-
-              BaseClient.handleApiError(error);
-              return false;
-            },
-          headers: Utils.getHeader()
-        );
-      }
-    });
-
+                                BaseClient.handleApiError(error);
+                                return false;
+                              },
+                              headers: Utils.getHeader()
+                          );
+                        }
+                      });
                     }
                   },
                 ),

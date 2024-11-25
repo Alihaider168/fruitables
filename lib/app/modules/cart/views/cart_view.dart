@@ -73,20 +73,19 @@ class _CartViewState extends State<CartView> {
             children: [
               _buildSummaryRow("lbl_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
                   controller.useWallet.value && controller.usePoints.value
-                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
+                      ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount()))
                       :controller.usePoints.value
-                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())
+                      ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()))
                       :controller.useWallet.value
-                      ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount())
-                      :
-                  Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+                      ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount()))
+                      : getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()))}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
               CustomButton(
                 text: "lbl_proceed_to_checkout".tr,
                 onTap: (){
                   Get.toNamed(Routes.CHECKOUT,arguments: {
                     "usedPointsBalance" : controller.usePoints.value ? controller.usedPointsBalance : null,
                     "usedWalletBalance" : controller.useWallet.value ? controller.usedWalletBalance : null,
-                    "voucher":controller.selectedVoucher.value
+                    "voucher":controller.menuController.selectedVoucher.value
 
                   });
                 },
@@ -327,15 +326,20 @@ class _CartViewState extends State<CartView> {
               ],
             ),
           ),
-          Obx(()=>controller.selectedVoucher.value !=null?
+          Obx(()=>controller.menuController.selectedVoucher.value !=null?
           Padding(
             padding: getPadding(top:8.0,bottom: 8),
-            child: showVoucherCard(controller,controller.selectedVoucher.value!),
+            child: showVoucherCard(controller.menuController.selectedVoucher.value!),
           ):
           
           InkWell(
             onTap: (){
-                              controller.showVouchersSheet(context);
+              if(Constants.isLoggedIn.value ){
+                controller.showVouchersSheet(context);
+              }else{
+                controller.menuController.showLoginSheet(context);
+              }
+
 
             },
             child: Container(
@@ -354,9 +358,9 @@ class _CartViewState extends State<CartView> {
             
                 ),
                 SizedBox(width: getSize(10)),
-                MyText(title: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,)
+                Obx(()=> MyText(title: Constants.isLoggedIn.value ? "lbl_apply_promo".tr : "login_to_apply_promo".tr,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,))
               ],),
             ),
           ),),
@@ -391,13 +395,13 @@ class _CartViewState extends State<CartView> {
           Divider(),
           Obx(()=> _buildSummaryRow(controller.useWallet.value || controller.usePoints.value ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${
               controller.useWallet.value && controller.usePoints.value
-                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount())
+                  ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()+controller.getWalletAmount()))
                   :controller.usePoints.value
-                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount())
+                  ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getPointsAmount()))
                   :controller.useWallet.value
-                  ? Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount())
+                  ? getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()) - (controller.getWalletAmount()))
                   :
-              Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true)),
+              getFinalPriceWithVoucher(Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax()))}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true)),
         ],
       ),
     );
@@ -422,6 +426,19 @@ class _CartViewState extends State<CartView> {
   //       ? (Constants.userModel?.customer?.balance??0)
   //       : Utils.getNewCheckoutPrice(controller.menuController.cart.getTotalDiscountedPrice(), controller.menuController.cart.getTax());
   // }
+
+  num getFinalPriceWithVoucher(num amt){
+    if(controller.menuController.selectedVoucher.value != null){
+      if(controller.menuController.selectedVoucher.value!.type != 'percentage'){
+        return amt -(controller.menuController.selectedVoucher.value!.discount??0);
+      }else{
+        return amt - (amt*(controller.menuController.selectedVoucher.value!.discount??0)/100);
+      }
+
+    }else{
+      return amt;
+    }
+  }
 
 
 

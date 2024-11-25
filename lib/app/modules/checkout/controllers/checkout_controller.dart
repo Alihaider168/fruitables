@@ -245,6 +245,7 @@ Rxn<VoucherModel> voucher = Rxn<VoucherModel>();
               menuController.cart.clearCart();
               menuController.bottomBar.value = false;
               menuController.orderAdded.value = true;
+              menuController.selectedVoucher.value = null;
 
               return true;
             },

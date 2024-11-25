@@ -6,6 +6,7 @@ import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
 import 'package:rexsa_cafe/app/data/models/user_model.dart';
+import 'package:rexsa_cafe/app/data/models/vouchersMode.dart';
 import 'package:rexsa_cafe/app/data/utils/Shared_prefrences/app_prefrences.dart';
 import 'package:rexsa_cafe/app/data/utils/auth_utils/auth.dart';
 import 'package:rexsa_cafe/app/data/utils/cart/cart.dart';
@@ -23,7 +24,7 @@ class MainMenuController extends GetxController {
   Orders? currentOrderForReview;
 
   bool sheetShown = false;
-
+  Rxn<VoucherModel> selectedVoucher = Rxn<VoucherModel>();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Rx<MenuModel> menuModel = MenuModel().obs;

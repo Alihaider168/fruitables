@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/vouchersMode.dart';
 import 'package:rexsa_cafe/app/modules/cart/controllers/cart_controller.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:rexsa_cafe/app/modules/vouchers/controller/vouchersController.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -280,8 +281,8 @@ initState(){
 }
 
 
-Widget showVoucherCard(CartController controller,VoucherModel voucher) {
-
+Widget showVoucherCard(VoucherModel voucher) {
+  MainMenuController menuController = MainMenuController();
     return Container(
       margin: getMargin(bottom: 10),
       decoration: BoxDecoration(
@@ -305,23 +306,25 @@ Widget showVoucherCard(CartController controller,VoucherModel voucher) {
         
             Icon(Icons.card_giftcard),
             SizedBox(width: 10),
-            Container(
-              width: getSize(100),
-              child: Text(
-                "${voucher.code}",
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 16,
-                  overflow: TextOverflow.ellipsis,
-                  
-                  fontWeight: FontWeight.w500,
+            Expanded(
+              child: Container(
+                // width: getSize(100),
+                child: Text(
+                  "${voucher.code}",
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 16,
+                    overflow: TextOverflow.ellipsis,
+
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
              SizedBox(width: getSize(10)),
             InkWell(
               onTap: (){
-                controller.selectedVoucher.value =null;
+                menuController.selectedVoucher.value =null;
                 
               },
               child: Text(
@@ -336,7 +339,7 @@ Widget showVoucherCard(CartController controller,VoucherModel voucher) {
                 ),
               ),
             ),
-                        Spacer(),
+            SizedBox(width: getSize(10),),
 
             Container(
               constraints: BoxConstraints(maxWidth: getSize(100)),

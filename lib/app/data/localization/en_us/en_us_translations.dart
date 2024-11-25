@@ -200,6 +200,7 @@ final Map<String, String> enUs = {
     "calories":"Calories",
     "not_now":"Not Now",
     "submit":"Submit",
+    "please_type_correct_voucher":"Please type valid voucher name",
 
 
 

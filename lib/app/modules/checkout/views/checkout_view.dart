@@ -1,4 +1,5 @@
 import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
+import 'package:rexsa_cafe/app/modules/vouchers/view/vouchers.dart';
 
 import '../../../data/core/app_export.dart';
 import '../controllers/checkout_controller.dart';
@@ -337,7 +338,11 @@ class CheckoutView extends GetView<CheckoutController> {
                         _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
                         controller.usedWalletBalance!= null && controller.usedWalletBalance != 0 ? _buildSummaryRow("from_wallet".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedWalletBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
                         controller.usedPointsBalance!= null && controller.usedPointsBalance != 0? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.usedPointsBalance}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
-                        _buildSummaryRow(controller.usedPointsBalance!= null || controller.usedWalletBalance!= null ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.getFinalPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
+                        Padding(
+                          padding: getPadding(top:8.0,bottom: 8),
+                          child: showVoucherCard(controller.menuController.selectedVoucher.value!),
+                        ),
+                        _buildSummaryRow(controller.usedPointsBalance!= null || controller.usedWalletBalance!= null ? "payable_amount".tr:"lbl_grand_total".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${getFinalPriceWithVoucher(controller.getFinalPrice())}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}", isBold: true),
                         // _buildSummaryRow("lbl_grand_total".tr, "${"lbl_rs".tr}  ${controller.menuController.cart.getTotalDiscountedPrice() + controller.menuController.cart.getTax() + Constants.DELIVERY_FEES}", isBold: true),
                       ],
                     ),
@@ -397,7 +402,7 @@ class CheckoutView extends GetView<CheckoutController> {
                       if(controller.selectedMethod.value.isNotEmpty){
                         if(controller.selectedMethod.value != "cash_on_delivery".tr){
                           // Get.to(()=> FatoorahWidget(amount: controller.getFinalPrice()));
-                          controller.startPayment(context,amount: controller.getFinalPrice());
+                          controller.startPayment(context,amount: getFinalPriceWithVoucher(controller.getFinalPrice()));
                         }else{
                           controller.addOrder(paymentMethod: "cod");
                         }
@@ -437,6 +442,20 @@ class CheckoutView extends GetView<CheckoutController> {
         ],
       ),
     );
+  }
+
+
+  num getFinalPriceWithVoucher(num amt){
+    if(controller.menuController.selectedVoucher.value != null){
+      if(controller.menuController.selectedVoucher.value!.type != 'percentage'){
+        return amt -(controller.menuController.selectedVoucher.value!.discount??0);
+      }else{
+        return amt - (amt*(controller.menuController.selectedVoucher.value!.discount??0)/100);
+      }
+
+    }else{
+      return amt;
+    }
   }
 
 }

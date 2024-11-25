@@ -398,7 +398,7 @@ class CheckoutView extends GetView<CheckoutController> {
                 text: "confirm_order".tr,
                 onTap: (){
                   if(!Constants.isDelivery.value||controller.selectedAddress.value.isNotEmpty){
-                    if(controller.getFinalPrice() > 0){
+                    if(getFinalPriceWithVoucher(controller.getFinalPrice()) > 0){
                       if(controller.selectedMethod.value.isNotEmpty){
                         if(controller.selectedMethod.value != "cash_on_delivery".tr){
                           // Get.to(()=> FatoorahWidget(amount: controller.getFinalPrice()));

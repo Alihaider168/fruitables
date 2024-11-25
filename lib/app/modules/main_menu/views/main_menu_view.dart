@@ -3,6 +3,7 @@ import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_collapsable_widget.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_drawer.dart';
+import 'package:rexsa_cafe/app/modules/main_menu/views/viewAll.dart';
 
 import '../controllers/main_menu_controller.dart';
 
@@ -172,16 +173,16 @@ class _MainMenuViewState extends State<MainMenuView> {
 
 
             ListView.separated(
-              itemCount: (controller.menuModel.value.data?.categories?.length??0) >5
-                  ? 5 : (controller.menuModel.value.data?.categories?.length??0),
+              itemCount: (controller.menuModel.value.data?.homePageWidgets?.length??0) >5
+                  ? 5 : (controller.menuModel.value.data?.homePageWidgets?.length??0),
               separatorBuilder: (_,__){
                 return SizedBox(height: getSize(20),);
               },
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                final category = controller.menuModel.value.data?.categories![index];
-                final items = (controller.menuModel.value.data?.items ?? []).where((element) => category?.id == element.categoryId).toList();
+                final homePageWidget = controller.menuModel.value.data?.homePageWidgets![index];
+                final items = controller.getProductsIds(homePageWidget!.products);
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +194,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MyText(
-                            title: Utils.checkIfArabicLocale() ? category?.arabicName??"" : category?.englishName??"",
+                            title: Utils.checkIfArabicLocale() ? homePageWidget?.title??"" : homePageWidget?.englishName??"",
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),
@@ -202,7 +203,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                             visible: items.length>4,
                             child: GestureDetector(
                               onTap:(){
-                                Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                                Get.to(()=>ViewAllScreen(homePageWidget: homePageWidget, controller: controller));
+                                // Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
                               },
                               child: MyText(
                                 title: 'lbl_view_all'.tr,
@@ -235,7 +237,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                                       right: i == 0 && Utils.checkIfArabicLocale() ? 14 : 2,
                                       left: i == 0 && !Utils.checkIfArabicLocale() ? 14 : 2,
                                     ),
-                                    child: CustomItemCard(item: items[i]),
+                                    child: CustomItemCard(item: items[i]!),
                                   );
 
                               },
@@ -245,7 +247,8 @@ class _MainMenuViewState extends State<MainMenuView> {
                               visible:  items.length>4,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
+                                  Get.to(()=>ViewAllScreen(homePageWidget: homePageWidget, controller: controller));
+                                  // Get.toNamed(Routes.CATEGORY_DETAIL,arguments: {'category':index});
                                 },
                                 child: Padding(
                                   padding:getPadding(all: 16),
@@ -269,14 +272,7 @@ class _MainMenuViewState extends State<MainMenuView> {
                         ),
                       ),
                     ),
-                    // Items of the category
-                    // SingleChildScrollView(
-                    //   a,
-                    //   child: Row(
-                    //     children: [...items.map((item) => CustomItemCard(item: item))],
-                    //   ),
-                    // ),
-                    // ...items.map((item) => CustomItemCard(item: item)),
+                
                   ],
                 );
               },

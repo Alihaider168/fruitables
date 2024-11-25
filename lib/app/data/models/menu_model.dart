@@ -25,12 +25,15 @@ class Data {
   List<Items>? items;
   List<Banners>? banners;
   List<Banners>? popups;
+    List<HomePageWidgets>? homePageWidgets;
+
 
   Data({
     this.categories,
     this.items,
     this.banners,
     this.popups,
+    this.homePageWidgets,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,7 @@ class Data {
     items = (json['items'] as List?)?.map((dynamic e) => Items.fromJson(e as Map<String,dynamic>)).toList();
     banners = (json['banners'] as List?)?.map((dynamic e) => Banners.fromJson(e as Map<String,dynamic>)).toList();
     popups = (json['popUps'] as List?)?.map((dynamic e) => Banners.fromJson(e as Map<String,dynamic>)).toList();
+    homePageWidgets = (json['HomePageWidgets'] as List?)?.map((dynamic e)=>HomePageWidgets.fromMap(e as Map<String, dynamic>)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -46,9 +50,41 @@ class Data {
     json['items'] = items?.map((e) => e.toJson()).toList();
     json['banners'] = banners?.map((e) => e.toJson()).toList();
     json['popUps'] = popups?.map((e) => e.toJson()).toList();
+    json['HomePageWidgets'] = homePageWidgets?.map((e) => e.toMap()).toList();
+
     return json;
   }
 }
+class HomePageWidgets {
+  final String title;
+  final List<String> products;
+  final String englishName;
+
+  HomePageWidgets({
+    required this.title,
+    required this.products,
+    required this.englishName,
+  });
+
+  // Converts the object to a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'products': products,
+      'englishName': englishName,
+    };
+  }
+
+  // Creates an object from a Map
+  factory HomePageWidgets.fromMap(Map<String, dynamic> map) {
+    return HomePageWidgets(
+      title: map['title'] ?? '',
+      products: List<String>.from(map['products'] ?? []),
+      englishName: map['englishName'] ?? '',
+    );
+  }
+}
+
 
 class Categories {
   String? englishName;

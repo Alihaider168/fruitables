@@ -270,6 +270,7 @@ Rxn<VoucherModel> voucher = Rxn<VoucherModel>();
               "instructions" : instructionsController.text,
               "discount": menuController.cart.getTotalDiscountForCart(),
               "products": products,
+              'voucherName':voucher.value?.title,
               'voucherId':voucher.value?.code,
               'voucherAmount':voucher.value != null? calculateVoucherAmount(voucher.value!, getFinalPrice()):null,
 

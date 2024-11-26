@@ -276,9 +276,10 @@ class _CartViewState extends State<CartView> {
       ),
       child: Column(
         children: [
-          !Constants.isLoggedIn.value ? Offstage() : Container(
+          !Constants.isLoggedIn.value ? Offstage() :Constants.userModel!.customer!.balance! <= 0?SizedBox(): Container(
             height: getSize(25),
-            child: Row(
+            child:
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 MyText(title: "${"lbl_use_wallet".tr}: ${"lbl_rs".tr} ${(Constants.userModel?.customer?.balance??0.00).toStringAsFixed(2)}",fontSize:Utils.checkIfArabicLocale()?12: 12,),
@@ -301,7 +302,7 @@ class _CartViewState extends State<CartView> {
             ),
           ),
           !Constants.isLoggedIn.value ? Offstage() : SizedBox(height: getSize(5),),
-          !Constants.isLoggedIn.value ? Offstage() : Container(
+          !Constants.isLoggedIn.value ? Offstage() :Constants.userModel!.customer!.points! <= 0?SizedBox(): Container(
             height: getSize(25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -392,7 +393,7 @@ class _CartViewState extends State<CartView> {
           SizedBox(height: getSize(0)),
           _buildSummaryRow("lbl_subtotal".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountedPrice()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           _buildSummaryRow("lbl_discount".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTotalDiscountForCart()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
-          Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
+          // Constants.isDelivery.value ? _buildSummaryRow("lbl_delivery_fee".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${Constants.DELIVERY_FEES}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage(),
           _buildSummaryRow("${"lbl_tax".tr} (15.0%)", "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}${controller.menuController.cart.getTax()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}"),
           Obx(()=> controller.useWallet.value ? _buildSummaryRow("from_wallet".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.getWalletAmount()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage()),
           Obx(()=> controller.usePoints.value ? _buildSummaryRow("from_points".tr, "${Utils.checkIfArabicLocale() ? "":"${'lbl_rs'.tr} "}-${controller.getPointsAmount()}${!Utils.checkIfArabicLocale() ? "":" ${'lbl_rs'.tr} "}") : Offstage()),

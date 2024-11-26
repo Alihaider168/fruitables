@@ -49,7 +49,7 @@ class FavouritesView extends GetView<FavouritesController> {
           );
         },
       )),
-                  bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value,ordersLength:controller.mainMenuController.ordersLenght.value-1   ,)),
+      bottomNavigationBar: Obx(()=>  !controller.mainMenuController.bottomBar.value  && !controller.mainMenuController.orderAdded.value? Offstage() : CartBottom(showCurrentOrder :controller.mainMenuController.orderAdded.value,order: controller.mainMenuController.currentOrder.value,ordersLength:controller.mainMenuController.ordersLenght.value-1   ,)),
 
     );
   }

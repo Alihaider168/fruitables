@@ -13,6 +13,13 @@ final Map<String, String> enUs = {
   "enter_phone_number": "Phone #",
   'lbl_done':'Done',
     'voucherCode':"Add Voucher Code",
+    'current':"Current",
+    'past':"Past",
+      'remove':"Remove",
+      'code_copied':'Voucher code copied to clipboard',
+      "no_voucher_Subheading":"No vouchers available at the moment, but stay tuned for exciting offers!",
+      "no_voucher_found":"No Voucher Found",
+
   'lbl_search':'Search',
   'lbl_close':'Close',
   'lbl_no_results':'No results found',

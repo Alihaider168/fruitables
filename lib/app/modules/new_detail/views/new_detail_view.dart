@@ -239,7 +239,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                        Icon(Icons.store, color: Colors.black),
                                          DottedLine(
                                                 direction: Axis.vertical,
-                                                lineLength: getSize(40),
+                                                lineLength: getSize(Get.height*.035),
                                                 lineThickness: 2,
                                                 dashLength: 5,
                                                 dashColor: Colors.grey,
@@ -250,7 +250,7 @@ class NewDetailView extends GetView<NewDetailController> {
 
                                          DottedLine(
                                                 direction: Axis.vertical,
-                                                lineLength: getSize(40),
+                                                lineLength: getSize(Get.height*.035),
                                                 lineThickness: 2,
                                                 dashLength: 5,
                                                 dashColor: Colors.grey,
@@ -278,7 +278,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                      fontSize: 12,
                                      fontWeight: FontWeight.w600,
                                   ),],),
-                                                                  SizedBox(height: getSize(19),),
+                                                                  SizedBox(height: getSize(Get.height*.015),),
 
                                        Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,7 +294,7 @@ class NewDetailView extends GetView<NewDetailController> {
                                                                            fontWeight: FontWeight.w600,
                                                                         ),],),
                                   if(controller.order?.status == "delivered" )
-                                SizedBox(height: getSize(19),),
+                                SizedBox(height: getSize(Get.height*.015),),
                                                                 if(controller.order?.status == "delivered" )
 
                                     Column(
@@ -392,7 +392,7 @@ class NewDetailView extends GetView<NewDetailController> {
                           Divider(color: Colors.grey.shade300),
                                 _buildTotalRow("lbl_subtotal".tr, (controller.order?.totalAmount??0)-(controller.order?.tax??0) - (controller.order?.discount??0) -((controller.order?.type??"") == "delivery" ? Constants.DELIVERY_FEES : 0)),
                                 _buildTotalRow("lbl_discount".tr, (controller.order?.discount??0).toDouble(), isDiscount: true),
-                                (controller.order?.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
+                                // (controller.order?.type??"") == "delivery" ? _buildTotalRow("lbl_delivery_fee".tr, Constants.DELIVERY_FEES) : Offstage(),
                                 _buildTotalRow("${"lbl_tax".tr} (15.0%)",controller.order?.tax??0),
 
                                 SizedBox(height: getSize(12)),

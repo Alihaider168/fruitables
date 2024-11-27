@@ -6,7 +6,7 @@ import 'package:rexsa_cafe/app/data/widgets/custom_text_form_field.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 
 class CartController extends GetxController {
-  MainMenuController menuController = Get.put(MainMenuController());
+ final  MainMenuController menuController = Get.put(MainMenuController());
 
   RxBool useWallet = false.obs;
   RxBool usePoints = false.obs;

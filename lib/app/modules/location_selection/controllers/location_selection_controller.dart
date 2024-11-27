@@ -1,15 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rexsa_cafe/app/data/models/city_model.dart';
 import 'package:rexsa_cafe/app/data/models/orders_model.dart';
-import 'package:rexsa_cafe/app/data/utils/api_utils.dart';
-import 'package:rexsa_cafe/app/data/utils/utils.dart';
-import 'package:rexsa_cafe/app/data/widgets/custom_button.dart';
-import 'package:rexsa_cafe/app/services/base_client.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../data/core/app_export.dart';
 
@@ -219,6 +214,7 @@ class LocationSelectionController extends GetxController {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return Padding(
+          // padding: getPadding(all: 0),
           padding: getPadding(bottom: MediaQuery.of(ctx).viewInsets.bottom ),
           child: DraggableScrollableSheet(
             initialChildSize: 0.4,
@@ -276,13 +272,19 @@ class LocationSelectionController extends GetxController {
                             : Obx(()=> ListView.builder(
                           itemCount: filteredLocations.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
+                            return InkWell(
                               onTap: (){
-                                selectedRegionModel = cityModel?.branches?[index];
-                                regionController.text = Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
-                                Get.back();
+                                  selectedRegionModel = cityModel?.branches?[index];
+                                  regionController.text = Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??"";
+                                  Get.back();
                               },
-                              title: Text(Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
+                              child: Container(
+                                padding: getPadding(top: 5, bottom: 5, right: 5, left: 5),
+                                alignment:Utils.checkIfArabicLocale()?Alignment.centerRight: Alignment.centerLeft,
+                                
+                                child: Text(Utils.checkIfArabicLocale() ? filteredLocations[index].name??"" : filteredLocations[index].englishName??""),
+                              
+                              ),
                             );
                           },
                         ))),

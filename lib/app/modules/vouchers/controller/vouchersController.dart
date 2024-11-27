@@ -8,7 +8,7 @@ class VoucherController extends GetxController {
   var currentTab = 0.obs;
   RxBool isLoading = false.obs;
   
-  final List<String> tabs = ['Current', 'Past'];
+  final List<String> tabs = ['current'.tr, 'past'.tr];
   
  RxList<VoucherModel> vouchers = <VoucherModel>[].obs;
   RxList<VoucherModel> usedVouchers = <VoucherModel>[].obs;

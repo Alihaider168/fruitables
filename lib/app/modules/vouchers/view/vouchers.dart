@@ -3,7 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:intl/intl.dart';
 import 'package:rexsa_cafe/app/data/core/app_export.dart';
 import 'package:rexsa_cafe/app/data/models/vouchersMode.dart';
-import 'package:rexsa_cafe/app/modules/cart/controllers/cart_controller.dart';
+import 'package:rexsa_cafe/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/controllers/main_menu_controller.dart';
 import 'package:rexsa_cafe/app/modules/vouchers/controller/vouchersController.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -26,7 +26,7 @@ initState(){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           onPressed: (){
@@ -38,7 +38,8 @@ initState(){
         centerTitle: true,
       ),
       body: Obx(
-        ()=>
+        ()=> 
+        
         Skeletonizer(
           enabled: controller.isLoading.value,
           child: controller.isLoading.value?
@@ -65,7 +66,49 @@ initState(){
             Obx(
               ()=> Expanded(
               
-                child:controller.currentTab.value ==0? _buildVoucherList(controller.vouchers):_buildVoucherList(controller.usedVouchers),
+                child:
+                !controller.isLoading.value && (controller.currentTab.value ==0? controller.vouchers.isEmpty:controller.usedVouchers.isEmpty)?
+        
+        Container(
+          color: Colors.white,
+          padding: getPadding(all: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.card_giftcard_outlined, size: getSize(120),),
+               SizedBox(
+                height: getSize(20)),
+            MyText(
+              title: 
+              'no_voucher_found'.tr,
+              fontWeight: FontWeight.bold,
+              // textAlign: TextAlign.center,
+              
+                    fontSize:
+                      getSize(20),
+                 ),
+            
+            SizedBox(
+                height:  getSize(5)),
+            Container(
+              width:  getSize(600),
+              alignment: Alignment.center,
+              child: Text(
+                "no_voucher_Subheading".tr,
+                maxLines: 3,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: ColorConstant.textGrey,
+                    fontSize: getSize(16)),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: getSize(100)),
+          
+          
+          ],),
+        ):
+                controller.currentTab.value ==0? _buildVoucherList(controller.vouchers):_buildVoucherList(controller.usedVouchers),
               ),
             ),
           ],
@@ -76,7 +119,9 @@ initState(){
 
   Widget _buildTabs() {
     return Material(
-      elevation: 4,
+      elevation: 3,
+      borderRadius: BorderRadius.circular(10.0), 
+    shadowColor: Colors.grey.shade300,
       child: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -110,7 +155,7 @@ initState(){
 
           border: Border(
             bottom: BorderSide(
-              color: isSelected ? Colors.pink : Colors.transparent,
+              color: isSelected ? Colors.black : Colors.transparent,
               width: 2,
             ),
           ),
@@ -120,7 +165,7 @@ initState(){
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: getFontSize(14),
-            color: isSelected ? Colors.pink : ColorConstant.textGrey,
+            color: isSelected ? Colors.black : ColorConstant.textGrey,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
         ),
@@ -143,133 +188,139 @@ initState(){
 
   Widget _buildVoucherCard(VoucherModel voucher) {
     return Container(
-      margin: getMargin(bottom: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12)
-      ),
-      child: Padding(
-        padding: getPadding(top: 16, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-        padding: getPadding(left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    voucher.title??'',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+           margin: getMargin(bottom: 15)
+,
+      child: Material(
+          elevation: 3,
+        borderRadius: BorderRadius.circular(10.0), 
+      shadowColor: Colors.grey.shade300,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(12)
+          ),
+          child: Padding(
+            padding: getPadding(top: 16, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+            padding: getPadding(left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: Get.width *.55,
+                        child: Text(
+
+                          voucher.title??'',
+                          overflow: TextOverflow.visible,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${voucher.type != 'percentage' ?'SAR':''} ${voucher.discount?.toStringAsFixed(2)} ${voucher.type == 'percentage' ?'%':''}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 4),
+                Padding(
+            padding: getPadding(left: 16, right: 16),
+                  child: Container(
+                            padding: getPadding(left: 8, right: 8,top: 3, bottom: 3),
+        
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: ColorConstant.blue.withOpacity(0.2)
+                    ),
+                    child: Text(
+                      voucher.code??'',
+                      style: TextStyle(
+                        color:  ColorConstant.blue,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold
+                        
+                      ),
                     ),
                   ),
-                  Text(
-                    '${voucher.type != 'percentage' ?'SAR':''} ${voucher.discount?.toStringAsFixed(2)} ${voucher.type == 'percentage' ?'%':''}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                ),
+                SizedBox(height: 8),
+                Padding(
+            padding: getPadding(left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                           Text(
+                            'SAR',
+                            style: TextStyle(
+                              color:  ColorConstant.black,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            ' ${voucher.minimumAmount?.toStringAsFixed(2)} ${"minimum".tr} ',
+                            style: TextStyle(
+                              color:  ColorConstant.textGrey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: (){
+                          copyToClipboard(voucher.code!);
+                          ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('code_copied'.tr),
+          duration: Duration(seconds: 2),
+        ),
+      );
+                        },
+                        child: Icon(Icons.copy,color: ColorConstant.blue,size: 20,)),
+                    ],
+                  ),
+                ),
+                
+        
+                SizedBox(height: 8),
+                Center(
+                  child: Padding(
+                  
+                    padding: getPadding(right: 10, left: 10, top: 10, bottom: 10),
+                    child: DottedLine(
+                      lineLength: getSize(303),
+                      dashColor: Colors.grey.shade500,
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 4),
-            Padding(
-        padding: getPadding(left: 16, right: 16),
-              child: Container(
-                        padding: getPadding(left: 8, right: 8,top: 3, bottom: 3),
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: ColorConstant.blue.withOpacity(0.2)
                 ),
-                child: Text(
-                  voucher.code??'',
-                  style: TextStyle(
-                    color:  ColorConstant.blue,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold
-                    
+                Center(
+                  child: Padding(
+                          padding: getPadding(top: 0, bottom: 0),
+                    child: Text(
+                      '${"valid_until".tr} ${DateFormat('dd MMM yyyy').format(voucher.expiryDate!)}',
+                      style: TextStyle(
+                        color:  ColorConstant.black,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                )
+               
+              ],
             ),
-            SizedBox(height: 8),
-            Padding(
-        padding: getPadding(left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(),
-                  // Row(
-                  //   children: [
-                  //      Text(
-                  //       'SAR',
-                  //       style: TextStyle(
-                  //         color:  ColorConstant.black,
-                  //         fontSize: 14,
-                  //       ),
-                  //     ),
-                      // Text(
-                      //   ' ${voucher.minimumAmount?.toStringAsFixed(2)} ${"minimum".tr} ',
-                      //   style: TextStyle(
-                      //     color:  ColorConstant.textGrey,
-                      //     fontSize: 14,
-                      //   ),
-                      // ),
-                  //   ],
-                  // ),
-                  InkWell(
-                    onTap: (){
-                      copyToClipboard(voucher.code!);
-                    },
-                    child: Icon(Icons.copy,color: ColorConstant.blue,size: 20,)),
-                ],
-              ),
-            ),
-            
-    
-            SizedBox(height: 8),
-            Row(children: [
-              Container(
-                height: 20,
-                width: 13,
-                decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30))
-              ),),
-              Padding(
-
-                padding: getPadding(right: 10, left: 10.5),
-                child: DottedLine(
-                  lineLength: getSize(303),
-                  dashColor: Colors.grey.shade500,
-                ),
-              ),
-               Container(
-                height: 20,
-                width: 13,
-                decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30), bottomLeft: Radius.circular(30))
-              ),)
-            ],),
-            Center(
-              child: Padding(
-                      padding: getPadding(top: 0, bottom: 0),
-                child: Text(
-                  '${"valid_until".tr} ${DateFormat('dd MMM yyyy').format(voucher.expiryDate!)}',
-                  style: TextStyle(
-                    color:  ColorConstant.black,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            )
-           
-          ],
+          ),
         ),
       ),
     );
@@ -281,12 +332,11 @@ initState(){
 }
 
 
-Widget showVoucherCard(VoucherModel voucher) {
-  MainMenuController menuController = MainMenuController();
+Widget showVoucherCard(VoucherModel? voucher,num totalAmount,Function setState) {
+ final  MainMenuController menuController = Get.put(MainMenuController());
     return Container(
       margin: getMargin(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(8)
       ),
       child: Padding(
@@ -294,29 +344,20 @@ Widget showVoucherCard(VoucherModel voucher) {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
         
-          children: [
-             Container(
-          height: 15,
-          width: 10,
-          decoration: BoxDecoration(
-          color: ColorConstant.opacBlackColor.withOpacity(.05),
-          borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30))
-        ),),
-                          SizedBox(width: 10),
-        
+          children: [        
             Icon(Icons.card_giftcard),
             SizedBox(width: 10),
             Expanded(
               child: Container(
                 // width: getSize(100),
                 child: Text(
-                  "${voucher.code}",
+                  "${voucher?.code ?? ''}",
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     overflow: TextOverflow.ellipsis,
 
-                    fontWeight: FontWeight.w500,
+                    
                   ),
                 ),
               ),
@@ -324,13 +365,15 @@ Widget showVoucherCard(VoucherModel voucher) {
              SizedBox(width: getSize(10)),
             InkWell(
               onTap: (){
-                menuController.selectedVoucher.value =null;
+                menuController.selectedVoucher = Rxn<VoucherModel>();
+                Future.delayed(Duration(milliseconds: 500),(){
+                  setState();
+                });
                 
               },
               child: Text(
-              "Remove",               
+              "remove".tr,               
                 style: TextStyle(
-                
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
@@ -340,7 +383,6 @@ Widget showVoucherCard(VoucherModel voucher) {
               ),
             ),
             SizedBox(width: getSize(10),),
-
             Container(
               constraints: BoxConstraints(maxWidth: getSize(100)),
                padding: getPadding(left: 8, right: 8,top: 3, bottom: 3),
@@ -350,13 +392,13 @@ Widget showVoucherCard(VoucherModel voucher) {
             color: ColorConstant.blue.withOpacity(0.2)
           ),
               child: Text(
-                '${voucher.type != 'percentage' ?'SAR':''} -${voucher.discount?.toStringAsFixed(2)} ${voucher.type == 'percentage' ?'%':''}',
+                '${'SAR'} ${calculateVoucherAmount(voucher, totalAmount) >0?"-":"" }${calculateVoucherAmount(voucher, totalAmount).toStringAsFixed(2)}',
                
                maxLines: 1,
                 style: TextStyle(
                 
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                  // fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
                   
                   color: ColorConstant.blue
@@ -368,14 +410,7 @@ Widget showVoucherCard(VoucherModel voucher) {
             //     copyToClipboard(voucher.code!);
             //   },
             //   child: Icon(Icons.copy,color: ColorConstant.blue,size: 23,)),
-              SizedBox(width: getSize(10),),
-                    Container(
-          height: 15,
-          width: 10,
-          decoration: BoxDecoration(
-          color: ColorConstant.opacBlackColor.withOpacity(.05),
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), bottomLeft: Radius.circular(30))
-        ),),
+                    
           ],
         ),
       ),

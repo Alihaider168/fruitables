@@ -79,6 +79,12 @@ class MainMenuController extends GetxController {
     getCurrentOrderContinious();
   }
 
+List<Items?>  getProductsIds(List<String> products){
+     return Constants.menuItems.where((item) {
+      return products.contains(item?.id);
+    }).toList();
+  }
+
 
   Future<void> loadCart() async {
     await cart.loadCartFromPreferences();

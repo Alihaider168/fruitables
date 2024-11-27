@@ -317,47 +317,7 @@ class PastOrderTile extends StatelessWidget {
                         ),
 
                         SizedBox(height: getSize(6)),
-                        if(completedAt == null && deliveryDate == null)
-                          AnimatedBuilder(
-                            animation: controller.animation,
-                            builder: (context, child) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-
-                                      width: size.width/7,
-                                      height: 5,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                    ),
-                                    Positioned(
-
-                                      left: controller.animation.value,
-                                      child: Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 5),
-
-                                        width: 50,
-                                        height: 5,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [ColorConstant.primaryPink1.withOpacity(.7), ColorConstant.primaryPink1.withOpacity(.8), ColorConstant.primaryPink1],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          )
+                        
 
                       ],
                     ),
@@ -391,7 +351,7 @@ class PastOrderTile extends StatelessWidget {
           ),
           InkWell(
             onTap:(){
-              rating == null?
+              rating == null  && completedAt != null && deliveryDate != null?
               reviewFunction!():null;
             },
             child: Container(
@@ -404,11 +364,57 @@ class PastOrderTile extends StatelessWidget {
                   border: Border(bottom: BorderSide(color: Colors.grey.shade300, width: 1.5),right: BorderSide(color: Colors.grey.shade300, width: 1.5),left: BorderSide(color: Colors.grey.shade300, width: 2))
               ),
 
-              child:  Row(
+              child: rating ==null && completedAt == null && deliveryDate == null?
+                          Container(
+                            padding: getPadding(top: 5, bottom: 5),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            child: AnimatedBuilder(
+                              animation: controller.animation,
+                              builder: (context, child) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                            
+                                        width: size.width/7,
+                                        height: 5,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      Positioned(
+                            
+                                        left: controller.animation.value,
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(horizontal: 5),
+                            
+                                          width: 50,
+                                          height: 5,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [ColorConstant.primaryPink1.withOpacity(.7), ColorConstant.primaryPink1.withOpacity(.8), ColorConstant.primaryPink1],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ):
+                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  
                   MyText(
-
                     title:
                     rating == null? "add_review".tr:"you_rated".tr,
                     fontWeight: FontWeight.w700,

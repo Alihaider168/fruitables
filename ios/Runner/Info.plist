@@ -53,9 +53,9 @@
 		<string>https</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need your location to show it on the map.</string>
+    <string>Rexsa Cafe need your location to show your current location on the map.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>We need your location to show it on the map.</string>
+    <string>Rexsa Cafe need your location to show your current location on the map.</string>
     <key>io.flutter.embedded_views_preview</key>
     <true/>
     <key>NSAppTransportSecurity</key>

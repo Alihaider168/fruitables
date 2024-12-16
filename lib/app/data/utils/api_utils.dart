@@ -5,6 +5,7 @@ class ApiUtils {
 
   static const getRegions = '$baseUrl/mobile-app/getAllBranches?companyId=rexsacafe';
   static const getMenu = '$baseUrl/mobile-app/getBranchMenu/64209654e91634fed32dbd1e';
+  static const getDeliveryMenu='$baseUrl/mobile-app/getDeliveryItems?companyId=rexsacafe';
   static const register = '$baseUrl1/register';
     static const submitReview = '$baseUrl/reviews';
 

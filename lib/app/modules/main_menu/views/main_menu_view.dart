@@ -3,6 +3,7 @@ import 'package:rexsa_cafe/app/data/models/menu_model.dart';
 import 'package:rexsa_cafe/app/data/widgets/cart_bottom.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_collapsable_widget.dart';
 import 'package:rexsa_cafe/app/data/widgets/custom_drawer.dart';
+import 'package:rexsa_cafe/app/modules/category_detail/views/category_detail_view.dart';
 import 'package:rexsa_cafe/app/modules/main_menu/views/viewAll.dart';
 
 import '../controllers/main_menu_controller.dart';
@@ -37,7 +38,7 @@ class _MainMenuViewState extends State<MainMenuView> {
           ),
         ),
         leadingWidth: getSize(35),
-        title: GestureDetector(
+        title: Constants.isDelivery.value?SizedBox(): GestureDetector(
           onTap: (){
             Get.toNamed(Routes.LOCATION_SELECTION);
           },
@@ -81,7 +82,7 @@ class _MainMenuViewState extends State<MainMenuView> {
       Obx(()=> CustomCollapsableWidget(
         banners: controller.menuModel.value.data?.banners??[],
         header: // Horizontal ListView for categories
-        Obx(()=> controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
+        Obx(()=>Constants.isDelivery.value ?SizedBox(): controller.menuModel.value.data?.categories != null && (controller.menuModel.value.data?.categories??[]).isNotEmpty ?
         Column(
           children: [
             SizedBox(height: getSize(15),),
@@ -167,7 +168,29 @@ class _MainMenuViewState extends State<MainMenuView> {
           ],
         ): Offstage()),
 
-        child:
+        child:Constants.isDelivery.value ?Container(
+        child:   Expanded(
+          child: SingleChildScrollView(
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              
+                itemCount: controller.menuModel.value.data?.items?.length,
+                itemBuilder: (context, index){
+                  var item = controller.menuModel.value.data?.items?[index];
+                  
+                  return ItemWidget(
+                item: item??Items(),fromFav: false,
+                onFavTap: (){
+                  Get.back();
+                
+                },
+            
+              );
+                }),
+          ),
+        )
+        ):
         Column(
           children: [
 

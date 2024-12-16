@@ -51,9 +51,10 @@ class MainMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getInitialApisData();
-    loadOrders();
+    // getInitialApisData();
+    // loadOrders();
     // _scheduleBackgroundTask();
+    Constants.isDelivery.value?getDeliveryMenu():
     getMenu();
   }
 
@@ -103,6 +104,40 @@ List<Items?>  getProductsIds(List<String> products){
           onSuccess: (response) async {
             menuModel.value = MenuModel.fromJson(response.data);
             if((menuModel.value.data?.popups??[]).isNotEmpty){
+              showStartingImages(menuModel.value.data?.popups??[]);
+            }
+            Constants.menuItems = [];
+            Constants.menuItems.addAll(menuModel.value.data?.items??[]);
+            isLoading.value = false;
+            return true;
+          },
+          onError: (error) {
+            isLoading.value = false;
+            BaseClient.handleApiError(error);
+            update();
+            return false;
+          },
+        );
+      }
+    });
+  }
+    Future<dynamic> getDeliveryMenu() async {
+    Utils.check().then((value) async {
+      isLoading.value = true;
+      print("its called");
+      if (value) {
+        await BaseClient.get(ApiUtils.getDeliveryMenu,
+          onSuccess: (response) async {
+            menuModel.value.data = Data.fromJson(response.data);
+          
+            print(menuModel.value.data?.items);
+                        print(menuModel.value.data?.banners);
+            print(menuModel.value.data?.popups);
+
+
+
+            if(response.data['popUps'].isNotEmpty){
+              
               showStartingImages(menuModel.value.data?.popups??[]);
             }
             Constants.menuItems = [];

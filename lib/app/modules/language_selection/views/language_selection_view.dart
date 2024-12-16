@@ -167,11 +167,11 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
 
                         image: ImageConstant.delivery,
                           isSelected: controller.selectedPreference.value == 1,
-                          title: "Delivery - ( قريباً )" ,
+                          title: "Delivery - ( توصيل )" ,
                           index: 1,
                           groupValue: controller.selectedPreference.value,
                           onTap: (){
-                            // controller.selectedPreference.value = 1;
+                            controller.selectedPreference.value = 1;
                           }
                       )),
                       Spacer(),
@@ -179,10 +179,12 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
                       SizedBox(height: getSize(20),),
                       InkWell(
                         onTap: ()async{
-                              Constants.isDelivery.value = (controller.selectedPreference.value == 0);
+                              Constants.isDelivery.value = (controller.selectedPreference.value == 1);
                           if(controller.fromMenu){
                             Get.back();
                           }else{
+                            controller.selectedPreference.value == 1?
+                             Get.toNamed(Routes.MAIN_MENU,):
                             Get.toNamed(Routes.LOCATION_SELECTION,);
                           }
                           if (controller.selectedLanguage.value == 1) {
